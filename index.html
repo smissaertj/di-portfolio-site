@@ -26,9 +26,9 @@
 
         <div class="collapse navbar-collapse" id="navbar">
           <ul class="navbar-nav me-auto mb-2 mb-sm-0 justify-content-end w-100">
-            <li class="nav-item mx-2">
-              <a class="nav-link active" aria-current="page" href="#">Home</a>
-            </li>
+<!--            <li class="nav-item mx-2">-->
+<!--              <a class="nav-link active" aria-current="page" href="#">Home</a>-->
+<!--            </li>-->
             <li class="nav-item mx-2">
               <a class="nav-link" href="#section-about">About</a>
             </li>
@@ -42,10 +42,13 @@
               <a class="nav-link" href="#section-portfolio">Portfolio</a>
             </li>
             <li class="nav-item mx-2">
-              <a class="nav-link" href="#section-cv">Curriculum Vitae</a>
+              <a class="nav-link" href="#section-experience">Experience</a>
             </li>
             <li class="nav-item mx-2">
               <a class="nav-link" href="#section-certificates">Certificates</a>
+            </li>
+            <li class="nav-item mx-2">
+              <a class="nav-link" href="#section-contact">Contact</a>
             </li>
           </ul>
         </div>
@@ -55,16 +58,16 @@
     <div class="container col-xxl-8 px-4 py-5">
       <div class="row flex-lg-row-reverse align-items-center g-5 py-5">
         <div class="col-10 col-sm-8 col-lg-6">
-          <img src="profile_pic.jpg" class="profile-pic d-block mx-lg-auto img-fluid rounded-circle" alt="Bootstrap Themes" width="700" height="500" loading="lazy">
+          <img src="./img/profile_pic.jpg" class="profile-pic mx-auto img-fluid rounded-circle" alt="Bootstrap Themes" width="700" height="500" loading="lazy">
         </div>
         <div class="header-text col-lg-6">
-          <h1 class="display-5 fw-bold lh-1 mb-3 d-md-flex justify-content-md-center">Joeri JM Smissaert</h1>
-          <p class="lead d-md-flex justify-content-md-center">System Engineer & Full Stack Developer</p>
-          <div class="social d-grid gap-2 d-md-flex justify-content-md-center">
-<!--            <button type="button" class="btn btn-outline-secondary btn-lg px-4"><i class="fa-solid fa-at mx-2"></i>Contact</button>-->
-            <i class="social-icon fa-solid fa-at fa-2x mx-3"></i>
-            <i class="social-icon fa-brands fa-github fa-2x mx-3"></i>
-            <i class="social-icon fa-brands fa-linkedin-in fa-2x mx-3"></i>
+          <h1 class="display-5 fw-bold lh-1 mb-3 d-flex justify-content-center">Joeri JM Smissaert</h1>
+          <p class="lead d-flex justify-content-center text-center">SysOps Engineer & Full Stack Developer</p>
+          <div class="social d-grid gap-2 d-flex justify-content-center">
+<!--            <button type="button" class="btn btn-outline-warning btn-lg px-4"><i class="fa-solid fa-at mx-2"></i>Contact</button>-->
+            <a href="#section-contact"><i class="social-icon fa-solid fa-at fa-3x mx-3"></i></a>
+            <a href="https://github.com/smissaertj" target="_blank"><i class="social-icon fa-brands fa-github fa-3x mx-3"></i></a>
+            <a href="https://www.linkedin.com/in/jsmissaert/" target="_blank"><i class="social-icon fa-brands fa-linkedin-in fa-3x mx-3"></i></a>
           </div>
         </div>
       </div>
@@ -73,13 +76,35 @@
 
   <div class="container px-4 py-5" id="section-about">
   <h2 class="pb-2 border-bottom">About</h2>
+    <div class="row d-flex flex-wrap justify-content-center text-center">
+      <div class="col-10 col-sm-8 col-lg-6 mt-5">
+        <p>
+          My name is Joeri (pronounced as Yuri), I work as a SysOps Engineer for a managed hosting provider.
+          On a typical day, I investigate bugs and issues affecting our platform, monitor our infrastructure,
+          respond to outages by taking steps to stabilize the infrastructure and develop new and maintain
+          existing tools.
+        </p>
+        <p>
+          I used to provided technical support on business-critical infrastructure in industry sectors where ITIL
+          principles are followed.
+        </p>
+        <p>
+          I’m mainly interested in open source technologies, I automate boring stuff using Python and Ruby and
+          occasionally game on my Fedora Linux machine. I’m always committed to continuous professional development.
+        </p>
+        <p class="fs-4 fw-bold text-uppercase">
+          Never stop learning
+        </p>
+      
+      </div>
+    </div>
   </div>
 
   <div class="container px-4" id="section-skills">
     <h2 class="pb-2 border-bottom">Skills</h2>
-    <div class="row g-4 py-5 row-cols-1 row-cols-lg-4">
+    <div class="row g-4 row-cols-1 row-cols-lg-4 text-center">
       <div class="feature col">
-        <div class="feature-icon">
+        <div class="feature-icon d-flex justify-content-center">
           <i class="fa-solid fa-terminal fa-5x"></i>
         </div>
         <h2>Linux & Cloud</h2>
@@ -94,7 +119,7 @@
           <i class="fa-solid fa-laptop-code fa-5x"></i>
         </div>
         <h2>Coding</h2>
-        <p>Using Bash, Ansible, Python and Ruby, I automate most of my personal and professional tasks.</p>
+        <p>Using Bash, Ansible, Python and Ruby, I automate most of my tasks at home and at work.</p>
       </div>
       <div class="feature col">
         <div class="feature-icon">
@@ -127,48 +152,78 @@
   <h2 class="pb-2 border-bottom">Portfolio</h2>
     <div class="row">
       <div class="col-sm-4">
-        <div class="card">
-          <img src="https://via.placeholder.com/140x100" class="card-img-top" alt="">
-          <div class="card-body">
-            <h5 class="card-title">Special title treatment</h5>
-            <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-            <a href="#" class="btn btn-primary">Go somewhere</a>
+        <div class="card shadow-sm p-3 mb-5 bg-body rounded">
+          <img src="./img/portfolio/cf-logo-v-rgb.png" class="card-img-top" alt="">
+          <div class="card-body d-flex flex-wrap justify-content-center text-center">
+            <h5 class="card-title">Cloudflare DNS Updater</h5>
+            <p class="card-text">
+              A script which updates Cloudflare DNS records when changes are detected.
+            </p>
+            <a href="https://github.com/smissaertj/cloudflare-dns-updater" target="_blank">
+              <i class="social-button fa-brands fa-github fa-3x mx-3"></i>
+            </a>
           </div>
         </div>
       </div>
       <div class="col-sm-4">
-        <div class="card">
-          <img src="https://via.placeholder.com/140x100" class="card-img-top" alt="">
-          <div class="card-body">
-            <h5 class="card-title">Special title treatment</h5>
-            <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-            <a href="#" class="btn btn-primary">Go somewhere</a>
+        <div class="card shadow-sm p-3 mb-5 bg-body rounded">
+          <img src="./img/portfolio/dino-run.png" class="card-img-top" alt="Screenshot of the Dino Run game.">
+          <div class="card-body d-flex flex-wrap justify-content-center text-center">
+            <h5 class="card-title">Dino Run</h5>
+            <p class="card-text">
+              This is my attempt at better understanding Object Oriented Programming by making a 2D platform
+              game using PyGame.
+            </p>
+            <a href="https://github.com/smissaertj/dino-run" target="_blank">
+              <i class="social-button fa-brands fa-github fa-3x mx-3"></i>
+            </a>
           </div>
         </div>
       </div>
       <div class="col-sm-4">
-        <div class="card">
-          <img src="https://via.placeholder.com/140x100" class="card-img-top" alt="">
-          <div class="card-body">
-            <h5 class="card-title">Special title treatment</h5>
-            <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-            <a href="#" class="btn btn-primary">Go somewhere</a>
+        <div class="card shadow-sm p-3 mb-5 bg-body rounded">
+          <img src="./img/portfolio/gnomepaper-gui.png" class="card-img-top" alt="">
+          <div class="card-body d-flex flex-wrap justify-content-center text-center">
+            <h5 class="card-title">GnomePaper GUI</h5>
+            <p class="card-text">
+              A Python GUI app which changes the wallpaper for the Gnome Desktop Environment at a predefined interval.
+            </p>
+            <a href="https://github.com/smissaertj/GnomePaper-GUI" target="_blank">
+              <i class="social-button fa-brands fa-github fa-3x mx-3"></i>
+            </a>
           </div>
         </div>
       </div>
     </div>
   </div>
   
-  <div class="container px-4 py-5" id="section-cv">
-  <h2 class="pb-2 border-bottom">Curriculum Vitae</h2>
+  <div class="container px-4 py-5" id="section-experience">
+  <h2 class="pb-2 border-bottom">Experience</h2>
+    <div class="row text-center">
+      <div class="col-sm-10 col-md-6 col-lg-12 pt-5 d-flex flex-wrap justify-content-center align-items-center">
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item"><span class="fw-bold">SysOps Engineer</span> since 2020</li>
+          <li class="list-group-item"><span class="fw-bold">Senior Technical Support Engineer</span> since 2019</li>
+          <li class="list-group-item"><span class="fw-bold">Technical Support Engineer</span> since 2018</li>
+          <li class="list-group-item"><span class="fw-bold">Infrastructure Support Specialist</span> since 2013</li>
+          <li class="list-group-item"><span class="fw-bold">System Operator</span> since 2010</li>
+          <li class="list-group-item"><span class="fw-bold">IT Support Engineer</span> since 2008</li>
+        </ul>
+      </div>
+    </div>
+    <div  class="row">
+      <div class="col-sm-10 col-md-6 col-lg-12 pt-5 d-flex flex-wrap justify-content-center align-items-center">
+          <a href="#"><button class="btn btn-outline-secondary">Download My CV</button></a>
+      </div>
+    </div>
   </div>
   
   <div class="container px-4 py-5" id="section-certificates">
   <h2 class="pb-2 border-bottom">Certificates</h2>
-    <div class="accordion" id="accordionExample">
+    <div class="accordion shadow-sm" id="accordionExample">
       <div class="accordion-item">
         <h2 class="accordion-header" id="headingOne">
-          <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+          <button class="accordion-button fw-bolder" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
             IBM Full Stack Software Developer Professional Certificate
           </button>
         </h2>
@@ -180,7 +235,7 @@
             Developing Cloud Native Applications.
             <p class="my-3">
               <a href="https://www.coursera.org/account/accomplishments/specialization/certificate/83NJ7JF9G33C" target="_blank">
-                <button type="button" class="btn btn-outline-secondary">View Certificate</button>
+                <button type="button" class="btn btn-outline-warning">View Certificate</button>
               </a>
             </p>
           </div>
@@ -188,7 +243,7 @@
       </div>
       <div class="accordion-item">
         <h2 class="accordion-header" id="headingTwo">
-          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+          <button class="accordion-button collapsed fw-bolder" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
             IBM Cloud Application Development Foundations Specialization
           </button>
         </h2>
@@ -200,7 +255,7 @@
             applications.
             <p class="my-3">
               <a href="https://www.coursera.org/account/accomplishments/specialization/certificate/T9DYURRBPKQF" target="_blank">
-                <button type="button" class="btn btn-outline-secondary">View Certificate</button>
+                <button type="button" class="btn btn-outline-warning">View Certificate</button>
               </a>
             </p>
           </div>
@@ -208,7 +263,7 @@
       </div>
       <div class="accordion-item">
         <h2 class="accordion-header" id="headingThree">
-          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+          <button class="accordion-button collapsed fw-bolder" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
             Google IT Automation with Python Professional Certificate
           </button>
         </h2>
@@ -220,7 +275,7 @@
             automation at scale by using configuration management and the Cloud.
             <p class="my-3">
               <a href="https://www.coursera.org/account/accomplishments/specialization/certificate/CS97HM3MHQVE" target="_blank">
-                <button type="button" class="btn btn-outline-secondary">View Certificate</button>
+                <button type="button" class="btn btn-outline-warning">View Certificate</button>
               </a>
             </p>
           </div>
@@ -228,7 +283,7 @@
       </div>
       <div class="accordion-item">
         <h2 class="accordion-header" id="headingFour">
-          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+          <button class="accordion-button collapsed fw-bolder" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
             HarvardX CS50: Introduction to Computer Science
           </button>
         </h2>
@@ -240,7 +295,7 @@
             software engineering, and web development.
             <p class="my-3">
               <a href="https://courses.edx.org/certificates/a2eb18de3e944621aeab31470ebdc8e1" target="_blank">
-                <button type="button" class="btn btn-outline-secondary">View Certificate</button>
+                <button type="button" class="btn btn-outline-warning">View Certificate</button>
               </a>
             </p>
           </div>
@@ -248,7 +303,7 @@
       </div>
       <div class="accordion-item">
         <h2 class="accordion-header" id="headingFive">
-          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
+          <button class="accordion-button collapsed fw-bolder" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
             RH066x: Fundamentals of Red Hat Enterprise Linux
           </button>
         </h2>
@@ -257,7 +312,7 @@
             This course will provide you with a basic introduction to Linux® skills using Red Hat® Enterprise Linux 8.
             <p class="my-3">
               <a href="https://courses.edx.org/certificates/46cda25463484ce0beaedbf1161bf419" target="_blank">
-                <button type="button" class="btn btn-outline-secondary">View Certificate</button>
+                <button type="button" class="btn btn-outline-warning">View Certificate</button>
               </a>
             </p>
           </div>
@@ -265,7 +320,7 @@
       </div>
       <div class="accordion-item">
         <h2 class="accordion-header" id="headingSix">
-          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSix" aria-expanded="false" aria-controls="collapseSix">
+          <button class="accordion-button collapsed fw-bolder" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSix" aria-expanded="false" aria-controls="collapseSix">
             Google IT Support Professional Certificate
           </button>
         </h2>
@@ -279,7 +334,7 @@
             operating systems, system administration, and security.
             <p class="my-3">
               <a href="https://www.coursera.org/account/accomplishments/specialization/certificate/S73G8FHNYZQP" target="_blank">
-                <button type="button" class="btn btn-outline-secondary">View Certificate</button>
+                <button type="button" class="btn btn-outline-warning">View Certificate</button>
               </a>
             </p>
           </div>
@@ -288,16 +343,48 @@
     </div>
   </div>
 
+  <div class="container px-4 py-5" id="section-contact">
+  <h2 class="pb-2 border-bottom">Contact</h2>
+    <div class="row d-flex justify-content-center">
+       <div class="col-sm-10 col-md-6">
+        <div class="card shadow-sm bg-body rounded">
+          <div class="card-header text-uppercase">Get in touch</div>
+          <form action="#" method="post">
+            <div class="card-body">
+              <div class="input-group mb-3">
+                <span class="input-group-text" id="name">Name</span>
+                <input type="text" class="form-control" placeholder="Your name" aria-label="name" aria-describedby="name">
+              </div>
+              
+              <div class="input-group mb-3">
+                <span class="input-group-text" id="email">Your email address</span>
+                <input type="email" class="form-control" placeholder="Your email address" aria-label="email" aria-describedby="email">
+              </div>
+    
+              <div class="input-group">
+                <span class="input-group-text" id="message">Your message</span>
+                <textarea class="form-control" aria-label="message" aria-describedby="message"></textarea>
+              </div>
+            </div>
+            <div class="card-footer text-muted text-center d-grid gap-2">
+              <button id="btnSubmit" type="submit" class="btn btn-warning text-uppercase">Send</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <div class="container">
     <footer class="py-3 my-4">
       <ul class="nav justify-content-center border-bottom pb-3 mb-3">
-        <li class="nav-item"><a href="#" class="nav-link px-2 text-muted">Home</a></li>
-        <li class="nav-item"><a href="#" class="nav-link px-2 text-muted">About</a></li>
+<!--        <li class="nav-item"><a href="#" class="nav-link px-2 text-muted">Home</a></li>-->
+        <li class="nav-item"><a href="#section-about" class="nav-link px-2 text-muted">About</a></li>
 <!--        <li class="nav-item"><a href="#" class="nav-link px-2 text-muted">Blog</a></li>-->
-        <li class="nav-item"><a href="#" class="nav-link px-2 text-muted">Portfolio</a></li>
-        <li class="nav-item"><a href="#" class="nav-link px-2 text-muted">Curriculum Vitae</a></li>
-        <li class="nav-item"><a href="#" class="nav-link px-2 text-muted">Certificates</a></li>
+        <li class="nav-item"><a href="#section-portfolio" class="nav-link px-2 text-muted">Portfolio</a></li>
+        <li class="nav-item"><a href="#section-experience" class="nav-link px-2 text-muted">Experience</a></li>
+        <li class="nav-item"><a href="#section-certificates" class="nav-link px-2 text-muted">Certificates</a></li>
+        <li class="nav-item"><a href="#section-contact" class="nav-link px-2 text-muted">Contact</a></li>
       </ul>
       <p class="text-center text-muted">&copy; 2022 Joeri JM Smissaert</p>
     </footer>

@@ -7,8 +7,10 @@ body {
 }
 
 .logo:hover, .navbar-nav li a:hover {
+    color: #d66915 !important;
     font-weight: bolder;
     transform: scale(1.25);
+
 }
 
 .profile-pic{
@@ -16,11 +18,17 @@ body {
     box-shadow: 24px 8px 12px 0 rgba(0, 0, 0, 0.2);
 }
 
-.social-icon {
+.social-icon, .social-button {
     color: #FFB703;
 }
-.social-icon:hover {
+.social-icon:hover, .social-button:hover {
     transform: scale(1.25);
+    color: #d66915;
+}
+
+
+.btn-outline-warning:hover {
+    color: white;
 }
 
 .feature h2 {
@@ -29,4 +37,17 @@ body {
 
 .feature-icon {
     color: #FFB703;
+}
+
+.accordion-button:focus {
+    box-shadow: none;
+}
+.accordion-button:not(.collapsed) {
+    color: white;
+    background-color: #FFB703;
+    border-color: white;
+}
+
+#btnSubmit {
+    color: white;
 }
