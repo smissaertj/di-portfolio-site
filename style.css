@@ -1,0 +1,32 @@
+body {
+    font-family: 'Poppins', sans-serif;
+}
+
+.logo, .navbar-nav li a {
+    color: #FFB703 !important;
+}
+
+.logo:hover, .navbar-nav li a:hover {
+    font-weight: bolder;
+    transform: scale(1.25);
+}
+
+.profile-pic{
+    border: 10px solid rgba(255, 183, 3, 0.3);
+    box-shadow: 24px 8px 12px 0 rgba(0, 0, 0, 0.2);
+}
+
+.social-icon {
+    color: #FFB703;
+}
+.social-icon:hover {
+    transform: scale(1.25);
+}
+
+.feature h2 {
+    font-weight: bolder;
+}
+
+.feature-icon {
+    color: #FFB703;
+}

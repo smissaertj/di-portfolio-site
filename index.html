@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Portfolio website of Joeri Smissaert">
+  <meta name="author" content="Joeri Smissaert">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Joeri JM Smissaert</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <nav class="navbar sticky-top navbar-expand-sm navbar-dark bg-dark" aria-label="Navbar">
+      <a class="navbar-brand mx-5" href="#"><i class="logo fa-solid fa-code"></i></a>
+      <div class="container-fluid">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbar">
+          <ul class="navbar-nav me-auto mb-2 mb-sm-0 justify-content-end w-100">
+            <li class="nav-item mx-2">
+              <a class="nav-link active" aria-current="page" href="#">Home</a>
+            </li>
+            <li class="nav-item mx-2">
+              <a class="nav-link" href="#section-about">About</a>
+            </li>
+            <li class="nav-item mx-2">
+              <a class="nav-link" href="#section-skills">Skills</a>
+            </li>
+<!--            <li class="nav-item">-->
+<!--              <a class="nav-link" href="#">Blog</a>-->
+<!--            </li>-->
+            <li class="nav-item mx-2">
+              <a class="nav-link" href="#section-portfolio">Portfolio</a>
+            </li>
+            <li class="nav-item mx-2">
+              <a class="nav-link" href="#section-cv">Curriculum Vitae</a>
+            </li>
+            <li class="nav-item mx-2">
+              <a class="nav-link" href="#section-certificates">Certificates</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container col-xxl-8 px-4 py-5">
+      <div class="row flex-lg-row-reverse align-items-center g-5 py-5">
+        <div class="col-10 col-sm-8 col-lg-6">
+          <img src="profile_pic.jpg" class="profile-pic d-block mx-lg-auto img-fluid rounded-circle" alt="Bootstrap Themes" width="700" height="500" loading="lazy">
+        </div>
+        <div class="header-text col-lg-6">
+          <h1 class="display-5 fw-bold lh-1 mb-3 d-md-flex justify-content-md-center">Joeri JM Smissaert</h1>
+          <p class="lead d-md-flex justify-content-md-center">System Engineer & Full Stack Developer</p>
+          <div class="social d-grid gap-2 d-md-flex justify-content-md-center">
+<!--            <button type="button" class="btn btn-outline-secondary btn-lg px-4"><i class="fa-solid fa-at mx-2"></i>Contact</button>-->
+            <i class="social-icon fa-solid fa-at fa-2x mx-3"></i>
+            <i class="social-icon fa-brands fa-github fa-2x mx-3"></i>
+            <i class="social-icon fa-brands fa-linkedin-in fa-2x mx-3"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <div class="container px-4 py-5" id="section-about">
+  <h2 class="pb-2 border-bottom">About</h2>
+  </div>
+
+  <div class="container px-4" id="section-skills">
+    <h2 class="pb-2 border-bottom">Skills</h2>
+    <div class="row g-4 py-5 row-cols-1 row-cols-lg-4">
+      <div class="feature col">
+        <div class="feature-icon">
+          <i class="fa-solid fa-terminal fa-5x"></i>
+        </div>
+        <h2>Linux & Cloud</h2>
+        <p>
+          I've been supporting and administrating services on the Debian and Red Hat families of the Linux OS for
+          over 10 years: Nginx, PHP-FPM, MariaDB & MySQL, MongoDB, Redis, the ELK Stack, Postfix, NFS, Samba,
+          Firewalld, iptables, Docker and Kubernetes are some technologies I work with on a daily basis.
+        </p>
+      </div>
+      <div class="feature col">
+        <div class="feature-icon">
+          <i class="fa-solid fa-laptop-code fa-5x"></i>
+        </div>
+        <h2>Coding</h2>
+        <p>Using Bash, Ansible, Python and Ruby, I automate most of my personal and professional tasks.</p>
+      </div>
+      <div class="feature col">
+        <div class="feature-icon">
+          <i class="fa-solid fa-code-branch fa-5x"></i>
+        </div>
+        <h2>DevOps</h2>
+        <p>
+          I'm familiar with DevOps practices by building and maintaining tools released through CI/CD pipelines to
+          virtual machines and Kubernetes clusters in cloud environments.
+        </p>
+      </div>
+      <div class="feature col">
+        <div class="feature-icon">
+          <i class="fa-solid fa-align-left fa-5x"></i>
+        </div>
+        <h2>Web Development</h2>
+        <p>
+          Currently enrolled in the Developers Institute Full Stack Python course, I'm expanding my knowledge
+          on Front- and Backend development using frameworks such as Bootstrap, Tailwind CSS, Flask and Django.
+        </p>
+      </div>
+    </div>
+  </div>
+
+<!--  <div class="container px-4 py-5" id="featured-3">-->
+<!--  <h2 class="pb-2 border-bottom">Blog</h2>-->
+<!--  </div>-->
+
+  <div class="container px-4 py-5" id="section-portfolio">
+  <h2 class="pb-2 border-bottom">Portfolio</h2>
+    <div class="row">
+      <div class="col-sm-4">
+        <div class="card">
+          <img src="https://via.placeholder.com/140x100" class="card-img-top" alt="">
+          <div class="card-body">
+            <h5 class="card-title">Special title treatment</h5>
+            <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+            <a href="#" class="btn btn-primary">Go somewhere</a>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-4">
+        <div class="card">
+          <img src="https://via.placeholder.com/140x100" class="card-img-top" alt="">
+          <div class="card-body">
+            <h5 class="card-title">Special title treatment</h5>
+            <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+            <a href="#" class="btn btn-primary">Go somewhere</a>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-4">
+        <div class="card">
+          <img src="https://via.placeholder.com/140x100" class="card-img-top" alt="">
+          <div class="card-body">
+            <h5 class="card-title">Special title treatment</h5>
+            <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+            <a href="#" class="btn btn-primary">Go somewhere</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="container px-4 py-5" id="section-cv">
+  <h2 class="pb-2 border-bottom">Curriculum Vitae</h2>
+  </div>
+  
+  <div class="container px-4 py-5" id="section-certificates">
+  <h2 class="pb-2 border-bottom">Certificates</h2>
+    <div class="accordion" id="accordionExample">
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="headingOne">
+          <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+            IBM Full Stack Software Developer Professional Certificate
+          </button>
+        </h2>
+        <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+          <div class="accordion-body">
+            The earner of this Professional Certificate has completed 10 courses
+            on various Application Development and Cloud technologies and is
+            equipped with the skills and know how to undertake challenges of
+            Developing Cloud Native Applications.
+            <p class="my-3">
+              <a href="https://www.coursera.org/account/accomplishments/specialization/certificate/83NJ7JF9G33C" target="_blank">
+                <button type="button" class="btn btn-outline-secondary">View Certificate</button>
+              </a>
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="headingTwo">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+            IBM Cloud Application Development Foundations Specialization
+          </button>
+        </h2>
+        <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+          <div class="accordion-body">
+            The Cloud Application Development Foundations Specialization program
+            teaches the tools and technologies that successful software
+            developers use to build, deploy, test, run, and manage Cloud Native
+            applications.
+            <p class="my-3">
+              <a href="https://www.coursera.org/account/accomplishments/specialization/certificate/T9DYURRBPKQF" target="_blank">
+                <button type="button" class="btn btn-outline-secondary">View Certificate</button>
+              </a>
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="headingThree">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+            Google IT Automation with Python Professional Certificate
+          </button>
+        </h2>
+        <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionExample">
+          <div class="accordion-body">
+            This program is designed
+            to teach you how to program with Python and how to use Python to automate common system administration
+            tasks. You'll learn to use Git and GitHub, troubleshoot and debug complex problems, and apply
+            automation at scale by using configuration management and the Cloud.
+            <p class="my-3">
+              <a href="https://www.coursera.org/account/accomplishments/specialization/certificate/CS97HM3MHQVE" target="_blank">
+                <button type="button" class="btn btn-outline-secondary">View Certificate</button>
+              </a>
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="headingFour">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+            HarvardX CS50: Introduction to Computer Science
+          </button>
+        </h2>
+        <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingFour" data-bs-parent="#accordionExample">
+          <div class="accordion-body">
+            Harvard University's introduction to the intellectual enterprises of computer science and the art of
+            programming, an entry-level course teaching students how to think algorithmically and solve problems efficiently.
+            Topics include abstraction, algorithms, data structures, encapsulation, resource management, security,
+            software engineering, and web development.
+            <p class="my-3">
+              <a href="https://courses.edx.org/certificates/a2eb18de3e944621aeab31470ebdc8e1" target="_blank">
+                <button type="button" class="btn btn-outline-secondary">View Certificate</button>
+              </a>
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="headingFive">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
+            RH066x: Fundamentals of Red Hat Enterprise Linux
+          </button>
+        </h2>
+        <div id="collapseFive" class="accordion-collapse collapse" aria-labelledby="headingFive" data-bs-parent="#accordionExample">
+          <div class="accordion-body">
+            This course will provide you with a basic introduction to Linux® skills using Red Hat® Enterprise Linux 8.
+            <p class="my-3">
+              <a href="https://courses.edx.org/certificates/46cda25463484ce0beaedbf1161bf419" target="_blank">
+                <button type="button" class="btn btn-outline-secondary">View Certificate</button>
+              </a>
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="headingSix">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSix" aria-expanded="false" aria-controls="collapseSix">
+            Google IT Support Professional Certificate
+          </button>
+        </h2>
+        <div id="collapseSix" class="accordion-collapse collapse" aria-labelledby="headingSix" data-bs-parent="#accordionExample">
+          <div class="accordion-body">
+            Those who earn the Google IT Support Professional Certificate have
+            completed five-courses, developed by Google, that include hands-on,
+            practice-based assessments and are designed to prepare them for
+            entry-level roles in IT support. They are competent in foundational
+            skills, including troubleshooting and customer service, networking,
+            operating systems, system administration, and security.
+            <p class="my-3">
+              <a href="https://www.coursera.org/account/accomplishments/specialization/certificate/S73G8FHNYZQP" target="_blank">
+                <button type="button" class="btn btn-outline-secondary">View Certificate</button>
+              </a>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="container">
+    <footer class="py-3 my-4">
+      <ul class="nav justify-content-center border-bottom pb-3 mb-3">
+        <li class="nav-item"><a href="#" class="nav-link px-2 text-muted">Home</a></li>
+        <li class="nav-item"><a href="#" class="nav-link px-2 text-muted">About</a></li>
+<!--        <li class="nav-item"><a href="#" class="nav-link px-2 text-muted">Blog</a></li>-->
+        <li class="nav-item"><a href="#" class="nav-link px-2 text-muted">Portfolio</a></li>
+        <li class="nav-item"><a href="#" class="nav-link px-2 text-muted">Curriculum Vitae</a></li>
+        <li class="nav-item"><a href="#" class="nav-link px-2 text-muted">Certificates</a></li>
+      </ul>
+      <p class="text-center text-muted">&copy; 2022 Joeri JM Smissaert</p>
+    </footer>
+  </div>
+
+
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+          crossorigin="anonymous"></script>
+</body>
+</html>
