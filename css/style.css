@@ -16,6 +16,7 @@ body {
 .profile-pic{
     border: 10px solid rgba(255, 183, 3, 0.3);
     box-shadow: 24px 8px 12px 0 rgba(0, 0, 0, 0.2);
+    width: 30vw;
 }
 
 .social-icon, .social-button {
