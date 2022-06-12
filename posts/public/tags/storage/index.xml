@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Storage on Joeri JM Smissaert</title>
+    <link>https://joerismissaert.dev/tags/storage/</link>
+    <description>Recent content in Storage on Joeri JM Smissaert</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>&lt;a href=&#34;https://joerismissaert.dev/privacy-policy&#34;&gt;Privacy Policy&lt;/a&gt; &amp; &lt;a href=&#34;https://joerismissaert.dev/terms-of-service&#34;&gt;Terms of Service&lt;/a&gt;</copyright>
+    <lastBuildDate>Mon, 07 Dec 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://joerismissaert.dev/tags/storage/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Configuring and Auto Mounting Remote File Systems Using fstab and automount: NFS &amp; CIFS</title>
+      <link>https://joerismissaert.dev/configuring-and-auto-mounting-remote-file-systems-using-fstab-and-automount-NFS-CIFS/</link>
+      <pubDate>Mon, 07 Dec 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://joerismissaert.dev/configuring-and-auto-mounting-remote-file-systems-using-fstab-and-automount-NFS-CIFS/</guid>
+      <description>firewalld: nfs, mountd, rpc-bind
+NFS Server yum install nfs-utils
+Mounting nfs shares showmount -e nfs-server mount nfs-server:/share /mnt /etc/fstab ==&amp;gt; _netdev mount option. nfs-server:/data /nfs nfs _netdev 0 0
+Mounting Samba shares cifs-utils samba-client smbclient -L //sambahost mount -o username=sambeuser //sambahost/share /mountpoint _netdev,username=,password= or noauto
+If you want to allow samba to modify public files used for public file transfer services. Files/Directories must be labeled public_content_rw_t., you must turn on the smbd_anon_write boolean.</description>
+    </item>
+    
+    <item>
+      <title>Advanced Storage: Virtual Data Optimizer</title>
+      <link>https://joerismissaert.dev/advanced-storage-virtual-data-optimizer/</link>
+      <pubDate>Thu, 20 Aug 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://joerismissaert.dev/advanced-storage-virtual-data-optimizer/</guid>
+      <description>Virtual Data Optimizer is a storage solution developed to reduce disk space usage on block devices by applying deduplication features. VDO creates volumes on top of any existing block device from where you either create an XFS file system, or use the volume as a Physical Volume in an LVM setup.
+VDO uses three common technologies:
+ Zero-block elimination to filter out data blocks that contain only zeros. Deduplication of redundant data blocks.</description>
+    </item>
+    
+    <item>
+      <title>Advanced Storage: Configuring Stratis</title>
+      <link>https://joerismissaert.dev/advanced-storage-configuring-stratis/</link>
+      <pubDate>Mon, 17 Aug 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://joerismissaert.dev/advanced-storage-configuring-stratis/</guid>
+      <description>Stratis, created as an answer to Btrfs and ZFS by Red Hat, is a volume-managing file system that introduces advanced storage features like:
+ Thin-provisioning: The file system presents itself to users as much bigger than it really is. Useful in virtualized environments. Snapshots: Allows users to backup the current state of the file system and makes it easy to revert to a previous state. Cache tier: A Ceph storage feature that ensures data is stored physically closer to the Ceph client, making data access faster.</description>
+    </item>
+    
+    <item>
+      <title>Advanced Storage: Logical Volume Manager</title>
+      <link>https://joerismissaert.dev/advanced-storage-logical-volume-manager/</link>
+      <pubDate>Mon, 10 Aug 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://joerismissaert.dev/advanced-storage-logical-volume-manager/</guid>
+      <description>Understanding LVM The Logical Volume Manager was introduced to workaround some restrictions that come with standard partitions. The most important restriction would be inflexibility, with LVM you can dynamically grow a partition even if the disk itself is running out of space.
+In the LVM architecture we can distinguish several layers. The lowest layer contains the storage devices, these can be anything from regular disks to partions and logical units (LUNs) on a storage-area network (SAN).</description>
+    </item>
+    
+    <item>
+      <title>Managing Storage: Creating &amp; Mounting File Systems</title>
+      <link>https://joerismissaert.dev/managing-storage-creating-mounting-file-systems/</link>
+      <pubDate>Fri, 31 Jul 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://joerismissaert.dev/managing-storage-creating-mounting-file-systems/</guid>
+      <description>Partitions by themselves aren&amp;rsquo;t of any use if they don&amp;rsquo;t contain a file system. On RHEL 8 different file systems can be used, the default being xfs. To format a partition with one of the supported file systems we can use the mkfs command followed by the -t option to specify a specific file system. Alternatively, you can use a file system-specific tool like mkfs.xfs to format an xfs file system or mkfs.</description>
+    </item>
+    
+    <item>
+      <title>Managing Storage: Creating Partitions</title>
+      <link>https://joerismissaert.dev/managing-storage-creating-partitions/</link>
+      <pubDate>Wed, 29 Jul 2020 16:05:02 +0400</pubDate>
+      
+      <guid>https://joerismissaert.dev/managing-storage-creating-partitions/</guid>
+      <description>To match the different partition types we use different partitioning utilities. The fdisk utlity is used to create MBR partitions while the gdisk utility is used to create GPT paritions.
+Apart from fdisk and gdisk, there is the parted command which can create both MBR and GPT partitions but has less advanced features.
+Each command takes a disk device name as an argument. The device names are usually /dev/sda, /dev/sdb, &amp;hellip; in the order the device is recognized by the kernel.</description>
+    </item>
+    
+    <item>
+      <title>Managing Storage: Understanding MBR and GPT Partitions</title>
+      <link>https://joerismissaert.dev/managing-storage-understanding-mbr-and-gpt-partitions/</link>
+      <pubDate>Tue, 28 Jul 2020 17:45:50 +0400</pubDate>
+      
+      <guid>https://joerismissaert.dev/managing-storage-understanding-mbr-and-gpt-partitions/</guid>
+      <description>If a mass storage device is connected to a Linux computer, the Linux kernel tries to locate any partitions. So to use a hard drive we need to partition it. On RHEL 8 two different partitioning schemes are available: the Master Boot Record and GUID Partition Table. Linux typically has multiple partitions on one hard disk, this makes sense for different reasons:
+ Distinguish different types of data. Mount options to enhance security or performance.</description>
+    </item>
+    
+  </channel>
+</rss>

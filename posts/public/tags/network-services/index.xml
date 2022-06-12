@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Network services on Joeri JM Smissaert</title>
+    <link>https://joerismissaert.dev/tags/network-services/</link>
+    <description>Recent content in Network services on Joeri JM Smissaert</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>&lt;a href=&#34;https://joerismissaert.dev/privacy-policy&#34;&gt;Privacy Policy&lt;/a&gt; &amp; &lt;a href=&#34;https://joerismissaert.dev/terms-of-service&#34;&gt;Terms of Service&lt;/a&gt;</copyright>
+    <lastBuildDate>Fri, 09 Oct 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://joerismissaert.dev/tags/network-services/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Network Services - Managing Apache HTTP</title>
+      <link>https://joerismissaert.dev/network-services-managing-apache-http/</link>
+      <pubDate>Fri, 09 Oct 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://joerismissaert.dev/network-services-managing-apache-http/</guid>
+      <description>Managing Apache HTTP Services is not part of the current RHCSA exam objectives, but we need minimal knowledge on this topic in order to master the SELinux-related objectives later on.
+The Apache server is provided through different software packages. The basic packages is httpd which contains everything for an operational but basic website. For a complete overview of all the packages use yum search httpd.
+Understanding the httpd Package Let&amp;rsquo;s examine the httpd package by downloading it using yumdownloader and running a few rpm commands on it:</description>
+    </item>
+    
+    <item>
+      <title>Network Services - Configuring SSH</title>
+      <link>https://joerismissaert.dev/network-services-configuring-ssh/</link>
+      <pubDate>Fri, 02 Oct 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://joerismissaert.dev/network-services-configuring-ssh/</guid>
+      <description>Hardening the SSH Server SSH is a convenient and important solution to establish remote connections to servers. If your SSH server is visible directly from the internet, you can be sure that sooner or later intruders will try to connect to it, intending to do harm.
+Dictionary attacks are common against an SSH server. SSH servers usually offer their services on port 22, and every Linux servers has a root account.</description>
+    </item>
+    
+  </channel>
+</rss>

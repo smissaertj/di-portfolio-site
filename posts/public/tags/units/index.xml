@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Units on Joeri JM Smissaert</title>
+    <link>https://joerismissaert.dev/tags/units/</link>
+    <description>Recent content in Units on Joeri JM Smissaert</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>&lt;a href=&#34;https://joerismissaert.dev/privacy-policy&#34;&gt;Privacy Policy&lt;/a&gt; &amp; &lt;a href=&#34;https://joerismissaert.dev/terms-of-service&#34;&gt;Terms of Service&lt;/a&gt;</copyright>
+    <lastBuildDate>Thu, 25 Jun 2020 12:04:28 +0000</lastBuildDate><atom:link href="https://joerismissaert.dev/tags/units/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>An Introduction to Systemd and Systemd Unit files</title>
+      <link>https://joerismissaert.dev/an-introduction-to-systemd-and-systemd-unit-files/</link>
+      <pubDate>Thu, 25 Jun 2020 12:04:28 +0000</pubDate>
+      
+      <guid>https://joerismissaert.dev/an-introduction-to-systemd-and-systemd-unit-files/</guid>
+      <description>Systemd is considered to be the future standard init system by all mainstream Linux distributions. The Systemd System and Service Manager uses &amp;ldquo;units&amp;rdquo; as an abstraction for parts of the system to be managed: typically services, sockets, mounts and targets. It provides a uniform interface for managing units.
+The systemctl -t help command displays a list of available units that can be managed with Systemd.
+[student@server1 ~]$ systemctl -t help Available unit types: service mount swap socket target device automount timer path slice scope Each unit type can be recognized by the file extension.</description>
+    </item>
+    
+  </channel>
+</rss>

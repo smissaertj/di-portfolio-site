@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Network Storage on Joeri JM Smissaert</title>
+    <link>https://joerismissaert.dev/tags/network-storage/</link>
+    <description>Recent content in Network Storage on Joeri JM Smissaert</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>&lt;a href=&#34;https://joerismissaert.dev/privacy-policy&#34;&gt;Privacy Policy&lt;/a&gt; &amp; &lt;a href=&#34;https://joerismissaert.dev/terms-of-service&#34;&gt;Terms of Service&lt;/a&gt;</copyright>
+    <lastBuildDate>Mon, 07 Dec 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://joerismissaert.dev/tags/network-storage/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Configuring and Auto Mounting Remote File Systems Using fstab and automount: NFS &amp; CIFS</title>
+      <link>https://joerismissaert.dev/configuring-and-auto-mounting-remote-file-systems-using-fstab-and-automount-NFS-CIFS/</link>
+      <pubDate>Mon, 07 Dec 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://joerismissaert.dev/configuring-and-auto-mounting-remote-file-systems-using-fstab-and-automount-NFS-CIFS/</guid>
+      <description>firewalld: nfs, mountd, rpc-bind
+NFS Server yum install nfs-utils
+Mounting nfs shares showmount -e nfs-server mount nfs-server:/share /mnt /etc/fstab ==&amp;gt; _netdev mount option. nfs-server:/data /nfs nfs _netdev 0 0
+Mounting Samba shares cifs-utils samba-client smbclient -L //sambahost mount -o username=sambeuser //sambahost/share /mountpoint _netdev,username=,password= or noauto
+If you want to allow samba to modify public files used for public file transfer services. Files/Directories must be labeled public_content_rw_t., you must turn on the smbd_anon_write boolean.</description>
+    </item>
+    
+  </channel>
+</rss>

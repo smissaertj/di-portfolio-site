@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>at on Joeri JM Smissaert</title>
+    <link>https://joerismissaert.dev/tags/at/</link>
+    <description>Recent content in at on Joeri JM Smissaert</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>&lt;a href=&#34;https://joerismissaert.dev/privacy-policy&#34;&gt;Privacy Policy&lt;/a&gt; &amp; &lt;a href=&#34;https://joerismissaert.dev/terms-of-service&#34;&gt;Terms of Service&lt;/a&gt;</copyright>
+    <lastBuildDate>Tue, 07 Jul 2020 20:57:41 +0400</lastBuildDate><atom:link href="https://joerismissaert.dev/tags/at/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Scheduling Tasks with Cron, At and Anacron</title>
+      <link>https://joerismissaert.dev/scheduling-tasks-with-cron-at-anacron/</link>
+      <pubDate>Tue, 07 Jul 2020 20:57:41 +0400</pubDate>
+      
+      <guid>https://joerismissaert.dev/scheduling-tasks-with-cron-at-anacron/</guid>
+      <description>Configuring Cron to Automate Recurring Tasks. On Linux, the cron service is used to run processes automatically at specific times as a way to automate tasks that have to occur regularly.
+The cron service consists of two major components:
+ The cron daemon checks every minute to see if there are any jobs to run. The cron configuration files work together to provide the right information to the right service at the right time.</description>
+    </item>
+    
+  </channel>
+</rss>

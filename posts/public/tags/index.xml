@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Tags on Joeri JM Smissaert</title>
+    <link>https://joerismissaert.dev/tags/</link>
+    <description>Recent content in Tags on Joeri JM Smissaert</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>&lt;a href=&#34;https://joerismissaert.dev/privacy-policy&#34;&gt;Privacy Policy&lt;/a&gt; &amp; &lt;a href=&#34;https://joerismissaert.dev/terms-of-service&#34;&gt;Terms of Service&lt;/a&gt;</copyright>
+    <lastBuildDate>Mon, 07 Dec 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://joerismissaert.dev/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>CIFS</title>
+      <link>https://joerismissaert.dev/tags/cifs/</link>
+      <pubDate>Mon, 07 Dec 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://joerismissaert.dev/tags/cifs/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Network</title>
+      <link>https://joerismissaert.dev/tags/network/</link>
+      <pubDate>Mon, 07 Dec 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://joerismissaert.dev/tags/network/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Network Storage</title>
+      <link>https://joerismissaert.dev/tags/network-storage/</link>
+      <pubDate>Mon, 07 Dec 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://joerismissaert.dev/tags/network-storage/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>NFS</title>
+      <link>https://joerismissaert.dev/tags/nfs/</link>
+      <pubDate>Mon, 07 Dec 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://joerismissaert.dev/tags/nfs/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>RHEL</title>
+      <link>https://joerismissaert.dev/tags/rhel/</link>
+      <pubDate>Mon, 07 Dec 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://joerismissaert.dev/tags/rhel/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Samba</title>
+      <link>https://joerismissaert.dev/tags/samba/</link>
+      <pubDate>Mon, 07 Dec 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://joerismissaert.dev/tags/samba/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Storage</title>
+      <link>https://joerismissaert.dev/tags/storage/</link>
+      <pubDate>Mon, 07 Dec 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://joerismissaert.dev/tags/storage/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Firewall</title>
+      <link>https://joerismissaert.dev/tags/firewall/</link>
+      <pubDate>Sat, 07 Nov 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://joerismissaert.dev/tags/firewall/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>firewalld service</title>
+      <link>https://joerismissaert.dev/tags/firewalld-service/</link>
+      <pubDate>Sat, 07 Nov 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://joerismissaert.dev/tags/firewalld-service/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Security</title>
+      <link>https://joerismissaert.dev/tags/security/</link>
+      <pubDate>Sat, 07 Nov 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://joerismissaert.dev/tags/security/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>

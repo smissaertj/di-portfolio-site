@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>vim on Joeri JM Smissaert</title>
+    <link>https://staging.joerismissaert.dev/tags/vim/</link>
+    <description>Recent content in vim on Joeri JM Smissaert</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 04 May 2020 07:56:09 +0000</lastBuildDate>
+    
+	<atom:link href="https://staging.joerismissaert.dev/tags/vim/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Vim Quickstart</title>
+      <link>https://staging.joerismissaert.dev/vim-quickstart/</link>
+      <pubDate>Mon, 04 May 2020 07:56:09 +0000</pubDate>
+      
+      <guid>https://staging.joerismissaert.dev/vim-quickstart/</guid>
+      <description>Nano used to be my favorite command line text editor until I (re)discovered Vim (Vi improved). I never was a big fan of Vim earlier on because of the command and input mode that leads to confusion. One does not simply quit Vim. Well, at least not until you put your back into it.
+I decided to take some time to learn Vim because it offers some enhancements over regular Vi (syntax highlighting for one) and Vi is really the only text editor that is always available on any Linux distribution.</description>
+    </item>
+    
+  </channel>
+</rss>

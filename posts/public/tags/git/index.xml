@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>git on Joeri JM Smissaert</title>
+    <link>https://joerismissaert.dev/tags/git/</link>
+    <description>Recent content in git on Joeri JM Smissaert</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>&lt;a href=&#34;https://joerismissaert.dev/privacy-policy&#34;&gt;Privacy Policy&lt;/a&gt; &amp; &lt;a href=&#34;https://joerismissaert.dev/terms-of-service&#34;&gt;Terms of Service&lt;/a&gt;</copyright>
+    <lastBuildDate>Thu, 14 May 2020 10:28:03 +0000</lastBuildDate><atom:link href="https://joerismissaert.dev/tags/git/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Auto Deploy Branch Changes to Kinsta using GitLab CI/CD</title>
+      <link>https://joerismissaert.dev/auto-deploy-branch-changes-to-kinsta-using-gitlab-ci-cd/</link>
+      <pubDate>Thu, 14 May 2020 10:28:03 +0000</pubDate>
+      
+      <guid>https://joerismissaert.dev/auto-deploy-branch-changes-to-kinsta-using-gitlab-ci-cd/</guid>
+      <description>If you&amp;rsquo;re comfortable using the command line, you&amp;rsquo;re probably aware there are different ways you can push your Kinsta Staging site to Live without overwriting the Live database. This can be useful when you need to push code changes, and at the same time need to leave the Live database in its current state.
+This post will cover how you can achieve this using GitLab CI/CD and assumes you&amp;rsquo;re familiar with version control using git, and using the Kinsta Staging environment for testing and development.</description>
+    </item>
+    
+  </channel>
+</rss>

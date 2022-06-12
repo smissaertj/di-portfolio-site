@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Linux on Joeri JM Smissaert</title>
+    <link>https://joerismissaert.dev/categories/linux/</link>
+    <description>Recent content in Linux on Joeri JM Smissaert</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>&lt;a href=&#34;https://joerismissaert.dev/privacy-policy&#34;&gt;Privacy Policy&lt;/a&gt; &amp; &lt;a href=&#34;https://joerismissaert.dev/terms-of-service&#34;&gt;Terms of Service&lt;/a&gt;</copyright>
+    <lastBuildDate>Sun, 10 May 2020 16:57:26 +0000</lastBuildDate><atom:link href="https://joerismissaert.dev/categories/linux/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Lab: Permissions In Practice</title>
+      <link>https://joerismissaert.dev/lab-permissions-in-practice/</link>
+      <pubDate>Sun, 10 May 2020 16:57:26 +0000</pubDate>
+      
+      <guid>https://joerismissaert.dev/lab-permissions-in-practice/</guid>
+      <description>In the previous two posts we learned about basic and advanced permissions, Access Control Lists, umask and extended-attributes.
+Let&amp;rsquo;s put this knowledge to work by setting up a shared group environment
+Lab Objectives  Create 4 random users and two groups: finance &amp;amp; sales.
+Add two users to the first group and two to the second group. Create 2 directories: /data/finance &amp;amp; /data/sales.
+Make the group sales the group owner of the directory sales, and make the group finance the group owner of the directory finance.</description>
+    </item>
+    
+    <item>
+      <title>Access Control Lists, umask &amp; User-Extended Attributes 101</title>
+      <link>https://joerismissaert.dev/access-control-lists-umask-user-extended-attributes-101/</link>
+      <pubDate>Sun, 10 May 2020 07:12:26 +0000</pubDate>
+      
+      <guid>https://joerismissaert.dev/access-control-lists-umask-user-extended-attributes-101/</guid>
+      <description>Access Control Lists allow you to add permissions to more than one user or group on the same file or directory, and allows you to set default permissions for newly created files and directories.
+Managing ACLs It&amp;rsquo;s possible you need need to add file system support for ACLs during boot time by adding the acl mount option the the /etc/fstab file. That would be the case when you&amp;rsquo;re seeing the Operation not supported message when applying an ACL.</description>
+    </item>
+    
+    <item>
+      <title>Basic &amp; Advanced Permissions 101</title>
+      <link>https://joerismissaert.dev/basic-advanced-permissions-101/</link>
+      <pubDate>Sat, 09 May 2020 12:23:40 +0000</pubDate>
+      
+      <guid>https://joerismissaert.dev/basic-advanced-permissions-101/</guid>
+      <description>To get access to files on Linux, permissions are used. These permissions are assigned to three entities: the file owner, the group owner, and the others entity.
+Managing File Ownership Displaying Ownership Every file and directory on Linux has two owners: a user owner and a group owner. There is also the &amp;ldquo;others&amp;rdquo; entity. The user , group and others are shown when listing permissions with the ls -l command.</description>
+    </item>
+    
+    <item>
+      <title>CloudFlare Authenticated Origin Pulls</title>
+      <link>https://joerismissaert.dev/cloudflare-authenticated-origin-pulls/</link>
+      <pubDate>Thu, 30 Apr 2020 16:57:40 +0000</pubDate>
+      
+      <guid>https://joerismissaert.dev/cloudflare-authenticated-origin-pulls/</guid>
+      <description>In addition to my previous post on blocking requests that are hitting my websites directly without going through the CloudFlare network, we can enable the Authenticated Origin Pulls feature.
+Authenticated Origin Pulls uses TLS Authentication to verify that the server hosting my website is communicating with CloudFlare and not some other server or client.
+Nginx will be configured to only accept requests which use a valid client certificate from Cloudflare and requests which have not passed through CloudFlare will be dropped: The server will respond with a 400 Bad Request status code.</description>
+    </item>
+    
+    <item>
+      <title>Blocking requests not originating from CloudFlare on Nginx</title>
+      <link>https://joerismissaert.dev/blocking-requests-not-originating-from-cloudflare-on-nginx/</link>
+      <pubDate>Sat, 25 Jan 2020 07:36:18 +0000</pubDate>
+      
+      <guid>https://joerismissaert.dev/blocking-requests-not-originating-from-cloudflare-on-nginx/</guid>
+      <description>My websites are behind CloudFlare , which acts as a reverse proxy and which can help in mitigating attacks, malicious traffic and requests.
+CloudFlare is masking the real IP address of this site. If you look up the DNS A record for this domain, you&amp;rsquo;ll see one of CloudFlare&amp;rsquo;s IP addresses. Essentially, CloudFlare is forwarding traffic from their servers to the server where my sites are hosted.
+The inconvenience of this is that I can&amp;rsquo;t see the real IP address of the visitor, instead, I&amp;rsquo;m seeing CloudFlare&amp;rsquo;s IP addresses in the Nginx log.</description>
+    </item>
+    
+    <item>
+      <title>Serving a Python Flask app with Gunicorn, Nginx and Systemd.</title>
+      <link>https://joerismissaert.dev/serving-a-python-flask-app-with-gunicorn-nginx-and-systemd/</link>
+      <pubDate>Tue, 31 Dec 2019 08:05:24 +0000</pubDate>
+      
+      <guid>https://joerismissaert.dev/serving-a-python-flask-app-with-gunicorn-nginx-and-systemd/</guid>
+      <description>This post explains how to serve a Python app from a Virtualenv with the Gunicorn WSGI and using Nginx as a proxy server.
+You should already have Nginx installed, and have a sample Flask app in a Virtualenv.
+Install Gunicorn in your Virtualenv Activate your Virtualenv and install Gunicorn by typing:
+$ source myprojectenv/bin/activate (myprojectenv)$ pip install gunicorn Creating the WSGI Entry Point Next, we&amp;rsquo;ll create a file called wsgi.</description>
+    </item>
+    
+    <item>
+      <title>Mounting an unclean NTFS file system</title>
+      <link>https://joerismissaert.dev/mounting-an-unclean-ntfs-file-system/</link>
+      <pubDate>Fri, 06 Dec 2019 11:22:00 +0000</pubDate>
+      
+      <guid>https://joerismissaert.dev/mounting-an-unclean-ntfs-file-system/</guid>
+      <description>I&amp;rsquo;m dual booting between RHEL 8 and Windows 10 and the NTFS drive I use to share data between my two operating systems was suddenly mounted Read Only on Linux.
+While trying to mount the drive again, I was facing the following message:
+[root@rhel8 mnt]# umount -l /dev/sda1 [root@rhel8 mnt]# mount -t ntfs-3g -o rw /dev/sda1 /mnt/data The disk contains an unclean file system (0, 0). Metadata kept in Windows cache, refused to mount.</description>
+    </item>
+    
+  </channel>
+</rss>

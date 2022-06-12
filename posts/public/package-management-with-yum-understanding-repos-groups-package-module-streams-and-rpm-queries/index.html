@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="author" content="Joeri">
+<meta name="description" content="The Yellowdog Updater, Modified, is the default utility to manage software packages on Red Hat Enterprise Linux. On Fedora (the upstream version of RHEL) Yum has been replaced with dnf but Red Hat decided to keep the Yum name for the RHEL releases. Although you&amp;rsquo;ll be using yum, under the hood you&amp;rsquo;re in fact using dnf which is why sometimes you&amp;rsquo;ll see references to dnf or dnf resources.
+The Role of Repositories Yum is designed to work with repositories which are depots of available software packages." />
+<meta name="keywords" content="linux, red hat, centos, fedora, rhel, nginx, development, kinsta, rhcsa, python, AppStream, Package Module Stream, repo, yum, RHEL, RHCSA" />
+<meta name="robots" content="noodp" />
+<meta name="theme-color" content="#42464a" />
+<link rel="canonical" href="https://joerismissaert.dev/package-management-with-yum-understanding-repos-groups-package-module-streams-and-rpm-queries/" />
+
+
+    <title>
+        
+            Package Management with Yum: Understanding Repo’s, Groups, Package Module Streams and RPM Queries :: Joeri JM Smissaert 
+        
+    </title>
+
+
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.2.1/css/flag-icon.min.css" rel="stylesheet"
+    type="text/css">
+
+
+
+<link rel="stylesheet" href="https://joerismissaert.dev/main.bc0e1ee95501e8eff4092797423b13efee0ad37ba6def28f39ac50c21062b401.css">
+
+
+
+
+    <link rel="apple-touch-icon" sizes="180x180" href="https://joerismissaert.dev/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="https://joerismissaert.dev/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="https://joerismissaert.dev/favicon-16x16.png">
+    <link rel="manifest" href="https://joerismissaert.dev/site.webmanifest">
+    <link rel="mask-icon" href="https://joerismissaert.dev/safari-pinned-tab.svg" color="##42464a">
+    <link rel="shortcut icon" href="https://joerismissaert.dev/favicon.ico">
+    <meta name="msapplication-TileColor" content="##42464a">
+    <meta name="theme-color" content="##42464a">
+
+
+
+<meta itemprop="name" content="Package Management with Yum: Understanding Repo’s, Groups, Package Module Streams and RPM Queries">
+<meta itemprop="description" content="The Yellowdog Updater, Modified, is the default utility to manage software packages on Red Hat Enterprise Linux. On Fedora (the upstream version of RHEL) Yum has been replaced with dnf but Red Hat decided to keep the Yum name for the RHEL releases. Although you&rsquo;ll be using yum, under the hood you&rsquo;re in fact using dnf which is why sometimes you&rsquo;ll see references to dnf or dnf resources.
+The Role of Repositories Yum is designed to work with repositories which are depots of available software packages.">
+<meta itemprop="datePublished" content="2020-05-21T16:54:46+00:00" />
+<meta itemprop="dateModified" content="2020-05-21T16:54:46+00:00" />
+<meta itemprop="wordCount" content="2508">
+
+
+
+<meta itemprop="keywords" content="AppStream,Package Module Stream,repo,yum,RHEL,RHCSA," />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Package Management with Yum: Understanding Repo’s, Groups, Package Module Streams and RPM Queries"/>
+<meta name="twitter:description" content="The Yellowdog Updater, Modified, is the default utility to manage software packages on Red Hat Enterprise Linux. On Fedora (the upstream version of RHEL) Yum has been replaced with dnf but Red Hat decided to keep the Yum name for the RHEL releases. Although you&rsquo;ll be using yum, under the hood you&rsquo;re in fact using dnf which is why sometimes you&rsquo;ll see references to dnf or dnf resources.
+The Role of Repositories Yum is designed to work with repositories which are depots of available software packages."/>
+
+
+
+    <meta property="og:title" content="Package Management with Yum: Understanding Repo’s, Groups, Package Module Streams and RPM Queries" />
+<meta property="og:description" content="The Yellowdog Updater, Modified, is the default utility to manage software packages on Red Hat Enterprise Linux. On Fedora (the upstream version of RHEL) Yum has been replaced with dnf but Red Hat decided to keep the Yum name for the RHEL releases. Although you&rsquo;ll be using yum, under the hood you&rsquo;re in fact using dnf which is why sometimes you&rsquo;ll see references to dnf or dnf resources.
+The Role of Repositories Yum is designed to work with repositories which are depots of available software packages." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://joerismissaert.dev/package-management-with-yum-understanding-repos-groups-package-module-streams-and-rpm-queries/" />
+<meta property="article:published_time" content="2020-05-21T16:54:46+00:00" />
+<meta property="article:modified_time" content="2020-05-21T16:54:46+00:00" />
+
+
+
+
+    <meta property="article:section" content="CentOS" />
+
+    <meta property="article:section" content="Red Hat Enterprise Linux" />
+
+
+
+    <meta property="article:published_time" content="2020-05-21 16:54:46 &#43;0000 &#43;0000" />
+
+
+
+
+
+
+
+
+    </head>
+
+    <body class="dark-theme">
+        <div class="container">
+            <header class="header">
+    <span class="header__inner">
+        <a href="https://joerismissaert.dev/" style="text-decoration: none;">
+    <div class="logo">
+        
+            <span class="logo__mark">></span>
+            <span class="logo__text">$ cd ~</span>
+            <span class="logo__cursor" style=
+                  "
+                   background-color:#8B0000;
+                   ">
+            </span>
+        
+    </div>
+</a>
+
+
+        <span class="header__right">
+            
+                <nav class="menu">
+    <ul class="menu__inner"><li><a href="https://joerismissaert.dev/about/">1. About</a></li><li><a href="https://joerismissaert.dev/posts/">2. Posts</a></li><li><a href="https://joerismissaert.dev/dev/">3. Dev</a></li><li><a href="https://joerismissaert.dev/webdev/">4. WebDev</a></li>
+    </ul>
+</nav>
+
+                <span class="menu-trigger">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        <path d="M0 0h24v24H0z" fill="none"/>
+                        <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/>
+                    </svg>
+                </span>
+            
+
+            <span class="theme-toggle unselectable"><svg class="theme-toggler" width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M22 41C32.4934 41 41 32.4934 41 22C41 11.5066 32.4934 3 22
+  3C11.5066 3 3 11.5066 3 22C3 32.4934 11.5066 41 22 41ZM7 22C7
+  13.7157 13.7157 7 22 7V37C13.7157 37 7 30.2843 7 22Z"/>
+</svg>
+</span>
+        </span>
+    </span>
+</header>
+
+
+            <div class="content">
+                
+  <main class="post">
+
+    <div class="post-info">
+      <p>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clock">
+          <circle cx="12" cy="12" r="10"></circle>
+          <polyline points="12 6 12 12 16 14"></polyline>
+        </svg>
+        12 minutes
+
+        
+      </p>
+    </div>
+
+    <article>
+      <h1 class="post-title">
+        <a href="https://joerismissaert.dev/package-management-with-yum-understanding-repos-groups-package-module-streams-and-rpm-queries/">Package Management with Yum: Understanding Repo’s, Groups, Package Module Streams and RPM Queries</a>
+      </h1>
+
+      
+
+      <div class="post-content">
+        
+    <img src="https://joerismissaert.dev/img/Yum.png"  alt="The YUM logo"  class="center"  />
+
+
+<p>The Yellowdog Updater, Modified, is the default utility to manage software packages on Red Hat Enterprise Linux. On Fedora (the upstream version of RHEL) Yum has been replaced with <code>dnf</code> but Red Hat decided to keep the Yum name for the RHEL releases. Although you&rsquo;ll be using <code>yum</code>, under the hood you&rsquo;re in fact using <code>dnf</code> which is why sometimes you&rsquo;ll see references to <code>dnf</code> or <code>dnf</code> resources.</p>
+<h2 id="the-role-of-repositories">The Role of Repositories</h2>
+<p>Yum is designed to work with repositories which are depots of available software packages. Repositories makes it easy to keep your machine up to date, the maintainer of the repositories publishes updated packages and whenever you use <code>yum</code> to install software the most recent version is automatically used.</p>
+<p>As an added benefit, <code>yum</code> manages package dependencies so you don&rsquo;t have to deal with <a href="https://en.wikipedia.org/wiki/Dependency_hell" target="_blank">dependency hell</a>
+
+. When a single package is installed, that same package will contain information about the required dependencies which <code>yum</code> will automatically install for you.</p>
+<p>On Red Hat Enterprise Linux, you need to register the system on the Red Hat Customer Portal in order to obtain access to the Red Hat repositories. If you don&rsquo;t register the system you will end up with no repositories at all, but you can create your own repo from the installation media (more on that later).</p>
+<p>Repositories are configured in the <code>/etc/yum.repos.d/</code> directory as <code>.repo</code> files. Each file could contain multiple repositories, but each repository should have at least the following contents:</p>
+<ul>
+<li><code>[label]</code> Identifies the specific repository.</li>
+<li><code>name=</code> Specifies the name of the repository you want to use.</li>
+<li><code>baseurl=</code> Contains the URL that points to the repo files. Can be HTTP, FTP, or a file path.</li>
+</ul>
+<p>Here&rsquo;s an example of one of the default CentOS 8 repositories:</p>
+<pre><code>[BaseOS]
+name=CentOS-$releasever - Base
+mirrorlist=http://mirrorlist.centos.org/?release=$releasever&amp;arch=$basearch&amp;repo=BaseOS&amp;infra=$infra
+#baseurl=http://mirror.centos.org/$contentdir/$releasever/BaseOS/$basearch/os/
+gpgcheck=1
+enabled=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial
+</code></pre><p>Packages in Internet repositories are often signed with a GPG key which makes it possible to check whether they have been changed since the owner of the repository published them. If for some reason the repository security has been compromised, the GPG key signature will not match and the <code>yum</code> command will raise your attention about this.<br>
+GPG-signed packages are not a requirement for internal or local repositories.</p>
+<h3 id="creating-your-own-repository">Creating Your Own Repository</h3>
+<p>It&rsquo;s fairly straightforward to setup your own repository in case you can&rsquo;t or don&rsquo;t want to register your RHEL system. You can put your own RPM packages (or those from the installation media) in a directory and publish that directory as a repository.</p>
+<p>If you&rsquo;re not using the installation media as the source for your own repository, you will need to run the <code>createrepo</code> command inside your repository directory to generate the metadata for the RPM files.</p>
+<p>You can create repo from the installation media by mounting the ISO file persistently and creating the necessary <code>.repo</code> file.</p>
+<p>Create the empty <code>/repo</code> directory and add the following line to the bottom of the <code>/etc/fstab</code> file to mount the ISO file at next boot:</p>
+<pre><code>/path/to/file.iso    /repo    iso9660    defaults    0 0```
+</code></pre><p>Next, mount the ISO file:</p>
+<pre><code>[root@server1 ~]# mount /repo
+mount: /repo: WARNING: device write-protected, mounted read-only.
+[root@server1 ~]#
+</code></pre><p>Create the <code>/etc/yum.repos.d/mycustom.repo</code> file and add the following content:</p>
+<pre><code>[AppStream]
+name=AppStream
+baseurl=file:///repo/AppStream
+gpgcheck=0
+
+[BaseOS]
+name=BaseOS
+baseurl=file:///repo/BaseOS
+gpgcheck=0
+</code></pre><p>Check the installed repo&rsquo;s using <code>yum repolist</code>.</p>
+<h2 id="working-with-yum">Working with Yum</h2>
+<p>To use repositories you need the <code>yum</code> command. Below you&rsquo;ll find an overview of the most common <code>yum</code> tasks.</p>
+
+
+
+
+
+<table class="table table-dark table-striped table-bordered">
+<thead>
+<tr>
+<th>Command</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>search</td>
+<td>Searches for the string you provide in package names and summaries.</td>
+</tr>
+<tr>
+<td>[what]provides */name</td>
+<td>Look for specific files inside a package.</td>
+</tr>
+<tr>
+<td>info</td>
+<td>Return more info about a package.</td>
+</tr>
+<tr>
+<td>install</td>
+<td>Install a package.</td>
+</tr>
+<tr>
+<td>remove</td>
+<td>Remove a package.</td>
+</tr>
+<tr>
+<td>list [all</td>
+<td>installed]</td>
+</tr>
+<tr>
+<td>group list</td>
+<td>List package groups.</td>
+</tr>
+<tr>
+<td>group install [–with-optional]</td>
+<td>Install all packages from a group.</td>
+</tr>
+<tr>
+<td>update</td>
+<td>Update packages or a specific packages.</td>
+</tr>
+<tr>
+<td>clean all</td>
+<td>Remove all stored metadata.</td>
+</tr>
+<tr>
+<td>history [undo <!-- raw HTML omitted -->]</td>
+<td>List the command history / undo a specific command.</td>
+</tr>
+</tbody>
+</table>
+
+<p>To install a package you need the exact name, if you don&rsquo;t know the exact name <code>yum search</code> can help you narrow that down. Remember it searches for the string you provide in package names and summaries, so you won&rsquo;t have an exact match:</p>
+<pre><code>[root@server1 ~]# yum search user
+============ Name &amp; Summary Matched: user =============
+trousers-lib.x86_64 : TrouSerS libtspi library
+trousers-lib.i686 : TrouSerS libtspi library
+trousers-lib.x86_64 : TrouSerS libtspi library
+gnome-user-docs.noarch : GNOME User Documentation
+gnome-user-docs.noarch : GNOME User Documentation
+xdg-user-dirs.x86_64 : Handles user special directories
+xdg-user-dirs.x86_64 : Handles user special directories
+util-linux-user.x86_64 : libuser based util-linux utilities
+util-linux-user.x86_64 : libuser based util-linux utilities
+</code></pre><p>The <code>yum provides</code> command can help you find files inside a package which can be helpful if you know the name of the binary for example:</p>
+<pre><code>[root@server1 ~]# yum provides */sepolicy
+policycoreutils-devel-2.9-3.el8.i686 : SELinux policy core policy devel utilities
+Repo : BaseOS
+Matched from:
+Filename : /usr/bin/sepolicy
+Filename : /usr/share/bash-completion/completions/sepolicy
+
+policycoreutils-devel-2.9-3.el8.x86_64 : SELinux policy core policy devel utilities
+Repo : BaseOS
+Matched from:
+Filename : /usr/bin/sepolicy
+Filename : /usr/share/bash-completion/completions/sepolicy
+</code></pre><p>We can obtain more information about a package using <code>yum info</code>:</p>
+<pre><code>[root@server1 ~]# yum info nmap
+Available Packages
+Name         : nmap
+Epoch        : 2
+Version      : 7.70
+Release      : 5.el8
+Architecture : x86_64
+Size         : 5.8 M
+Source       : nmap-7.70-5.el8.src.rpm
+Repository   : AppStream
+Summary      : Network exploration tool and security scanner
+</code></pre><p><code>yum list | less</code> will show us a list of available and installed packages.<br>
+If the repository name is shown, i.e. <code>@AppStream</code>, the package is available for installation in that repository. If <code>@anaconda</code> is shown, then that package has already been installed:</p>
+<pre><code class="language-[root@server1" data-lang="[root@server1">Installed Packages
+GConf2.x86_64                 3.2.6-22.el8             @AppStream
+ModemManager.x86_64           1.10.4-1.el8              @anaconda
+</code></pre><p>Packages can be updated using <code>yum update</code>. The old version of a package is replaced with a new version, except for the <em>kernel</em> package. The newer kernel is installed along the old kernel so you can select the kernel you want to use in Grub when booting.</p>
+<p>To make it easier to manage specific functionality instead of specific packages, we can work with package groups. Use <code>yum groups list</code> to show available package groups and <code>yum groups info &lt;groupname&gt;</code> to see what packages are in the specified group:</p>
+<pre><code>[root@server1 ~]# yum groups list
+Last metadata expiration check: 0:00:12 ago on Wed 20 May 2020 17:01:09 +04.
+Available Environment Groups:
+   Server
+   Minimal Install
+   Workstation
+   Virtualization Host
+   Custom Operating System
+Installed Environment Groups:
+   Server with GUI
+Installed Groups:
+   Container Management
+   Headless Management
+Available Groups:
+   .NET Core Development
+   RPM Development Tools
+   Development Tools
+   Graphical Administration Tools
+   Legacy UNIX Compatibility
+   Network Servers
+   Scientific Support
+   Security Tools
+   Smart Card Support
+   System Tools
+
+[root@server1 ~]# yum groups info &quot;System Tools&quot;
+Last metadata expiration check: 0:00:25 ago on Wed 20 May 2020 17:01:09 +04.
+
+Group: System Tools
+ Description: This group is a collection of various tools for the system, such as the client for connecting to SMB shares and tools to monitor network traffic.
+ Default Packages:
+   NetworkManager-libreswan
+   chrony
+   cifs-utils
+   libreswan
+   nmap
+   openldap-clients
+   samba-client
+   setserial
+   tigervnc
+   tmux
+   xdelta
+   zsh
+ Optional Packages:
+   PackageKit-command-not-found
+   aide
+   amanda-client
+   arpwatch
+</code></pre><p>You can use <code>yum group install &quot;System Tools&quot;</code> to install the Default Packages inside that group. If you need the Optional Packages as well, use the <code>yum group install --with-optional &quot;System Tools&quot;</code> command instead. Hidden groups can be revealed using <code>yum groups list hidden</code>, these are subgroups of specific groups.</p>
+<h2 id="package-module-streams">Package Module Streams</h2>
+<p>To separate core operating system packages from user-space packages, we have two main repositories: <strong>BaseOS</strong> and <strong>AppStream</strong>.</p>
+<p>In Red Hat Enterprise Linux 8 different versions of the same package can be offered using Package Module Streams which are found inside the AppStream repo.</p>
+<p>A module is a delivery mechanism for a set of RPM packages that belong together, and are typically organized around a specific version of an application, with all dependencies for that specific version.</p>
+<p>Each module can have one or more <em>streams</em>. A stream contains one specific version. Only one stream can be enabled at the same time which means that only one version can be installed on a system.</p>
+<p>Each module can have a default stream. Default streams make it easy to install packages using <code>yum install</code> without the need to learn about modules.</p>
+<p>Module streams can be active or inactive. Active streams allow the installation of the module version. Streams are active if marked as default or if they are enabled by a user, unless the whole module has been disabled or another stream of that module is enabled.</p>
+<p>Modules can also have one or more <em>profiles</em> which are a list of packages installed together for a particular use case.</p>
+<p>Let&rsquo;s have a look at some of the modules using <code>yum module list</code>:</p>
+<pre><code>[root@server1 ~]# yum module list | grep -E 'php|nginx'
+nginx   1.14 [d] common [d]               nginx webserver                                                    
+nginx   1.16     common                   nginx webserver                                                    
+php     7.2 [d]  common [d], devel, minimal PHP scripting language                                             
+php     7.3      common, devel, minimal     PHP scripting language
+Hint: [d]efault, [e]nabled, [x]disabled, [i]nstalled
+</code></pre><p>From the above output we see the <em>nginx</em> and <em>php</em> modules with their respective stream (<em>1.14 &amp; 1.16, 7.2 &amp; 7.3</em>) and their profiles (<em>common, devel, minimal)</em>. You can see the same information for a specific module using <code>yum module list &lt;modulename&gt;</code>.</p>
+<p>For each module we can get more detailed information using <code>yum module info &lt;modulename&gt;</code> or for a specific stream using <code>yum module info &lt;modulename:version&gt;</code>:</p>
+<pre><code>[root@server1 ~]# yum module info php:7.3
+Last metadata expiration check: 0:02:58 ago on Thu 21 May 2020 09:05:40 +04.
+Name         : php
+Stream       : 7.3
+Version      : 8010020191122191516
+Context      : 2430b045
+Architecture : x86_64
+Profiles     : common, devel, minimal
+Repo         : AppStream
+Summary      : PHP scripting language
+Description  : php 7.3 module
+...........
+</code></pre><p>To investigate packages in a specific application stream, we use <code>yum module info </code>&ndash;<code>profile &lt;modulename:version&gt;</code>. This will list the available profiles and the packages for that specific profile:</p>
+<pre><code>[root@server1 ~]# yum module info --profile php:7.3
+Last metadata expiration check: 0:06:09 ago on Thu 21 May 2020 09:05:40 +04.
+Name    : php:7.3:8010020191122191516:2430b045:x86_64
+common  : php-cli
+        : php-common
+        : php-fpm
+        : php-json
+        : php-mbstring
+        : php-xml
+devel   : libzip
+        : php-cli
+        : php-common
+        : php-devel
+        : php-fpm
+        : php-json
+        : php-mbstring
+        : php-pear
+        : php-pecl-zip
+        : php-process
+        : php-xml
+minimal : php-cli
+        : php-common
+</code></pre><p>Once you have the necessary information, we can enable a module stream and install the module. Every module has a default module stream, if that is the version you need then you don&rsquo;t need to enable anything.<br>
+If, for example, we need php7.3 we would need to <em>enable</em> it before installing it. Note that this will also enable dependencies:</p>
+
+    <img src="https://joerismissaert.dev/img/yum_module_enable-1024x309.png"  alt="yum module enable"  class="center"  />
+
+
+<p>You can now install the module with with <code>yum module install php</code>.</p>
+
+    <img src="https://joerismissaert.dev/img/yum_module_install-1024x469.png"  alt="yum module enable"  class="center"  />
+
+
+<p>Notice in the above output how <code>yum</code> was complaining there was no default profile set for the PHP7.3 stream, so I needed to specify profile using <code>yum module install php/minimal</code>.</p>
+<p>Now that I have PHP7.3 installed, I can easily switch to PHP7.2. I don&rsquo;t have to enable the PHP7.2 module stream since that one is the default.</p>
+<pre><code>[root@server1 ~]# yum module reset php
+[root@server1 ~]# yum module install php:7.2/minimal
+[root@server1 ~]# yum distro-sync
+</code></pre><p><code>yum distro-sync</code> ensures that all dependent packages which are not in the module itself are updated as well. The output of this command should be:</p>
+<pre><code>Dependencies resolved.
+Nothing to do.
+Complete!
+</code></pre><blockquote>
+<p>When using <strong>yum install packagename</strong>, the default module stream of a package will be installed if that module stream is enabled. You would only need to use <strong>yum module install packagename:version&gt;/profile</strong> if you have specific version and/or profile requirements.</p>
+</blockquote>
+<h2 id="querying-software-packages-with-rpm">Querying Software Packages with RPM</h2>
+<p>There are two reasons why you should <em>not</em> use the <code>rpm</code> command to manage software packages.</p>
+<ol>
+<li>Yum takes care of resolving package dependencies for you while <code>rpm</code> does not.</li>
+<li>There are two package databases on a RHEL system, the YUM database and the RPM database. When you install packages via <code>yum</code>, the YUM database is updated first and the information is synchronized with the RPM database. Installing packages with RPM will update the RPM database only.</li>
+</ol>
+<p>That doesn&rsquo;t mean RPM isn&rsquo;t useful. If you downloaded an RPM package you can still install it via <code>yum install package.rpm</code>.<br>
+More importantly, the <code>rpm</code> command enables us to get more information about packages:</p>
+<p>We can use <code>rpm -qa</code> to show a list of all software that is installed on the system, similar to <code>yum list installed</code>. We can use grep on this command to find out specific package names: <code>rpm -qa | grep php</code></p>
+<pre><code>root@server1 ~]# rpm -qa | grep php
+php-common-7.2.11-2.module_el8.1.0+209+03b9a8ff.x86_64
+php-cli-7.2.11-2.module_el8.1.0+209+03b9a8ff.x86_64
+</code></pre><p>Let&rsquo;s find out more about the <code>php-common</code> package usin <code>rpm -qi</code>:</p>
+<pre><code>[root@server1 ~]# rpm -qi php-common
+Name        : php-common
+Version     : 7.2.11
+Release     : 2.module_el8.1.0+209+03b9a8ff
+Architecture: x86_64
+Install Date: Thu 21 May 2020 09:31:12 +04
+Group       : Unspecified
+Size        : 6472361
+License     : PHP and BSD
+Signature   : RSA/SHA256, Thu 05 Dec 2019 06:42:19 +04, Key ID 05b555b38483c65d
+Source RPM  : php-7.2.11-2.module_el8.1.0+209+03b9a8ff.src.rpm
+Build Date  : Thu 14 Nov 2019 08:15:12 +04
+Build Host  : x86-01.mbox.centos.org
+Relocations : (not relocatable)
+Packager    : CentOS Buildsys &amp;lt;bugs@centos.org&gt;
+Vendor      : CentOS
+URL         : http://www.php.net/
+Summary     : Common files for PHP
+Description :
+The php-common package contains files used by both the php
+package and the php-cli package.
+</code></pre><p>We can list the files inside the package using <code>rpm -ql</code>:</p>
+<pre><code>[root@server1 ~]# rpm -ql php-common
+/etc/php.d
+/etc/php.d/20-bz2.ini
+/etc/php.d/20-calendar.ini
+/etc/php.d/20-ctype.ini
+.....
+</code></pre><p>Or, we can list only the documentation using <code>rpm -qd</code>, or the configuration files using <code>rpm -qc</code>:</p>
+<pre><code>[root@server1 ~]# rpm -qd php-common
+/usr/share/doc/php-common/CODING_STANDARDS
+/usr/share/doc/php-common/CREDITS
+.....
+[root@server1 ~]# rpm -qc php-common
+/etc/php.d/20-bz2.ini
+/etc/php.d/20-calendar.ini
+/etc/php.d/20-ctype.ini
+...
+</code></pre><p>If you have a filename and want to know what package it belongs to, use <code>rpm -qf</code>:</p>
+<pre><code>[root@server1 ~]# rpm -qf /bin/bash
+bash-4.4.19-10.el8.x86_64
+[root@server1 ~]# rpm -qf /bin/lsblk
+util-linux-2.32.1-17.el8.x86_64
+</code></pre><p>All the above queries were used on the RPM database and what we were querying were installed packages. Sometimes it makes sense to query an RPM package file before installing it, in that case we need to add the <code>-p</code> option in addition to any of the previous mentioned options. We can use <code>yumdownloader</code> to download a specific package from our repository to run an RPM query against it before installing it:</p>
+<pre><code>[root@server1 ~]# yum whatprovides */yumdownloader
+Last metadata expiration check: 0:00:38 ago on Thu 21 May 2020 20:34:10 +04.
+yum-utils-4.0.8-3.el8.noarch : Yum-utils CLI compatibility layer
+Repo        : BaseOS
+Matched from:
+Filename    : /usr/bin/yumdownloader
+
+[root@server1 ~]# yum install yum-utils -y
+....
+
+[root@server1 ~]# yumdownloader httpd
+[root@server1 ~]# rpm -qpi httpd-2.4.37-16.module_el8.1.0+256+ae790463.x86_64.rpm 
+Name        : httpd
+Version     : 2.4.37
+Release     : 16.module_el8.1.0+256+ae790463
+....
+</code></pre><p>We can also query packages directly from the repository instead of downloading the package first. Use the <code>repoquery</code> command for this.</p>
+
+
+
+
+
+<table class="table table-dark table-striped table-bordered">
+<thead>
+<tr>
+<th>Command</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>rpm -qf</td>
+<td>Use a filename to find the specific RPM package the file belongs to</td>
+</tr>
+<tr>
+<td>rpm -ql</td>
+<td>Provide a list of files inside the RPM package</td>
+</tr>
+<tr>
+<td>rpm -qi</td>
+<td>Provide package information</td>
+</tr>
+<tr>
+<td>rpm -qd</td>
+<td>Show all documentation available in the package</td>
+</tr>
+<tr>
+<td>rpm -qc</td>
+<td>Show all configuration files</td>
+</tr>
+<tr>
+<td>rpm -q -scripts</td>
+<td>Show scripts that are used in the package</td>
+</tr>
+<tr>
+<td>rpm -qp <!-- raw HTML omitted --></td>
+<td>Query individual .rpm files instead of the RPM database</td>
+</tr>
+<tr>
+<td>rpm -qR</td>
+<td>Show package dependencies</td>
+</tr>
+<tr>
+<td>rpm -V</td>
+<td>Shows which parts of a package has been changed since installation.</td>
+</tr>
+<tr>
+<td>rpm -Va</td>
+<td>Verifies all installed packages and shows which part of the package has been changed since installation.</td>
+</tr>
+<tr>
+<td>rpm -qa</td>
+<td>List all installed packages</td>
+</tr>
+</tbody>
+</table>
+
+
+      </div>
+    </article>
+
+    <hr />
+
+    <div class="post-info">
+        <p>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-tag meta-icon">
+            <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path>
+            <line x1="7" y1="7" x2="7" y2="7"></line>
+          </svg><span class="tag"><a href="https://joerismissaert.dev/tags/appstream/">AppStream</a></span><span class="tag"><a href="https://joerismissaert.dev/tags/package-module-stream/">Package Module Stream</a></span><span class="tag"><a href="https://joerismissaert.dev/tags/repo/">repo</a></span><span class="tag"><a href="https://joerismissaert.dev/tags/yum/">yum</a></span><span class="tag"><a href="https://joerismissaert.dev/tags/rhel/">RHEL</a></span><span class="tag"><a href="https://joerismissaert.dev/tags/rhcsa/">RHCSA</a></span>
+        </p>
+
+      <p>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+          <polyline points="14 2 14 8 20 8"></polyline>
+          <line x1="16" y1="13" x2="8" y2="13"></line>
+          <line x1="16" y1="17" x2="8" y2="17"></line>
+          <polyline points="10 9 9 9 8 9"></polyline>
+        </svg>
+        2508 Words
+      </p>
+
+      <p>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar">
+          <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+          <line x1="16" y1="2" x2="16" y2="6"></line>
+          <line x1="8" y1="2" x2="8" y2="6"></line>
+          <line x1="3" y1="10" x2="21" y2="10"></line>
+        </svg>
+        2020-05-21 20:54 &#43;0400
+      </p>
+    </div>
+      <hr />
+      <div class="sharing-buttons">
+        
+<a class="resp-sharing-button__link resp-sharing-button__icon--solid" href="https://facebook.com/sharer/sharer.php?u=https%3a%2f%2fjoerismissaert.dev%2fpackage-management-with-yum-understanding-repos-groups-package-module-streams-and-rpm-queries%2f" target="_blank" rel="noopener" aria-label="" title="Share on facebook">
+  <div class="resp-sharing-button resp-sharing-button--facebook resp-sharing-button--small resp-sharing-button__icon--solid"><div aria-hidden="true" class="resp-sharing-button__icon resp-sharing-button__icon--solid">
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg>
+    </div>
+  </div>
+</a>
+
+
+<a class="resp-sharing-button__link" href="https://twitter.com/intent/tweet/?url=https%3a%2f%2fjoerismissaert.dev%2fpackage-management-with-yum-understanding-repos-groups-package-module-streams-and-rpm-queries%2f" target="_blank" rel="noopener" aria-label="" title="Share on twitter">
+  <div class="resp-sharing-button resp-sharing-button--twitter resp-sharing-button--small">
+      <div aria-hidden="true" class="resp-sharing-button__icon resp-sharing-button__icon--solid">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path></svg>
+    </div>
+  </div>
+</a>
+
+
+
+
+<a class="resp-sharing-button__link" href="https://www.linkedin.com/shareArticle?mini=true&amp;url=https%3a%2f%2fjoerismissaert.dev%2fpackage-management-with-yum-understanding-repos-groups-package-module-streams-and-rpm-queries%2f&amp;title=Package%20Management%20with%20Yum%3a%20Understanding%20Repo%e2%80%99s%2c%20Groups%2c%20Package%20Module%20Streams%20and%20RPM%20Queries&amp;summary=Package%20Management%20with%20Yum%3a%20Understanding%20Repo%e2%80%99s%2c%20Groups%2c%20Package%20Module%20Streams%20and%20RPM%20Queries&amp;source=https%3a%2f%2fjoerismissaert.dev%2fpackage-management-with-yum-understanding-repos-groups-package-module-streams-and-rpm-queries%2f" target="_blank" rel="noopener" aria-label="" title="Share on linkedin">
+  <div class="resp-sharing-button resp-sharing-button--linkedin resp-sharing-button--small"><div aria-hidden="true" class="resp-sharing-button__icon resp-sharing-button__icon--solid">
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>
+    </div>
+  </div>
+</a>
+
+
+<a class="resp-sharing-button__link" href="https://reddit.com/submit/?url=https%3a%2f%2fjoerismissaert.dev%2fpackage-management-with-yum-understanding-repos-groups-package-module-streams-and-rpm-queries%2f&amp;resubmit=true&amp;title=Package%20Management%20with%20Yum%3a%20Understanding%20Repo%e2%80%99s%2c%20Groups%2c%20Package%20Module%20Streams%20and%20RPM%20Queries" target="_blank" rel="noopener" aria-label="" title="Share on reddit">
+  <div class="resp-sharing-button resp-sharing-button--reddit resp-sharing-button--small"><div aria-hidden="true" class="resp-sharing-button__icon resp-sharing-button__icon--solid">
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M12 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0zm5.01 4.744c.688 0 1.25.561 1.25 1.249a1.25 1.25 0 0 1-2.498.056l-2.597-.547-.8 3.747c1.824.07 3.48.632 4.674 1.488.308-.309.73-.491 1.207-.491.968 0 1.754.786 1.754 1.754 0 .716-.435 1.333-1.01 1.614a3.111 3.111 0 0 1 .042.52c0 2.694-3.13 4.87-7.004 4.87-3.874 0-7.004-2.176-7.004-4.87 0-.183.015-.366.043-.534A1.748 1.748 0 0 1 4.028 12c0-.968.786-1.754 1.754-1.754.463 0 .898.196 1.207.49 1.207-.883 2.878-1.43 4.744-1.487l.885-4.182a.342.342 0 0 1 .14-.197.35.35 0 0 1 .238-.042l2.906.617a1.214 1.214 0 0 1 1.108-.701zM9.25 12C8.561 12 8 12.562 8 13.25c0 .687.561 1.248 1.25 1.248.687 0 1.248-.561 1.248-1.249 0-.688-.561-1.249-1.249-1.249zm5.5 0c-.687 0-1.248.561-1.248 1.25 0 .687.561 1.248 1.249 1.248.688 0 1.249-.561 1.249-1.249 0-.687-.562-1.249-1.25-1.249zm-5.466 3.99a.327.327 0 0 0-.231.094.33.33 0 0 0 0 .463c.842.842 2.484.913 2.961.913.477 0 2.105-.056 2.961-.913a.361.361 0 0 0 .029-.463.33.33 0 0 0-.464 0c-.547.533-1.684.73-2.512.73-.828 0-1.979-.196-2.512-.73a.326.326 0 0 0-.232-.095z"/></svg>
+    </div>
+  </div>
+</a>
+
+      </div>
+
+    
+      <div class="pagination">
+        <div class="pagination__title">
+          <span class="pagination__title-h"></span>
+          <hr />
+        </div>
+
+        <div class="pagination__buttons">
+          
+            <span class="button previous">
+              <a href="https://joerismissaert.dev/managing-shell-jobs-and-processes-on-rhel8/">
+                <span class="button__icon">←</span>
+                <span class="button__text">Managing Shell Jobs and Processes on RHEL8</span>
+              </a>
+            </span>
+          
+
+          
+            <span class="button next">
+              <a href="https://joerismissaert.dev/configuring-the-network-on-rhel-8-with-nmcli-and-nmtui/">
+                <span class="button__text">Configuring the Network on RHEL 8 with nmcli and nmtui</span>
+                <span class="button__icon">→</span>
+              </a>
+            </span>
+          
+        </div>
+      </div>
+    
+
+
+    
+      
+        <div id="comments">
+          <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "joeri-jm-smissaert" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+        </div>
+      
+    
+
+  </main>
+
+            </div>
+
+            
+                <footer class="footer">
+    <div class="footer__inner">
+        <div class="footer__content">
+            <span>&copy; 2021</span>
+            
+                <span><a href="https://joerismissaert.dev">Joeri JM Smissaert</a></span>
+            
+            
+                <span><a href="https://joerismissaert.dev/privacy-policy">Privacy Policy</a> & <a href="https://joerismissaert.dev/terms-of-service">Terms of Service</a></span>
+            
+            <span> <a href="https://joerismissaert.dev/posts/index.xml" target="_blank" title="rss"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-rss"><path d="M4 11a9 9 0 0 1 9 9"></path><path d="M4 4a16 16 0 0 1 16 16"></path><circle cx="5" cy="19" r="1"></circle></svg></a></span>
+        </div>
+    </div>
+    <div class="footer__inner">
+        <div class="footer__content">
+            <style>.bmc-button img{height: 34px !important;width: 35px !important;margin-bottom: 1px !important;box-shadow: none !important;border: none !important;vertical-align: middle !important;}.bmc-button{padding: 7px 15px 7px 10px !important;line-height: 35px !important;height:51px !important;text-decoration: none !important;display:inline-flex !important;color:#000000 !important;background-color:#FFFFFF !important;border-radius: 5px !important;border: 1px solid transparent !important;padding: 7px 15px 7px 10px !important;font-size: 20px !important;letter-spacing:0.6px !important;box-shadow: 0px 1px 2px rgba(190, 190, 190, 0.5) !important;-webkit-box-shadow: 0px 1px 2px 2px rgba(190, 190, 190, 0.5) !important;margin: 0 auto !important;font-family:'Roboto', cursive !important;-webkit-box-sizing: border-box !important;box-sizing: border-box !important;}.bmc-button:hover, .bmc-button:active, .bmc-button:focus {-webkit-box-shadow: 0px 1px 2px 2px rgba(190, 190, 190, 0.5) !important;text-decoration: none !important;box-shadow: 0px 1px 2px 2px rgba(190, 190, 190, 0.5) !important;opacity: 0.85 !important;color:#000000 !important;}</style><link href="https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap" rel="stylesheet"><a class="bmc-button" target="_blank" href="https://www.buymeacoffee.com/joerismissaert"><img src="https://cdn.buymeacoffee.com/buttons/bmc-new-btn-logo.svg" alt="Buy me a coffee"><span style="margin-left:5px;font-size:19px !important;">Buy me a coffee :)</span></a>
+        </div>
+    </div>
+</footer>
+
+            
+        </div>
+
+        
+
+
+
+
+<script type="text/javascript" src="https://joerismissaert.dev/bundle.min.dc716e9092c9820b77f96da294d0120aeeb189b5bcea9752309ebea27fd53bbe6b13cffb2aca8ecf32525647ceb7001f76091de4199ac5a3caa432c070247f5b.js" integrity="sha512-3HFukJLJggt3&#43;W2ilNASCu6xibW86pdSMJ6&#43;on/VO75rE8/7KsqOzzJSVkfOtwAfdgkd5BmaxaPKpDLAcCR/Ww=="></script>
+    
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-81179434-3', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+
+
+
+
+    </body>
+</html>

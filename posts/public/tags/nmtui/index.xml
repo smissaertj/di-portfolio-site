@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>nmtui on Joeri JM Smissaert</title>
+    <link>https://joerismissaert.dev/tags/nmtui/</link>
+    <description>Recent content in nmtui on Joeri JM Smissaert</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>&lt;a href=&#34;https://joerismissaert.dev/privacy-policy&#34;&gt;Privacy Policy&lt;/a&gt; &amp; &lt;a href=&#34;https://joerismissaert.dev/terms-of-service&#34;&gt;Terms of Service&lt;/a&gt;</copyright>
+    <lastBuildDate>Tue, 19 May 2020 08:03:28 +0000</lastBuildDate><atom:link href="https://joerismissaert.dev/tags/nmtui/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Configuring the Network on RHEL 8 with nmcli and nmtui</title>
+      <link>https://joerismissaert.dev/configuring-the-network-on-rhel-8-with-nmcli-and-nmtui/</link>
+      <pubDate>Tue, 19 May 2020 08:03:28 +0000</pubDate>
+      
+      <guid>https://joerismissaert.dev/configuring-the-network-on-rhel-8-with-nmcli-and-nmtui/</guid>
+      <description>In the previous post we learned how the check the runtime configuration of the network using the ip command. To make persistent changes to the network configuration that will survive a reboot, we need to use either nmcli or nmtui.
+Networking is managed by the NetworkManager service. When the NetworkManager service comes up, it reads the network card configuration scripts that are located in /etc/sysconfig/network-scripts and that have a name which starts with ifcgf followed by the name of the network card.</description>
+    </item>
+    
+  </channel>
+</rss>

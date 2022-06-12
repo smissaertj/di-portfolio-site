@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="author" content="Joeri JM Smissaert ">
+<meta name="description" content="To match the different partition types we use different partitioning utilities. The fdisk utlity is used to create MBR partitions while the gdisk utility is used to create GPT paritions.
+Apart from fdisk and gdisk, there is the parted command which can create both MBR and GPT partitions but has less advanced features.
+Each command takes a disk device name as an argument. The device names are usually /dev/sda, /dev/sdb, &amp;hellip; in the order the device is recognized by the kernel." />
+<meta name="keywords" content="linux, red hat, centos, fedora, rhel, nginx, development, kinsta, rhcsa, python, RHEL, Storage, Partitions, MBR, GPT, fdisk, gdisk, parted" />
+<meta name="robots" content="noodp" />
+<meta name="theme-color" content="#42464a" />
+<link rel="canonical" href="https://joerismissaert.dev/managing-storage-creating-partitions/" />
+
+
+    <title>
+        
+            Managing Storage: Creating Partitions :: Joeri JM Smissaert 
+        
+    </title>
+
+
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.2.1/css/flag-icon.min.css" rel="stylesheet"
+    type="text/css">
+
+
+
+<link rel="stylesheet" href="https://joerismissaert.dev/main.bc0e1ee95501e8eff4092797423b13efee0ad37ba6def28f39ac50c21062b401.css">
+
+
+
+
+    <link rel="apple-touch-icon" sizes="180x180" href="https://joerismissaert.dev/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="https://joerismissaert.dev/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="https://joerismissaert.dev/favicon-16x16.png">
+    <link rel="manifest" href="https://joerismissaert.dev/site.webmanifest">
+    <link rel="mask-icon" href="https://joerismissaert.dev/safari-pinned-tab.svg" color="##42464a">
+    <link rel="shortcut icon" href="https://joerismissaert.dev/favicon.ico">
+    <meta name="msapplication-TileColor" content="##42464a">
+    <meta name="theme-color" content="##42464a">
+
+
+
+<meta itemprop="name" content="Managing Storage: Creating Partitions">
+<meta itemprop="description" content="To match the different partition types we use different partitioning utilities. The fdisk utlity is used to create MBR partitions while the gdisk utility is used to create GPT paritions.
+Apart from fdisk and gdisk, there is the parted command which can create both MBR and GPT partitions but has less advanced features.
+Each command takes a disk device name as an argument. The device names are usually /dev/sda, /dev/sdb, &hellip; in the order the device is recognized by the kernel.">
+<meta itemprop="datePublished" content="2020-07-29T16:05:02+04:00" />
+<meta itemprop="dateModified" content="2020-07-29T16:05:02+04:00" />
+<meta itemprop="wordCount" content="2950">
+
+
+
+<meta itemprop="keywords" content="RHEL,Storage,Partitions,MBR,GPT,fdisk,gdisk,parted," />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Managing Storage: Creating Partitions"/>
+<meta name="twitter:description" content="To match the different partition types we use different partitioning utilities. The fdisk utlity is used to create MBR partitions while the gdisk utility is used to create GPT paritions.
+Apart from fdisk and gdisk, there is the parted command which can create both MBR and GPT partitions but has less advanced features.
+Each command takes a disk device name as an argument. The device names are usually /dev/sda, /dev/sdb, &hellip; in the order the device is recognized by the kernel."/>
+
+
+
+    <meta property="og:title" content="Managing Storage: Creating Partitions" />
+<meta property="og:description" content="To match the different partition types we use different partitioning utilities. The fdisk utlity is used to create MBR partitions while the gdisk utility is used to create GPT paritions.
+Apart from fdisk and gdisk, there is the parted command which can create both MBR and GPT partitions but has less advanced features.
+Each command takes a disk device name as an argument. The device names are usually /dev/sda, /dev/sdb, &hellip; in the order the device is recognized by the kernel." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://joerismissaert.dev/managing-storage-creating-partitions/" />
+<meta property="article:published_time" content="2020-07-29T16:05:02+04:00" />
+<meta property="article:modified_time" content="2020-07-29T16:05:02+04:00" />
+
+
+
+
+
+
+    <meta property="article:published_time" content="2020-07-29 16:05:02 &#43;0400 &#43;04" />
+
+
+
+
+
+
+
+
+    </head>
+
+    <body class="dark-theme">
+        <div class="container">
+            <header class="header">
+    <span class="header__inner">
+        <a href="https://joerismissaert.dev/" style="text-decoration: none;">
+    <div class="logo">
+        
+            <span class="logo__mark">></span>
+            <span class="logo__text">$ cd ~</span>
+            <span class="logo__cursor" style=
+                  "
+                   background-color:#8B0000;
+                   ">
+            </span>
+        
+    </div>
+</a>
+
+
+        <span class="header__right">
+            
+                <nav class="menu">
+    <ul class="menu__inner"><li><a href="https://joerismissaert.dev/about/">1. About</a></li><li><a href="https://joerismissaert.dev/posts/">2. Posts</a></li><li><a href="https://joerismissaert.dev/dev/">3. Dev</a></li><li><a href="https://joerismissaert.dev/webdev/">4. WebDev</a></li>
+    </ul>
+</nav>
+
+                <span class="menu-trigger">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        <path d="M0 0h24v24H0z" fill="none"/>
+                        <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/>
+                    </svg>
+                </span>
+            
+
+            <span class="theme-toggle unselectable"><svg class="theme-toggler" width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M22 41C32.4934 41 41 32.4934 41 22C41 11.5066 32.4934 3 22
+  3C11.5066 3 3 11.5066 3 22C3 32.4934 11.5066 41 22 41ZM7 22C7
+  13.7157 13.7157 7 22 7V37C13.7157 37 7 30.2843 7 22Z"/>
+</svg>
+</span>
+        </span>
+    </span>
+</header>
+
+
+            <div class="content">
+                
+  <main class="post">
+
+    <div class="post-info">
+      <p>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clock">
+          <circle cx="12" cy="12" r="10"></circle>
+          <polyline points="12 6 12 12 16 14"></polyline>
+        </svg>
+        14 minutes
+
+        
+      </p>
+    </div>
+
+    <article>
+      <h1 class="post-title">
+        <a href="https://joerismissaert.dev/managing-storage-creating-partitions/">Managing Storage: Creating Partitions</a>
+      </h1>
+
+      
+
+      <div class="post-content">
+        
+    <img src="https://joerismissaert.dev/img/redhat-8-logo.png"  alt="Red Hat logo"  class="center"  />
+
+
+<p>To match the different partition types we use different partitioning utilities.
+The <code>fdisk</code> utlity is used to create MBR partitions while the <code>gdisk</code> utility is used to create GPT paritions.</p>
+<p>Apart from <code>fdisk</code> and <code>gdisk</code>, there is the <code>parted</code> command which can create both MBR and GPT partitions but has less advanced features.</p>
+<p>Each command takes a disk device name as an argument. The device names are usually <code>/dev/sda</code>, <code>/dev/sdb</code>, &hellip; in the order the device is recognized by the kernel. You can have disks up to <code>/dev/sdz</code> and beyond: <code>/dev/sdaa</code>, <code>/dev/sdab</code>, &hellip;</p>
+<p>Partitions are numbered, the <code>/dev/sda</code> device contains partitions like <code>/dev/sda1</code> , <code>/dev/sda2</code>, &hellip;</p>
+<p>The name of the device also depends on the type of driver that&rsquo;s used:</p>
+
+
+
+
+
+<table class="table table-dark table-striped table-bordered">
+<thead>
+<tr>
+<th>Device Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>/dev/sda</td>
+<td>Devices that use the SCSI driver, used for both SCSI and SATA devices. This is common on physical machines but also on VMware virtual machines.</td>
+</tr>
+<tr>
+<td>/dev/nvme0n1</td>
+<td>The first hard disk on an NVME Express interface. Note that the first drive is referred to as <code>n1</code> instead of <code>a</code>.</td>
+</tr>
+<tr>
+<td>/dev/hda</td>
+<td>Legacy IDE disk devices.</td>
+</tr>
+<tr>
+<td>/dev/vda</td>
+<td>Common on KVM virtual machines using the virtio disk driver.</td>
+</tr>
+<tr>
+<td>/dev/xvda</td>
+<td>A disk in a Xen virtual machine that uses the Xen virtual disk driver.</td>
+</tr>
+</tbody>
+</table>
+
+<h2 id="creating-mbr-partitions-with-fdisk">Creating MBR Partitions with fdisk</h2>
+<p>Next, I will show you how to use <code>fdisk</code> to create a partition on nonpartitioned disk space. If you don&rsquo;t have nonpartitioned disk space the same principle can be applied to a separate virtual disk. Make sure to create a snapshot of your virtual machine so you can easily revert back.</p>
+<p>The <code>lsblk</code> command shows me I have two disks: <code>vda</code> and <code>vdb</code>, where <code>vda</code> contains two partitions:</p>
+<pre><code>[root@server1 ~]# lsblk
+NAME   MAJ:MIN RM SIZE RO TYPE MOUNTPOINT
+sr0     11:0    1   7G  0 rom  
+vda    253:0    0  30G  0 disk 
+├─vda1 253:1    0  18G  0 part /
+└─vda2 253:2    0   2G  0 part [SWAP]
+vdb    253:16   0  10G  0 disk 
+</code></pre><p><code>df -h</code> shows me the available disk space on each disk, for <code>/dev/vda</code> that would be 7.2Gb. There&rsquo;s no file system yet on <code>/dev/vdb</code> so it&rsquo;s not showing anything for this disk.</p>
+<pre><code>[root@server1 ~]# df -h
+Filesystem      Size  Used Avail Use% Mounted on
+devtmpfs        899M     0  899M   0% /dev
+tmpfs           915M     0  915M   0% /dev/shm
+tmpfs           915M  1.6M  914M   1% /run
+tmpfs           915M     0  915M   0% /sys/fs/cgroup
+/dev/vda1        18G   11G  7.2G  61% /
+tmpfs           183M   12K  183M   1% /run/user/42
+tmpfs           183M   28K  183M   1% /run/user/1000
+</code></pre><p>Let&rsquo;s run the <code>fdisk</code> command against the <code>/dev/vda</code> disk and print out the current disk allocation:</p>
+<pre><code>[root@server1 ~]# fdisk /dev/vda
+
+Welcome to fdisk (util-linux 2.32.1).
+Changes will remain in memory only, until you decide to write them.
+Be careful before using the write command.
+
+
+Command (m for help): p
+Disk /dev/vda: 30 GiB, 32212254720 bytes, 62914560 sectors
+Units: sectors of 1 * 512 = 512 bytes
+Sector size (logical/physical): 512 bytes / 512 bytes
+I/O size (minimum/optimal): 512 bytes / 512 bytes
+Disklabel type: dos
+Disk identifier: 0xde6faae3
+
+Device     Boot    Start      End  Sectors Size Id Type
+/dev/vda1  *        2048 37750783 37748736  18G 83 Linux
+/dev/vda2       37750784 41945087  4194304   2G 82 Linux swap / Solaris
+
+Command (m for help): 
+</code></pre><p>We can see that this disk has 62914560 sectors and that the last partition does not end on the last sector
+This confirms again we have free disk space available to create a new partition.</p>
+<p>Type <code>n</code> to create a new partition, followed by <code>p</code> to create a primary partition. You can choose the new parition number or hit enter to accept the default.</p>
+<pre><code>Command (m for help): n
+Partition type
+   p   primary (2 primary, 0 extended, 2 free)
+   e   extended (container for logical partitions)
+Select (default p): p
+Partition number (3,4, default 3): 3
+</code></pre><p><code>fdisk</code> will suggest the first available sector, you can accept that by hitting enter.
+For the last sector (which will ultimately determine the size), you can choose to accept the default to create a partition on all remaining disk space, or you can specify the last sector (using <code>+numberofsectors</code>) or specify a size using <code>+number(K,M,G)</code>, i.e. <code>+1G</code> will make the partition 1GiB in size.</p>
+<pre><code>First sector (41945088-62914559, default 41945088): 
+Last sector, +sectors or +size{K,M,G,T,P} (41945088-62914559, default 62914559): +1G
+
+Created a new partition 3 of type 'Linux' and of size 1 GiB.
+</code></pre><p>By default a Linux parition type is used. You can change the type using the <code>t</code> command. In this case we&rsquo;ll continue to use the Linux type.</p>
+<p>Use the <code>p</code> command to print the disk allocation again:</p>
+<pre><code>Command (m for help): p
+Disk /dev/vda: 30 GiB, 32212254720 bytes, 62914560 sectors
+Units: sectors of 1 * 512 = 512 bytes
+Sector size (logical/physical): 512 bytes / 512 bytes
+I/O size (minimum/optimal): 512 bytes / 512 bytes
+Disklabel type: dos
+Disk identifier: 0xde6faae3
+
+Device     Boot    Start      End  Sectors Size Id Type
+/dev/vda1  *        2048 37750783 37748736  18G 83 Linux
+/dev/vda2       37750784 41945087  4194304   2G 82 Linux swap / Solaris
+/dev/vda3       41945088 44042239  2097152   1G 83 Linux
+</code></pre><p>Once we&rsquo;re happy with the modifications, we use <code>w</code> to write them to disk and exit <code>fdisk</code>.<br>
+(Type <code>q</code> at anytime if you need to quit <code>fdisk</code> without writing your changes.)</p>
+<pre><code>Command (m for help): w
+The partition table has been altered.
+Syncing disks.
+</code></pre><p>It&rsquo;s possible you&rsquo;ll receive the following warning message:</p>
+<pre><code>WARNING: Re-reading the partition table failed with error 16: Device or resource busy.
+The kernel still uses the old table. The new table will be used at the next reboot or after you run partprobe(8) or kpartx(8).
+</code></pre><p>This means the partition table was written succesfully, but the in-memory kernel partition could not be updated.
+You can check this by comparing the output of <code>fdisk -l /dev/vda</code> with <code>cat /proc/partitions</code>.<br>
+Run <code>partprobe /dev/vda</code> to write the changes to the in-memory kernel parition table.
+Typically this happens when you add partitions to a disk that already has mounted partitions.</p>
+<h3 id="using-extended-and-logical-partitions-on-mbr">Using Extended and Logical Partitions on MBR</h3>
+<p>If three partitions have been created already, there is room for 1 more primary partition. If you need to go beyond 4 partitions on an MBR disk you will have to create an extended partition and create logical partitions within it.</p>
+<p>If something goes wrong with your extended partition you will have a problem with all logical partitions as well. With this in mind you might be better off using LVM, which I&rsquo;ll discuss later on in a different post.</p>
+<blockquote>
+<p>An extended partition is used only for the purpose of creating logical partitions. Consider it as a container for the logical partitions, you can&rsquo;t create a filesystem directly on the extended partition.</p>
+</blockquote>
+<pre><code>[root@server1 ~]# fdisk /dev/vda
+
+Welcome to fdisk (util-linux 2.32.1).
+Changes will remain in memory only, until you decide to write them.
+Be careful before using the write command.
+
+
+Command (m for help): p
+Disk /dev/vda: 30 GiB, 32212254720 bytes, 62914560 sectors
+Units: sectors of 1 * 512 = 512 bytes
+Sector size (logical/physical): 512 bytes / 512 bytes
+I/O size (minimum/optimal): 512 bytes / 512 bytes
+Disklabel type: dos
+Disk identifier: 0xde6faae3
+
+Device     Boot    Start      End  Sectors Size Id Type
+/dev/vda1  *        2048 37750783 37748736  18G 83 Linux
+/dev/vda2       37750784 41945087  4194304   2G 82 Linux swap / Solaris
+/dev/vda3       41945088 44042239  2097152   1G 83 Linux
+
+Command (m for help): n
+Partition type
+   p   primary (3 primary, 0 extended, 1 free)
+   e   extended (container for logical partitions)
+Select (default e): e
+
+Selected partition 4
+First sector (44042240-62914559, default 44042240): 
+Last sector, +sectors or +size{K,M,G,T,P} (44042240-62914559, default 62914559): 
+
+Created a new partition 4 of type 'Extended' and of size 9 GiB.
+
+Command (m for help): p
+Disk /dev/vda: 30 GiB, 32212254720 bytes, 62914560 sectors
+Units: sectors of 1 * 512 = 512 bytes
+Sector size (logical/physical): 512 bytes / 512 bytes
+I/O size (minimum/optimal): 512 bytes / 512 bytes
+Disklabel type: dos
+Disk identifier: 0xde6faae3
+
+Device     Boot    Start      End  Sectors Size Id Type
+/dev/vda1  *        2048 37750783 37748736  18G 83 Linux
+/dev/vda2       37750784 41945087  4194304   2G 82 Linux swap / Solaris
+/dev/vda3       41945088 44042239  2097152   1G 83 Linux
+/dev/vda4       44042240 62914559 18872320   9G  5 Extended
+
+Command (m for help): n
+All primary partitions are in use.
+Adding logical partition 5
+First sector (44044288-62914559, default 44044288): 
+Last sector, +sectors or +size{K,M,G,T,P} (44044288-62914559, default 62914559): +5G
+
+Created a new partition 5 of type 'Linux' and of size 5 GiB.
+
+Command (m for help): n
+All primary partitions are in use.
+Adding logical partition 6
+First sector (54532096-62914559, default 54532096): 
+Last sector, +sectors or +size{K,M,G,T,P} (54532096-62914559, default 62914559): 
+
+Created a new partition 6 of type 'Linux' and of size 4 GiB.
+
+Command (m for help): p
+Disk /dev/vda: 30 GiB, 32212254720 bytes, 62914560 sectors
+Units: sectors of 1 * 512 = 512 bytes
+Sector size (logical/physical): 512 bytes / 512 bytes
+I/O size (minimum/optimal): 512 bytes / 512 bytes
+Disklabel type: dos
+Disk identifier: 0xde6faae3
+
+Device     Boot    Start      End  Sectors Size Id Type
+/dev/vda1  *        2048 37750783 37748736  18G 83 Linux
+/dev/vda2       37750784 41945087  4194304   2G 82 Linux swap / Solaris
+/dev/vda3       41945088 44042239  2097152   1G 83 Linux
+/dev/vda4       44042240 62914559 18872320   9G  5 Extended
+/dev/vda5       44044288 54530047 10485760   5G 83 Linux
+/dev/vda6       54532096 62914559  8382464   4G 83 Linux
+
+Command (m for help): w
+The partition table has been altered.
+Failed to add partition 5 to system: Device or resource busy
+Failed to add partition 6 to system: Device or resource busy
+
+The kernel still uses the old partitions. The new table will be used at the next reboot. 
+Syncing disks.
+
+[root@server1 ~]# fdisk -l /dev/vda
+Disk /dev/vda: 30 GiB, 32212254720 bytes, 62914560 sectors
+Units: sectors of 1 * 512 = 512 bytes
+Sector size (logical/physical): 512 bytes / 512 bytes
+I/O size (minimum/optimal): 512 bytes / 512 bytes
+Disklabel type: dos
+Disk identifier: 0xde6faae3
+
+Device     Boot    Start      End  Sectors Size Id Type
+/dev/vda1  *        2048 37750783 37748736  18G 83 Linux
+/dev/vda2       37750784 41945087  4194304   2G 82 Linux swap / Solaris
+/dev/vda3       41945088 44042239  2097152   1G 83 Linux
+/dev/vda4       44042240 62914559 18872320   9G  5 Extended
+/dev/vda5       44044288 54530047 10485760   5G 83 Linux
+/dev/vda6       54532096 62914559  8382464   4G 83 Linux
+
+
+[root@server1 ~]# cat /proc/partitions
+major minor  #blocks  name
+
+ 253        0   31457280 vda
+ 253        1   18874368 vda1
+ 253        2    2097152 vda2
+ 253        3    1048576 vda3
+ 253        4    9436160 vda4
+ 253       16   10485760 vdb
+  11        0    7377920 sr0
+[root@server1 ~]# partprobe /dev/vda
+Error: Partition(s) 5, 6 on /dev/vda have been written, but we have been unable to inform the kernel of the change, probably because it/they are in use.  As a result, the old partition(s) will remain in use.  You should reboot now before making further changes.
+[root@server1 ~]# reboot
+</code></pre><blockquote>
+<p>Since we&rsquo;re getting an error using partprobe, we <strong>should</strong> reboot and not continue modifying or managing partitions.</p>
+</blockquote>
+<h2 id="creating-gpt-partitions-with-gdisk">Creating GPT Partitions with gdisk</h2>
+<p>If a disk is configured with a GUID Partition Table or if the disk has a size that goes beyond 2TiB you need to manage partitions with the <code>gdisk</code> utility.</p>
+<blockquote>
+<p>Never use <code>gdisk</code> on a disk that has been formatted with <code>fdisk</code> and already contains <code>fdisk</code> partitions. <code>gdisk</code> will detect MBR is present and convert this to GPT after which your computer will likely not boot anymore.</p>
+</blockquote>
+<pre><code>[root@server1 ~]# gdisk /dev/vda
+GPT fdisk (gdisk) version 1.0.3
+
+Partition table scan:
+  MBR: MBR only
+  BSD: not present
+  APM: not present
+  GPT: not present
+
+
+***************************************************************
+Found invalid GPT and valid MBR; converting MBR to GPT format
+in memory. THIS OPERATION IS POTENTIALLY DESTRUCTIVE! Exit by
+typing 'q' if you don't want to convert your MBR partitions
+to GPT format!
+***************************************************************
+
+
+Warning! Secondary partition table overlaps the last partition by
+33 blocks!
+You will need to delete this partition or resize it in another utility.
+
+Command (? for help): q
+</code></pre><p>In the following example, I&rsquo;ll create a GPT layout on a new disk, <code>/dev/vdb</code>:</p>
+<pre><code>[root@server1 ~]# gdisk /dev/vdb
+GPT fdisk (gdisk) version 1.0.3
+
+Partition table scan:
+  MBR: not present
+  BSD: not present
+  APM: not present
+  GPT: not present
+
+Creating new GPT entries.
+</code></pre><p>Type <code>p</code> to print the current disk allocation:</p>
+<pre><code>Command (? for help): p
+Disk /dev/vdb: 20971520 sectors, 10.0 GiB
+Sector size (logical/physical): 512/512 bytes
+Disk identifier (GUID): 32689440-34F8-4D19-8FCC-0FA78AFFCAF5
+Partition table holds up to 128 entries
+Main partition table begins at sector 2 and ends at sector 33
+First usable sector is 34, last usable sector is 20971486
+Partitions will be aligned on 2048-sector boundaries
+Total free space is 20971453 sectors (10.0 GiB)
+
+Number  Start (sector)    End (sector)  Size       Code  Name
+
+</code></pre><p>Type <code>n</code> to create a new partition, accept the default partition number that is suggested.
+Accept the default suggested First sector.
+The last sector should be set at 1GiB.</p>
+<p>By default the Linux partition type is selected. Accept or type <code>l</code> to show other parition types.
+Relevant partition types are as follows:</p>
+<ul>
+<li><strong>8200</strong> Linux Swap</li>
+<li><strong>8300</strong> Linux File System</li>
+<li><strong>8e00</strong> Linux LVM</li>
+</ul>
+<p>These are the same types as the ones used in MBR, except that two 0s are added to the ID.</p>
+<pre><code>Command (? for help): n
+Partition number (1-128, default 1): 
+First sector (34-20971486, default = 2048) or {+-}size{KMGTP}: 
+Last sector (2048-20971486, default = 20971486) or {+-}size{KMGTP}: +1G
+Current type is 'Linux filesystem'
+Hex code or GUID (L to show codes, Enter = 8300): 
+Changed type of partition to 'Linux filesystem'
+</code></pre><p>Check the partition by printing the disk allocation:</p>
+<pre><code>Command (? for help): p
+Disk /dev/vdb: 20971520 sectors, 10.0 GiB
+Sector size (logical/physical): 512/512 bytes
+Disk identifier (GUID): 32689440-34F8-4D19-8FCC-0FA78AFFCAF5
+Partition table holds up to 128 entries
+Main partition table begins at sector 2 and ends at sector 33
+First usable sector is 34, last usable sector is 20971486
+Partitions will be aligned on 2048-sector boundaries
+Total free space is 18874301 sectors (9.0 GiB)
+
+Number  Start (sector)    End (sector)  Size       Code  Name
+   1            2048         2099199   1024.0 MiB  8300  Linux filesystem
+</code></pre><p>Type <code>w</code> to write your changes.</p>
+<pre><code>Command (? for help): w
+
+Final checks complete. About to write GPT data. THIS WILL OVERWRITE EXISTING
+PARTITIONS!!
+
+Do you want to proceed? (Y/N): y
+OK; writing new GUID partition table (GPT) to /dev/vdb.
+The operation has completed successfully.
+</code></pre><p>Again, if you get an error message indicating that the partition table is in use, type <code>partprobe</code> to update the kernel partition table and reboot if required.</p>
+<pre><code>[root@server1 ~]# lsblk
+NAME   MAJ:MIN RM SIZE RO TYPE MOUNTPOINT
+sr0     11:0    1   7G  0 rom  
+vda    253:0    0  30G  0 disk 
+├─vda1 253:1    0  18G  0 part /
+├─vda2 253:2    0   2G  0 part [SWAP]
+├─vda3 253:3    0   1G  0 part 
+├─vda4 253:4    0   1K  0 part 
+├─vda5 253:5    0   5G  0 part 
+└─vda6 253:6    0   4G  0 part 
+vdb    253:16   0  10G  0 disk 
+└─vdb1 253:17   0   1G  0 part 
+</code></pre><pre><code>[root@server1 ~]# cat /proc/partitions 
+major minor  #blocks  name
+
+ 253        0   31457280 vda
+ 253        1   18874368 vda1
+ 253        2    2097152 vda2
+ 253        3    1048576 vda3
+ 253        4          1 vda4
+ 253        5    5242880 vda5
+ 253        6    4191232 vda6
+ 253       16   10485760 vdb
+ 253       17    1048576 vdb1
+  11        0    7377920 sr0
+</code></pre><h2 id="creating-gpt-partitions-with-parted">Creating GPT Partitions with parted</h2>
+<p>The <code>parted</code> utility uses an interactive shell, it&rsquo;s considered to be the default utility on RHEL 8 but it lacks advanced features.</p>
+<p>I&rsquo;ve deleted the partion I created previously with <code>gdisk</code> and I&rsquo;ll recreate it using <code>parted</code>:</p>
+<pre><code>[root@server1 ~]# parted /dev/vdb
+GNU Parted 3.2
+Using /dev/vdb
+Welcome to GNU Parted! Type 'help' to view a list of commands.
+</code></pre><p><code>print</code> the current disk allocation table:</p>
+<pre><code>(parted) print                                                                
+Model: Virtio Block Device (virtblk)
+Disk /dev/vdb: 10.7GB
+Sector size (logical/physical): 512B/512B
+Partition Table: gpt
+Disk Flags: 
+
+Number  Start  End  Size  File system  Name  Flags
+
+
+</code></pre><p>Type <code>mklabel</code> and press Enter. You&rsquo;ll be prompted for a disk label type, press the Tab key twice to see a list of available disk label types. Choose the <code>gpt</code> type and press Enter.</p>
+<pre><code>(parted) mklabel                                                          
+New disk label type?                                                      
+aix    amiga  atari  bsd    dvh    gpt    loop   mac    msdos  pc98   sun    
+New disk label type? gpt
+Warning: The existing disk label on /dev/vdb will be destroyed and all data on this disk will be lost. Do you want to continue?
+Yes/No? yes                                                               
+</code></pre><p>Type <code>mkpart</code>, the utility prompts for a partition name. I&rsquo;ve named by partition <em>backup</em>.</p>
+<pre><code>(parted) mkpart                                                           
+Partition name?  []? backup
+</code></pre><p>Notice you&rsquo;re prompted for a file system type, it suggest we&rsquo;re applying a file system here but this is <em><strong>not</strong></em> the case.
+Documentation suggest this setting isn&rsquo;t used, you could accept the default, but it&rsquo;s suggested to use Tab completion and choose a file system type comes close to what you&rsquo;re going to use on the partition later when actually creating the file system.</p>
+<pre><code>File system type?  [ext2]?                                                
+affs0            affs3            affs6            amufs0           amufs3           apfs1            btrfs            ext4             hfs              hp-ufs           linux-swap(new)  linux-swap(v1)   reiserfs         xfs              
+affs1            affs4            affs7            amufs1           amufs4           apfs2            ext2             fat16            hfs+             jfs              linux-swap(old)  nilfs2           sun-ufs          
+affs2            affs5            amufs            amufs2           amufs5           asfs             ext3             fat32            hfsx             linux-swap       linux-swap(v0)   ntfs             swsusp           
+File system type?  [ext2]? xfs
+</code></pre><p>We can specify the start location as a number of blocks or an offset from the start of the device like <code>1MiB</code>, not <code>+1MiB</code>.
+We&rsquo;ll make the partition 5GiB in size, so we specify the <code>5Gib</code> offset for the end value.</p>
+<pre><code>Start? 1MiB
+End? 5GiB
+</code></pre><p>Type <code>print</code> to see the modifications and <code>quit</code> to quit the utility and commit changes.</p>
+<pre><code>(parted) print                                                            
+Model: Virtio Block Device (virtblk)
+Disk /dev/vdb: 10.7GB
+Sector size (logical/physical): 512B/512B
+Partition Table: gpt
+Disk Flags: 
+
+Number  Start   End     Size    File system  Name    Flags
+ 1      1049kB  5369MB  5368MB  xfs          backup
+
+(parted) quit                                                             
+Information: You may need to update /etc/fstab.
+</code></pre><pre><code>[root@server1 ~]# lsblk
+NAME   MAJ:MIN RM SIZE RO TYPE MOUNTPOINT
+sr0     11:0    1   7G  0 rom  
+vda    253:0    0  30G  0 disk 
+├─vda1 253:1    0  18G  0 part /
+├─vda2 253:2    0   2G  0 part [SWAP]
+├─vda3 253:3    0   1G  0 part 
+├─vda4 253:4    0   1K  0 part 
+├─vda5 253:5    0   5G  0 part 
+└─vda6 253:6    0   4G  0 part 
+vdb    253:16   0  10G  0 disk 
+└─vdb1 253:17   0   5G  0 part 
+[root@server1 ~]#
+</code></pre>
+      </div>
+    </article>
+
+    <hr />
+
+    <div class="post-info">
+        <p>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-tag meta-icon">
+            <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path>
+            <line x1="7" y1="7" x2="7" y2="7"></line>
+          </svg><span class="tag"><a href="https://joerismissaert.dev/tags/rhel/">RHEL</a></span><span class="tag"><a href="https://joerismissaert.dev/tags/storage/">Storage</a></span><span class="tag"><a href="https://joerismissaert.dev/tags/partitions/">Partitions</a></span><span class="tag"><a href="https://joerismissaert.dev/tags/mbr/">MBR</a></span><span class="tag"><a href="https://joerismissaert.dev/tags/gpt/">GPT</a></span><span class="tag"><a href="https://joerismissaert.dev/tags/fdisk/">fdisk</a></span><span class="tag"><a href="https://joerismissaert.dev/tags/gdisk/">gdisk</a></span><span class="tag"><a href="https://joerismissaert.dev/tags/parted/">parted</a></span>
+        </p>
+
+      <p>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+          <polyline points="14 2 14 8 20 8"></polyline>
+          <line x1="16" y1="13" x2="8" y2="13"></line>
+          <line x1="16" y1="17" x2="8" y2="17"></line>
+          <polyline points="10 9 9 9 8 9"></polyline>
+        </svg>
+        2950 Words
+      </p>
+
+      <p>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar">
+          <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+          <line x1="16" y1="2" x2="16" y2="6"></line>
+          <line x1="8" y1="2" x2="8" y2="6"></line>
+          <line x1="3" y1="10" x2="21" y2="10"></line>
+        </svg>
+        2020-07-29 16:05 &#43;0400
+      </p>
+    </div>
+      <hr />
+      <div class="sharing-buttons">
+        
+<a class="resp-sharing-button__link resp-sharing-button__icon--solid" href="https://facebook.com/sharer/sharer.php?u=https%3a%2f%2fjoerismissaert.dev%2fmanaging-storage-creating-partitions%2f" target="_blank" rel="noopener" aria-label="" title="Share on facebook">
+  <div class="resp-sharing-button resp-sharing-button--facebook resp-sharing-button--small resp-sharing-button__icon--solid"><div aria-hidden="true" class="resp-sharing-button__icon resp-sharing-button__icon--solid">
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg>
+    </div>
+  </div>
+</a>
+
+
+<a class="resp-sharing-button__link" href="https://twitter.com/intent/tweet/?url=https%3a%2f%2fjoerismissaert.dev%2fmanaging-storage-creating-partitions%2f" target="_blank" rel="noopener" aria-label="" title="Share on twitter">
+  <div class="resp-sharing-button resp-sharing-button--twitter resp-sharing-button--small">
+      <div aria-hidden="true" class="resp-sharing-button__icon resp-sharing-button__icon--solid">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path></svg>
+    </div>
+  </div>
+</a>
+
+
+
+
+<a class="resp-sharing-button__link" href="https://www.linkedin.com/shareArticle?mini=true&amp;url=https%3a%2f%2fjoerismissaert.dev%2fmanaging-storage-creating-partitions%2f&amp;title=Managing%20Storage%3a%20Creating%20Partitions&amp;summary=Managing%20Storage%3a%20Creating%20Partitions&amp;source=https%3a%2f%2fjoerismissaert.dev%2fmanaging-storage-creating-partitions%2f" target="_blank" rel="noopener" aria-label="" title="Share on linkedin">
+  <div class="resp-sharing-button resp-sharing-button--linkedin resp-sharing-button--small"><div aria-hidden="true" class="resp-sharing-button__icon resp-sharing-button__icon--solid">
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>
+    </div>
+  </div>
+</a>
+
+
+<a class="resp-sharing-button__link" href="https://reddit.com/submit/?url=https%3a%2f%2fjoerismissaert.dev%2fmanaging-storage-creating-partitions%2f&amp;resubmit=true&amp;title=Managing%20Storage%3a%20Creating%20Partitions" target="_blank" rel="noopener" aria-label="" title="Share on reddit">
+  <div class="resp-sharing-button resp-sharing-button--reddit resp-sharing-button--small"><div aria-hidden="true" class="resp-sharing-button__icon resp-sharing-button__icon--solid">
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M12 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0zm5.01 4.744c.688 0 1.25.561 1.25 1.249a1.25 1.25 0 0 1-2.498.056l-2.597-.547-.8 3.747c1.824.07 3.48.632 4.674 1.488.308-.309.73-.491 1.207-.491.968 0 1.754.786 1.754 1.754 0 .716-.435 1.333-1.01 1.614a3.111 3.111 0 0 1 .042.52c0 2.694-3.13 4.87-7.004 4.87-3.874 0-7.004-2.176-7.004-4.87 0-.183.015-.366.043-.534A1.748 1.748 0 0 1 4.028 12c0-.968.786-1.754 1.754-1.754.463 0 .898.196 1.207.49 1.207-.883 2.878-1.43 4.744-1.487l.885-4.182a.342.342 0 0 1 .14-.197.35.35 0 0 1 .238-.042l2.906.617a1.214 1.214 0 0 1 1.108-.701zM9.25 12C8.561 12 8 12.562 8 13.25c0 .687.561 1.248 1.25 1.248.687 0 1.248-.561 1.248-1.249 0-.688-.561-1.249-1.249-1.249zm5.5 0c-.687 0-1.248.561-1.248 1.25 0 .687.561 1.248 1.249 1.248.688 0 1.249-.561 1.249-1.249 0-.687-.562-1.249-1.25-1.249zm-5.466 3.99a.327.327 0 0 0-.231.094.33.33 0 0 0 0 .463c.842.842 2.484.913 2.961.913.477 0 2.105-.056 2.961-.913a.361.361 0 0 0 .029-.463.33.33 0 0 0-.464 0c-.547.533-1.684.73-2.512.73-.828 0-1.979-.196-2.512-.73a.326.326 0 0 0-.232-.095z"/></svg>
+    </div>
+  </div>
+</a>
+
+      </div>
+
+    
+      <div class="pagination">
+        <div class="pagination__title">
+          <span class="pagination__title-h"></span>
+          <hr />
+        </div>
+
+        <div class="pagination__buttons">
+          
+            <span class="button previous">
+              <a href="https://joerismissaert.dev/managing-storage-creating-mounting-file-systems/">
+                <span class="button__icon">←</span>
+                <span class="button__text">Managing Storage: Creating &amp; Mounting File Systems</span>
+              </a>
+            </span>
+          
+
+          
+            <span class="button next">
+              <a href="https://joerismissaert.dev/managing-storage-understanding-mbr-and-gpt-partitions/">
+                <span class="button__text">Managing Storage: Understanding MBR and GPT Partitions</span>
+                <span class="button__icon">→</span>
+              </a>
+            </span>
+          
+        </div>
+      </div>
+    
+
+
+    
+      
+        <div id="comments">
+          <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "joeri-jm-smissaert" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+        </div>
+      
+    
+
+  </main>
+
+            </div>
+
+            
+                <footer class="footer">
+    <div class="footer__inner">
+        <div class="footer__content">
+            <span>&copy; 2021</span>
+            
+                <span><a href="https://joerismissaert.dev">Joeri JM Smissaert</a></span>
+            
+            
+                <span><a href="https://joerismissaert.dev/privacy-policy">Privacy Policy</a> & <a href="https://joerismissaert.dev/terms-of-service">Terms of Service</a></span>
+            
+            <span> <a href="https://joerismissaert.dev/posts/index.xml" target="_blank" title="rss"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-rss"><path d="M4 11a9 9 0 0 1 9 9"></path><path d="M4 4a16 16 0 0 1 16 16"></path><circle cx="5" cy="19" r="1"></circle></svg></a></span>
+        </div>
+    </div>
+    <div class="footer__inner">
+        <div class="footer__content">
+            <style>.bmc-button img{height: 34px !important;width: 35px !important;margin-bottom: 1px !important;box-shadow: none !important;border: none !important;vertical-align: middle !important;}.bmc-button{padding: 7px 15px 7px 10px !important;line-height: 35px !important;height:51px !important;text-decoration: none !important;display:inline-flex !important;color:#000000 !important;background-color:#FFFFFF !important;border-radius: 5px !important;border: 1px solid transparent !important;padding: 7px 15px 7px 10px !important;font-size: 20px !important;letter-spacing:0.6px !important;box-shadow: 0px 1px 2px rgba(190, 190, 190, 0.5) !important;-webkit-box-shadow: 0px 1px 2px 2px rgba(190, 190, 190, 0.5) !important;margin: 0 auto !important;font-family:'Roboto', cursive !important;-webkit-box-sizing: border-box !important;box-sizing: border-box !important;}.bmc-button:hover, .bmc-button:active, .bmc-button:focus {-webkit-box-shadow: 0px 1px 2px 2px rgba(190, 190, 190, 0.5) !important;text-decoration: none !important;box-shadow: 0px 1px 2px 2px rgba(190, 190, 190, 0.5) !important;opacity: 0.85 !important;color:#000000 !important;}</style><link href="https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap" rel="stylesheet"><a class="bmc-button" target="_blank" href="https://www.buymeacoffee.com/joerismissaert"><img src="https://cdn.buymeacoffee.com/buttons/bmc-new-btn-logo.svg" alt="Buy me a coffee"><span style="margin-left:5px;font-size:19px !important;">Buy me a coffee :)</span></a>
+        </div>
+    </div>
+</footer>
+
+            
+        </div>
+
+        
+
+
+
+
+<script type="text/javascript" src="https://joerismissaert.dev/bundle.min.dc716e9092c9820b77f96da294d0120aeeb189b5bcea9752309ebea27fd53bbe6b13cffb2aca8ecf32525647ceb7001f76091de4199ac5a3caa432c070247f5b.js" integrity="sha512-3HFukJLJggt3&#43;W2ilNASCu6xibW86pdSMJ6&#43;on/VO75rE8/7KsqOzzJSVkfOtwAfdgkd5BmaxaPKpDLAcCR/Ww=="></script>
+    
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-81179434-3', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+
+
+
+
+    </body>
+</html>

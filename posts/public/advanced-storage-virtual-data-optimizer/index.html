@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="author" content="Joeri JM Smissaert ">
+<meta name="description" content="Virtual Data Optimizer is a storage solution developed to reduce disk space usage on block devices by applying deduplication features. VDO creates volumes on top of any existing block device from where you either create an XFS file system, or use the volume as a Physical Volume in an LVM setup.
+VDO uses three common technologies:
+ Zero-block elimination to filter out data blocks that contain only zeros. Deduplication of redundant data blocks." />
+<meta name="keywords" content="linux, red hat, centos, fedora, rhel, nginx, development, kinsta, rhcsa, python, RHEL, Storage, Advanced Storage, VDO, Virtual Data Optimizer" />
+<meta name="robots" content="noodp" />
+<meta name="theme-color" content="#42464a" />
+<link rel="canonical" href="https://joerismissaert.dev/advanced-storage-virtual-data-optimizer/" />
+
+
+    <title>
+        
+            Advanced Storage: Virtual Data Optimizer :: Joeri JM Smissaert 
+        
+    </title>
+
+
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.2.1/css/flag-icon.min.css" rel="stylesheet"
+    type="text/css">
+
+
+
+<link rel="stylesheet" href="https://joerismissaert.dev/main.bc0e1ee95501e8eff4092797423b13efee0ad37ba6def28f39ac50c21062b401.css">
+
+
+
+
+    <link rel="apple-touch-icon" sizes="180x180" href="https://joerismissaert.dev/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="https://joerismissaert.dev/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="https://joerismissaert.dev/favicon-16x16.png">
+    <link rel="manifest" href="https://joerismissaert.dev/site.webmanifest">
+    <link rel="mask-icon" href="https://joerismissaert.dev/safari-pinned-tab.svg" color="##42464a">
+    <link rel="shortcut icon" href="https://joerismissaert.dev/favicon.ico">
+    <meta name="msapplication-TileColor" content="##42464a">
+    <meta name="theme-color" content="##42464a">
+
+
+
+<meta itemprop="name" content="Advanced Storage: Virtual Data Optimizer">
+<meta itemprop="description" content="Virtual Data Optimizer is a storage solution developed to reduce disk space usage on block devices by applying deduplication features. VDO creates volumes on top of any existing block device from where you either create an XFS file system, or use the volume as a Physical Volume in an LVM setup.
+VDO uses three common technologies:
+ Zero-block elimination to filter out data blocks that contain only zeros. Deduplication of redundant data blocks.">
+<meta itemprop="datePublished" content="2020-08-20T00:00:00+00:00" />
+<meta itemprop="dateModified" content="2020-08-20T00:00:00+00:00" />
+<meta itemprop="wordCount" content="602">
+
+
+
+<meta itemprop="keywords" content="RHEL,Storage,Advanced Storage,VDO,Virtual Data Optimizer," />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Advanced Storage: Virtual Data Optimizer"/>
+<meta name="twitter:description" content="Virtual Data Optimizer is a storage solution developed to reduce disk space usage on block devices by applying deduplication features. VDO creates volumes on top of any existing block device from where you either create an XFS file system, or use the volume as a Physical Volume in an LVM setup.
+VDO uses three common technologies:
+ Zero-block elimination to filter out data blocks that contain only zeros. Deduplication of redundant data blocks."/>
+
+
+
+    <meta property="og:title" content="Advanced Storage: Virtual Data Optimizer" />
+<meta property="og:description" content="Virtual Data Optimizer is a storage solution developed to reduce disk space usage on block devices by applying deduplication features. VDO creates volumes on top of any existing block device from where you either create an XFS file system, or use the volume as a Physical Volume in an LVM setup.
+VDO uses three common technologies:
+ Zero-block elimination to filter out data blocks that contain only zeros. Deduplication of redundant data blocks." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://joerismissaert.dev/advanced-storage-virtual-data-optimizer/" />
+<meta property="article:published_time" content="2020-08-20T00:00:00+00:00" />
+<meta property="article:modified_time" content="2020-08-20T00:00:00+00:00" />
+
+
+
+
+
+
+    <meta property="article:published_time" content="2020-08-20 00:00:00 &#43;0000 UTC" />
+
+
+
+
+
+
+
+
+    </head>
+
+    <body class="dark-theme">
+        <div class="container">
+            <header class="header">
+    <span class="header__inner">
+        <a href="https://joerismissaert.dev/" style="text-decoration: none;">
+    <div class="logo">
+        
+            <span class="logo__mark">></span>
+            <span class="logo__text">$ cd ~</span>
+            <span class="logo__cursor" style=
+                  "
+                   background-color:#8B0000;
+                   ">
+            </span>
+        
+    </div>
+</a>
+
+
+        <span class="header__right">
+            
+                <nav class="menu">
+    <ul class="menu__inner"><li><a href="https://joerismissaert.dev/about/">1. About</a></li><li><a href="https://joerismissaert.dev/posts/">2. Posts</a></li><li><a href="https://joerismissaert.dev/dev/">3. Dev</a></li><li><a href="https://joerismissaert.dev/webdev/">4. WebDev</a></li>
+    </ul>
+</nav>
+
+                <span class="menu-trigger">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        <path d="M0 0h24v24H0z" fill="none"/>
+                        <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/>
+                    </svg>
+                </span>
+            
+
+            <span class="theme-toggle unselectable"><svg class="theme-toggler" width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M22 41C32.4934 41 41 32.4934 41 22C41 11.5066 32.4934 3 22
+  3C11.5066 3 3 11.5066 3 22C3 32.4934 11.5066 41 22 41ZM7 22C7
+  13.7157 13.7157 7 22 7V37C13.7157 37 7 30.2843 7 22Z"/>
+</svg>
+</span>
+        </span>
+    </span>
+</header>
+
+
+            <div class="content">
+                
+  <main class="post">
+
+    <div class="post-info">
+      <p>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clock">
+          <circle cx="12" cy="12" r="10"></circle>
+          <polyline points="12 6 12 12 16 14"></polyline>
+        </svg>
+        3 minutes
+
+        
+      </p>
+    </div>
+
+    <article>
+      <h1 class="post-title">
+        <a href="https://joerismissaert.dev/advanced-storage-virtual-data-optimizer/">Advanced Storage: Virtual Data Optimizer</a>
+      </h1>
+
+      
+
+      <div class="post-content">
+        
+    <img src="https://joerismissaert.dev/img/redhat-8-logo.png"  alt="Red Hat logo"  class="center"  />
+
+
+<p>Virtual Data Optimizer is a storage solution developed to reduce disk space usage on block devices by applying deduplication features. VDO creates volumes on top of any existing block device from where you either create an XFS file system, or use the volume as a Physical Volume in an LVM setup.</p>
+<p>VDO uses three common technologies:</p>
+<ul>
+<li><strong>Zero-block elimination</strong> to filter out data blocks that contain only zeros.</li>
+<li><strong>Deduplication</strong> of redundant data blocks.</li>
+<li><strong>Compression</strong> when the kvdo module compresses data blocks.</li>
+</ul>
+<p>Typical usage cases for VDO are host platforms for containers and virtual machines or cloud block storage.
+Commonly, a logical size of up to 10 times the physical size is used for these types of environments.</p>
+<h2 id="setting-up-vdo">Setting up VDO</h2>
+<p>To use VDO the underlying block devices must have a minimal size of 4GiB and the <strong>vdo</strong> and <strong>kmod-kvdo</strong> packages must be installed.</p>
+<p>We create the VDO device using the <code>vdo create</code> command, specify a name using the <code>--name=</code> option, and we <em>can</em> specify the logical size using the <code>--vdoLogicalSize=</code> option. e.g. <code>vdo create --name=myvdo1 --vdoLogicalSize=1T /dev/sdb</code></p>
+<p>Once the device is created, we can put an XFS file system on top of it:
+<code>mkfs.xfs -K /dev/mapper/myvdo1</code>
+The <code>-K</code> option prevents unused blocks from being discarded immediately, making the command much faster.</p>
+<p>At this point we issue the <code>udevadm settle</code> command to ensure device nodes have been created succesfully.</p>
+<p>To persistently mount the VDO file system using the <code>/etc/fstab</code> file we must include the following mount options:
+<code>x-systemd.requires=vdo.service,discard</code>
+This makes sure the <strong>vdo</strong> service is loaded before trying to mount the file system.</p>
+<p>An alternative method to persistently mount the VDO file system is to use the example systemd mount unit found in <code>/usr/share/doc/vdo/examples/systemd</code>.
+Copy it to <code>/etc/systemc/system/mountpointname.mount</code> and edit the following lines:</p>
+<pre><code>name = 
+What = 
+Where = 
+
+</code></pre><p>The Unit file name must correspond to the <em>name</em>, <em>What</em> and <em>Where</em> values.
+Make sure to enable and start the moutn at boot: <code>systemctl enable --now mountpointname.mount</code></p>
+<h3 id="example">Example</h3>
+<pre><code>[root@server1 ~]# vdo create --name=vdo1 --device=/dev/sdb --vdoLogicalSize=1T
+Creating VDO vdo1
+      The VDO volume can address 2 GB in 1 data slab.
+      It can grow to address at most 16 TB of physical storage in 8192 slabs.
+      If a larger maximum size might be needed, use bigger slabs.
+Starting VDO vdo1
+Starting compression on VDO vdo1
+VDO instance 0 volume is ready at /dev/mapper/vdo1
+
+
+[root@server1 ~]# lsblk
+NAME        MAJ:MIN RM  SIZE RO TYPE MOUNTPOINT
+sda           8:0    0   25G  0 disk 
+├─sda1        8:1    0    1G  0 part /boot
+└─sda2        8:2    0   24G  0 part 
+  ├─cl-root 253:0    0   22G  0 lvm  /
+  └─cl-swap 253:1    0  2.1G  0 lvm  [SWAP]
+sdb           8:16   0    5G  0 disk 
+└─vdo1      253:2    0    1T  0 vdo  
+sdc           8:32   0    5G  0 disk 
+
+[root@server1 ~]# mkfs.xfs -K /dev/mapper/vdo1 
+meta-data=/dev/mapper/vdo1       isize=512    agcount=4, agsize=67108864 blks
+         =                       sectsz=4096  attr=2, projid32bit=1
+         =                       crc=1        finobt=1, sparse=1, rmapbt=0
+         =                       reflink=1
+data     =                       bsize=4096   blocks=268435456, imaxpct=5
+         =                       sunit=0      swidth=0 blks
+naming   =version 2              bsize=4096   ascii-ci=0, ftype=1
+log      =internal log           bsize=4096   blocks=131072, version=2
+         =                       sectsz=4096  sunit=1 blks, lazy-count=1
+realtime =none                   extsz=4096   blocks=0, rtextents=0
+
+[root@server1 ~]# udevadm settle
+
+[root@server1 ~]# cp /usr/share/doc/vdo/examples/systemd/VDO.mount.example /etc/systemd/system/vdo1.mount
+[root@server1 ~]# vim /etc/systemd/system/vdo1.mount 
+....
+
+[root@server1 ~]# cat /etc/systemd/system/vdo1.mount 
+[Unit]
+Description = Mount filesystem that lives on VDO
+name = vdo1.mount
+Requires = vdo.service systemd-remount-fs.service
+After = multi-user.target
+Conflicts = umount.target
+ 
+[Mount]
+What = /dev/mapper/vdo1
+Where = /vdo1
+Type = xfs
+Options = discard
+
+[Install]
+WantedBy = multi-user.target
+
+
+[root@server1 ~]# systemctl enable --now vdo1.mount
+
+[root@server1 ~]# vdostats --human-readable 
+Device                    Size      Used Available Use% Space saving%
+/dev/mapper/vdo1          5.0G      3.0G      2.0G  60%           99%
+
+[root@server1 ~]# df -h /vdo1/
+Filesystem        Size  Used Avail Use% Mounted on
+/dev/mapper/vdo1  1.0T  7.2G 1017G   1% /vdo1
+
+[root@server1 ~]# reboot
+
+</code></pre>
+      </div>
+    </article>
+
+    <hr />
+
+    <div class="post-info">
+        <p>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-tag meta-icon">
+            <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path>
+            <line x1="7" y1="7" x2="7" y2="7"></line>
+          </svg><span class="tag"><a href="https://joerismissaert.dev/tags/rhel/">RHEL</a></span><span class="tag"><a href="https://joerismissaert.dev/tags/storage/">Storage</a></span><span class="tag"><a href="https://joerismissaert.dev/tags/advanced-storage/">Advanced Storage</a></span><span class="tag"><a href="https://joerismissaert.dev/tags/vdo/">VDO</a></span><span class="tag"><a href="https://joerismissaert.dev/tags/virtual-data-optimizer/">Virtual Data Optimizer</a></span>
+        </p>
+
+      <p>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+          <polyline points="14 2 14 8 20 8"></polyline>
+          <line x1="16" y1="13" x2="8" y2="13"></line>
+          <line x1="16" y1="17" x2="8" y2="17"></line>
+          <polyline points="10 9 9 9 8 9"></polyline>
+        </svg>
+        602 Words
+      </p>
+
+      <p>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar">
+          <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+          <line x1="16" y1="2" x2="16" y2="6"></line>
+          <line x1="8" y1="2" x2="8" y2="6"></line>
+          <line x1="3" y1="10" x2="21" y2="10"></line>
+        </svg>
+        2020-08-20 04:00 &#43;0400
+      </p>
+    </div>
+      <hr />
+      <div class="sharing-buttons">
+        
+<a class="resp-sharing-button__link resp-sharing-button__icon--solid" href="https://facebook.com/sharer/sharer.php?u=https%3a%2f%2fjoerismissaert.dev%2fadvanced-storage-virtual-data-optimizer%2f" target="_blank" rel="noopener" aria-label="" title="Share on facebook">
+  <div class="resp-sharing-button resp-sharing-button--facebook resp-sharing-button--small resp-sharing-button__icon--solid"><div aria-hidden="true" class="resp-sharing-button__icon resp-sharing-button__icon--solid">
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg>
+    </div>
+  </div>
+</a>
+
+
+<a class="resp-sharing-button__link" href="https://twitter.com/intent/tweet/?url=https%3a%2f%2fjoerismissaert.dev%2fadvanced-storage-virtual-data-optimizer%2f" target="_blank" rel="noopener" aria-label="" title="Share on twitter">
+  <div class="resp-sharing-button resp-sharing-button--twitter resp-sharing-button--small">
+      <div aria-hidden="true" class="resp-sharing-button__icon resp-sharing-button__icon--solid">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path></svg>
+    </div>
+  </div>
+</a>
+
+
+
+
+<a class="resp-sharing-button__link" href="https://www.linkedin.com/shareArticle?mini=true&amp;url=https%3a%2f%2fjoerismissaert.dev%2fadvanced-storage-virtual-data-optimizer%2f&amp;title=Advanced%20Storage%3a%20Virtual%20Data%20Optimizer&amp;summary=Advanced%20Storage%3a%20Virtual%20Data%20Optimizer&amp;source=https%3a%2f%2fjoerismissaert.dev%2fadvanced-storage-virtual-data-optimizer%2f" target="_blank" rel="noopener" aria-label="" title="Share on linkedin">
+  <div class="resp-sharing-button resp-sharing-button--linkedin resp-sharing-button--small"><div aria-hidden="true" class="resp-sharing-button__icon resp-sharing-button__icon--solid">
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>
+    </div>
+  </div>
+</a>
+
+
+<a class="resp-sharing-button__link" href="https://reddit.com/submit/?url=https%3a%2f%2fjoerismissaert.dev%2fadvanced-storage-virtual-data-optimizer%2f&amp;resubmit=true&amp;title=Advanced%20Storage%3a%20Virtual%20Data%20Optimizer" target="_blank" rel="noopener" aria-label="" title="Share on reddit">
+  <div class="resp-sharing-button resp-sharing-button--reddit resp-sharing-button--small"><div aria-hidden="true" class="resp-sharing-button__icon resp-sharing-button__icon--solid">
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M12 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0zm5.01 4.744c.688 0 1.25.561 1.25 1.249a1.25 1.25 0 0 1-2.498.056l-2.597-.547-.8 3.747c1.824.07 3.48.632 4.674 1.488.308-.309.73-.491 1.207-.491.968 0 1.754.786 1.754 1.754 0 .716-.435 1.333-1.01 1.614a3.111 3.111 0 0 1 .042.52c0 2.694-3.13 4.87-7.004 4.87-3.874 0-7.004-2.176-7.004-4.87 0-.183.015-.366.043-.534A1.748 1.748 0 0 1 4.028 12c0-.968.786-1.754 1.754-1.754.463 0 .898.196 1.207.49 1.207-.883 2.878-1.43 4.744-1.487l.885-4.182a.342.342 0 0 1 .14-.197.35.35 0 0 1 .238-.042l2.906.617a1.214 1.214 0 0 1 1.108-.701zM9.25 12C8.561 12 8 12.562 8 13.25c0 .687.561 1.248 1.25 1.248.687 0 1.248-.561 1.248-1.249 0-.688-.561-1.249-1.249-1.249zm5.5 0c-.687 0-1.248.561-1.248 1.25 0 .687.561 1.248 1.249 1.248.688 0 1.249-.561 1.249-1.249 0-.687-.562-1.249-1.25-1.249zm-5.466 3.99a.327.327 0 0 0-.231.094.33.33 0 0 0 0 .463c.842.842 2.484.913 2.961.913.477 0 2.105-.056 2.961-.913a.361.361 0 0 0 .029-.463.33.33 0 0 0-.464 0c-.547.533-1.684.73-2.512.73-.828 0-1.979-.196-2.512-.73a.326.326 0 0 0-.232-.095z"/></svg>
+    </div>
+  </div>
+</a>
+
+      </div>
+
+    
+      <div class="pagination">
+        <div class="pagination__title">
+          <span class="pagination__title-h"></span>
+          <hr />
+        </div>
+
+        <div class="pagination__buttons">
+          
+            <span class="button previous">
+              <a href="https://joerismissaert.dev/basic-kernel-management/">
+                <span class="button__icon">←</span>
+                <span class="button__text">Basic Kernel Management</span>
+              </a>
+            </span>
+          
+
+          
+            <span class="button next">
+              <a href="https://joerismissaert.dev/advanced-storage-configuring-stratis/">
+                <span class="button__text">Advanced Storage: Configuring Stratis</span>
+                <span class="button__icon">→</span>
+              </a>
+            </span>
+          
+        </div>
+      </div>
+    
+
+
+    
+      
+        <div id="comments">
+          <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "joeri-jm-smissaert" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+        </div>
+      
+    
+
+  </main>
+
+            </div>
+
+            
+                <footer class="footer">
+    <div class="footer__inner">
+        <div class="footer__content">
+            <span>&copy; 2021</span>
+            
+                <span><a href="https://joerismissaert.dev">Joeri JM Smissaert</a></span>
+            
+            
+                <span><a href="https://joerismissaert.dev/privacy-policy">Privacy Policy</a> & <a href="https://joerismissaert.dev/terms-of-service">Terms of Service</a></span>
+            
+            <span> <a href="https://joerismissaert.dev/posts/index.xml" target="_blank" title="rss"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-rss"><path d="M4 11a9 9 0 0 1 9 9"></path><path d="M4 4a16 16 0 0 1 16 16"></path><circle cx="5" cy="19" r="1"></circle></svg></a></span>
+        </div>
+    </div>
+    <div class="footer__inner">
+        <div class="footer__content">
+            <style>.bmc-button img{height: 34px !important;width: 35px !important;margin-bottom: 1px !important;box-shadow: none !important;border: none !important;vertical-align: middle !important;}.bmc-button{padding: 7px 15px 7px 10px !important;line-height: 35px !important;height:51px !important;text-decoration: none !important;display:inline-flex !important;color:#000000 !important;background-color:#FFFFFF !important;border-radius: 5px !important;border: 1px solid transparent !important;padding: 7px 15px 7px 10px !important;font-size: 20px !important;letter-spacing:0.6px !important;box-shadow: 0px 1px 2px rgba(190, 190, 190, 0.5) !important;-webkit-box-shadow: 0px 1px 2px 2px rgba(190, 190, 190, 0.5) !important;margin: 0 auto !important;font-family:'Roboto', cursive !important;-webkit-box-sizing: border-box !important;box-sizing: border-box !important;}.bmc-button:hover, .bmc-button:active, .bmc-button:focus {-webkit-box-shadow: 0px 1px 2px 2px rgba(190, 190, 190, 0.5) !important;text-decoration: none !important;box-shadow: 0px 1px 2px 2px rgba(190, 190, 190, 0.5) !important;opacity: 0.85 !important;color:#000000 !important;}</style><link href="https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap" rel="stylesheet"><a class="bmc-button" target="_blank" href="https://www.buymeacoffee.com/joerismissaert"><img src="https://cdn.buymeacoffee.com/buttons/bmc-new-btn-logo.svg" alt="Buy me a coffee"><span style="margin-left:5px;font-size:19px !important;">Buy me a coffee :)</span></a>
+        </div>
+    </div>
+</footer>
+
+            
+        </div>
+
+        
+
+
+
+
+<script type="text/javascript" src="https://joerismissaert.dev/bundle.min.dc716e9092c9820b77f96da294d0120aeeb189b5bcea9752309ebea27fd53bbe6b13cffb2aca8ecf32525647ceb7001f76091de4199ac5a3caa432c070247f5b.js" integrity="sha512-3HFukJLJggt3&#43;W2ilNASCu6xibW86pdSMJ6&#43;on/VO75rE8/7KsqOzzJSVkfOtwAfdgkd5BmaxaPKpDLAcCR/Ww=="></script>
+    
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-81179434-3', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+
+
+
+
+    </body>
+</html>

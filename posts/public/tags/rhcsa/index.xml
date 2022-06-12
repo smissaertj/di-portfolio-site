@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>RHCSA on Joeri JM Smissaert</title>
+    <link>https://joerismissaert.dev/tags/rhcsa/</link>
+    <description>Recent content in RHCSA on Joeri JM Smissaert</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>&lt;a href=&#34;https://joerismissaert.dev/privacy-policy&#34;&gt;Privacy Policy&lt;/a&gt; &amp; &lt;a href=&#34;https://joerismissaert.dev/terms-of-service&#34;&gt;Terms of Service&lt;/a&gt;</copyright>
+    <lastBuildDate>Wed, 15 Jul 2020 20:06:32 +0400</lastBuildDate><atom:link href="https://joerismissaert.dev/tags/rhcsa/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Understanding and Configuring System Logging</title>
+      <link>https://joerismissaert.dev/understanding-and-configuring-system-logging/</link>
+      <pubDate>Wed, 15 Jul 2020 20:06:32 +0400</pubDate>
+      
+      <guid>https://joerismissaert.dev/understanding-and-configuring-system-logging/</guid>
+      <description>Understanding System Logging Services on a Linux server write information to log files in different destinations using different approaches, and there are multiple ways to find relevant information in those log files.
+Services can write log information via:
+ Direct Write - information is written directly to a log file by a service. rsyslogd - a service passes log information to the rsyslogd service that in turn takes care of managing centralized log files.</description>
+    </item>
+    
+    <item>
+      <title>Scheduling Tasks with Cron, At and Anacron</title>
+      <link>https://joerismissaert.dev/scheduling-tasks-with-cron-at-anacron/</link>
+      <pubDate>Tue, 07 Jul 2020 20:57:41 +0400</pubDate>
+      
+      <guid>https://joerismissaert.dev/scheduling-tasks-with-cron-at-anacron/</guid>
+      <description>Configuring Cron to Automate Recurring Tasks. On Linux, the cron service is used to run processes automatically at specific times as a way to automate tasks that have to occur regularly.
+The cron service consists of two major components:
+ The cron daemon checks every minute to see if there are any jobs to run. The cron configuration files work together to provide the right information to the right service at the right time.</description>
+    </item>
+    
+    <item>
+      <title>An Introduction to Systemd and Systemd Unit files</title>
+      <link>https://joerismissaert.dev/an-introduction-to-systemd-and-systemd-unit-files/</link>
+      <pubDate>Thu, 25 Jun 2020 12:04:28 +0000</pubDate>
+      
+      <guid>https://joerismissaert.dev/an-introduction-to-systemd-and-systemd-unit-files/</guid>
+      <description>Systemd is considered to be the future standard init system by all mainstream Linux distributions. The Systemd System and Service Manager uses &amp;ldquo;units&amp;rdquo; as an abstraction for parts of the system to be managed: typically services, sockets, mounts and targets. It provides a uniform interface for managing units.
+The systemctl -t help command displays a list of available units that can be managed with Systemd.
+[student@server1 ~]$ systemctl -t help Available unit types: service mount swap socket target device automount timer path slice scope Each unit type can be recognized by the file extension.</description>
+    </item>
+    
+    <item>
+      <title>Managing Shell Jobs and Processes on RHEL8</title>
+      <link>https://joerismissaert.dev/managing-shell-jobs-and-processes-on-rhel8/</link>
+      <pubDate>Sat, 20 Jun 2020 13:57:41 +0000</pubDate>
+      
+      <guid>https://joerismissaert.dev/managing-shell-jobs-and-processes-on-rhel8/</guid>
+      <description>On Linux, we can distinct between three major process types: Shell jobs, Daemons and Kernel threads.
+ Shell Jobs are commands started from the command line and are also referred to as interactive processes. Daemons are processes that provides services. They usually start when a computer is booted. Kernel threads are part of the Linux kernel. You can not manage them using the common tools discussed in this post.  Managing Shell Jobs Running Jobs in the Foreground and Background When you type a command, a shell job is started automatically in the foreground occupying the terminal until it finishes.</description>
+    </item>
+    
+    <item>
+      <title>Package Management with Yum: Understanding Repo’s, Groups, Package Module Streams and RPM Queries</title>
+      <link>https://joerismissaert.dev/package-management-with-yum-understanding-repos-groups-package-module-streams-and-rpm-queries/</link>
+      <pubDate>Thu, 21 May 2020 16:54:46 +0000</pubDate>
+      
+      <guid>https://joerismissaert.dev/package-management-with-yum-understanding-repos-groups-package-module-streams-and-rpm-queries/</guid>
+      <description>The Yellowdog Updater, Modified, is the default utility to manage software packages on Red Hat Enterprise Linux. On Fedora (the upstream version of RHEL) Yum has been replaced with dnf but Red Hat decided to keep the Yum name for the RHEL releases. Although you&amp;rsquo;ll be using yum, under the hood you&amp;rsquo;re in fact using dnf which is why sometimes you&amp;rsquo;ll see references to dnf or dnf resources.
+The Role of Repositories Yum is designed to work with repositories which are depots of available software packages.</description>
+    </item>
+    
+    <item>
+      <title>Configuring the Network on RHEL 8 with nmcli and nmtui</title>
+      <link>https://joerismissaert.dev/configuring-the-network-on-rhel-8-with-nmcli-and-nmtui/</link>
+      <pubDate>Tue, 19 May 2020 08:03:28 +0000</pubDate>
+      
+      <guid>https://joerismissaert.dev/configuring-the-network-on-rhel-8-with-nmcli-and-nmtui/</guid>
+      <description>In the previous post we learned how the check the runtime configuration of the network using the ip command. To make persistent changes to the network configuration that will survive a reboot, we need to use either nmcli or nmtui.
+Networking is managed by the NetworkManager service. When the NetworkManager service comes up, it reads the network card configuration scripts that are located in /etc/sysconfig/network-scripts and that have a name which starts with ifcgf followed by the name of the network card.</description>
+    </item>
+    
+    <item>
+      <title>Access Control Lists, umask &amp; User-Extended Attributes 101</title>
+      <link>https://joerismissaert.dev/access-control-lists-umask-user-extended-attributes-101/</link>
+      <pubDate>Sun, 10 May 2020 07:12:26 +0000</pubDate>
+      
+      <guid>https://joerismissaert.dev/access-control-lists-umask-user-extended-attributes-101/</guid>
+      <description>Access Control Lists allow you to add permissions to more than one user or group on the same file or directory, and allows you to set default permissions for newly created files and directories.
+Managing ACLs It&amp;rsquo;s possible you need need to add file system support for ACLs during boot time by adding the acl mount option the the /etc/fstab file. That would be the case when you&amp;rsquo;re seeing the Operation not supported message when applying an ACL.</description>
+    </item>
+    
+    <item>
+      <title>Basic &amp; Advanced Permissions 101</title>
+      <link>https://joerismissaert.dev/basic-advanced-permissions-101/</link>
+      <pubDate>Sat, 09 May 2020 12:23:40 +0000</pubDate>
+      
+      <guid>https://joerismissaert.dev/basic-advanced-permissions-101/</guid>
+      <description>To get access to files on Linux, permissions are used. These permissions are assigned to three entities: the file owner, the group owner, and the others entity.
+Managing File Ownership Displaying Ownership Every file and directory on Linux has two owners: a user owner and a group owner. There is also the &amp;ldquo;others&amp;rdquo; entity. The user , group and others are shown when listing permissions with the ls -l command.</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,917 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+	<meta name="generator" content="Hugo 0.80.0" />
+        <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="author" content="Joeri JM Smissaert ">
+<meta name="description" content="SysOps Engineer @ Kinsta Inc." />
+<meta name="keywords" content="linux, red hat, centos, fedora, rhel, nginx, development, kinsta, rhcsa, python" />
+<meta name="robots" content="noodp" />
+<meta name="theme-color" content="#42464a" />
+<link rel="canonical" href="https://joerismissaert.dev/" />
+
+
+    <title>
+        
+            Joeri JM Smissaert 
+        
+    </title>
+
+
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.2.1/css/flag-icon.min.css" rel="stylesheet"
+    type="text/css">
+
+
+
+<link rel="stylesheet" href="https://joerismissaert.dev/main.bc0e1ee95501e8eff4092797423b13efee0ad37ba6def28f39ac50c21062b401.css">
+
+
+
+
+    <link rel="apple-touch-icon" sizes="180x180" href="https://joerismissaert.dev/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="https://joerismissaert.dev/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="https://joerismissaert.dev/favicon-16x16.png">
+    <link rel="manifest" href="https://joerismissaert.dev/site.webmanifest">
+    <link rel="mask-icon" href="https://joerismissaert.dev/safari-pinned-tab.svg" color="##42464a">
+    <link rel="shortcut icon" href="https://joerismissaert.dev/favicon.ico">
+    <meta name="msapplication-TileColor" content="##42464a">
+    <meta name="theme-color" content="##42464a">
+
+
+
+<meta itemprop="name" content="Joeri JM Smissaert">
+<meta itemprop="description" content="Joeri Smissaert&#39;s personal website and blog.">
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Joeri JM Smissaert"/>
+<meta name="twitter:description" content="Joeri Smissaert&#39;s personal website and blog."/>
+
+
+
+    <meta property="og:title" content="Joeri JM Smissaert" />
+<meta property="og:description" content="Joeri Smissaert&#39;s personal website and blog." />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://joerismissaert.dev/" />
+<meta property="og:updated_time" content="2020-12-07T00:00:00+00:00" />
+
+
+
+
+
+
+
+
+<link rel="alternate" type="application/rss+xml" href="https://joerismissaert.dev/index.xml" title="Joeri JM Smissaert" />
+
+
+
+
+
+    </head>
+
+    <body class="dark-theme">
+        <div class="container">
+            <header class="header">
+    <span class="header__inner">
+        <a href="https://joerismissaert.dev/" style="text-decoration: none;">
+    <div class="logo">
+        
+            <span class="logo__mark">></span>
+            <span class="logo__text">$ cd ~</span>
+            <span class="logo__cursor" style=
+                  "
+                   background-color:#8B0000;
+                   ">
+            </span>
+        
+    </div>
+</a>
+
+
+        <span class="header__right">
+            
+                <nav class="menu">
+    <ul class="menu__inner"><li><a href="https://joerismissaert.dev/about/">1. About</a></li><li><a href="https://joerismissaert.dev/posts/">2. Posts</a></li><li><a href="https://joerismissaert.dev/dev/">3. Dev</a></li><li><a href="https://joerismissaert.dev/webdev/">4. WebDev</a></li>
+    </ul>
+</nav>
+
+                <span class="menu-trigger">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        <path d="M0 0h24v24H0z" fill="none"/>
+                        <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/>
+                    </svg>
+                </span>
+            
+
+            <span class="theme-toggle unselectable"><svg class="theme-toggler" width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M22 41C32.4934 41 41 32.4934 41 22C41 11.5066 32.4934 3 22
+  3C11.5066 3 3 11.5066 3 22C3 32.4934 11.5066 41 22 41ZM7 22C7
+  13.7157 13.7157 7 22 7V37C13.7157 37 7 30.2843 7 22Z"/>
+</svg>
+</span>
+        </span>
+    </span>
+</header>
+
+
+            <div class="content">
+                
+    <main aria-role="main">
+        <div>
+            
+               <img src="https://joerismissaert.dev/img/image.jpg" class="circle" alt="Portrait" style="max-width:200px" />
+            
+
+            <h1>Joeri JM Smissaert</h1>
+                <p>SysOps Engineer @ Kinsta Inc.</p>
+                <div>
+                    &nbsp; <a href="mailto:hello@joerismissaert.com" target="_blank" rel="noopener" title="Email"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg></a> &nbsp;&nbsp; <a href="https://gitlab.com/joerismissaert" target="_blank" rel="noopener" title="Gitlab"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22.65 14.39L12 22.13 1.35 14.39a.84.84 0 0 1-.3-.94l1.22-3.78 2.44-7.51A.42.42 0 0 1 4.82 2a.43.43 0 0 1 .58 0 .42.42 0 0 1 .11.18l2.44 7.49h8.1l2.44-7.51A.42.42 0 0 1 18.6 2a.43.43 0 0 1 .58 0 .42.42 0 0 1 .11.18l2.44 7.51L23 13.45a.84.84 0 0 1-.35.94z"></path></svg></a> &nbsp;&nbsp; <a href="https://www.linkedin.com/in/jsmissaert" target="_blank" rel="noopener" title="Linkedin"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg></a> &nbsp;
+                </div>
+        </div>
+    </main>
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+    <div id="tag-cloud" style="padding: 5% 12% ">
+        
+            
+            
+            
+            
+            
+            
+            <a href="https://joerismissaert.dev/tags/access-control-lists" style="font-size:1rem">access-control-lists</a>
+        
+            
+            
+            
+            
+            
+            
+            <a href="https://joerismissaert.dev/tags/acl" style="font-size:1rem">acl</a>
+        
+            
+            
+            
+            
+            
+            
+            <a href="https://joerismissaert.dev/tags/advanced-storage" style="font-size:1.5119546458644888rem">advanced-storage</a>
+        
+            
+            
+            
+            
+            
+            
+            <a href="https://joerismissaert.dev/tags/anacron" style="font-size:1rem">anacron</a>
+        
+            
+            
+            
+            
+            
+            
+            <a href="https://joerismissaert.dev/tags/apache" style="font-size:1rem">apache</a>
+        
+            
+            
+            
+            
+            
+            
+            <a href="https://joerismissaert.dev/tags/appstream" style="font-size:1rem">appstream</a>
+        
+            
+            
+            
+            
+            
+            
+            <a href="https://joerismissaert.dev/tags/at" style="font-size:1rem">at</a>
+        
+            
+            
+            
+            
+            
+            
+            <a href="https://joerismissaert.dev/tags/authenticated-origin-pulls" style="font-size:1rem">authenticated-origin-pulls</a>
+        
+            
+            
+            
+            
+            
+            
+            <a href="https://joerismissaert.dev/tags/bash" style="font-size:1rem">bash</a>
+        
+            
+            
+            
+            
+            
+            
+            <a href="https://joerismissaert.dev/tags/boot" style="font-size:1rem">boot</a>
+        
+            
+            
+            
+            
+            
+            
+            <a href="https://joerismissaert.dev/tags/boot-arguments" style="font-size:1rem">boot-arguments</a>
+        
+            
+            
+            
+            
+            
+            
+            <a href="https://joerismissaert.dev/tags/centos" style="font-size:1.5119546458644888rem">centos</a>
+        
+            
+            
+            
+            
+            
+            
+            <a href="https://joerismissaert.dev/tags/centos8" style="font-size:1.323007418555045rem">centos8</a>
+        
+            
+            
+            
+            
+            
+            
+            <a href="https://joerismissaert.dev/tags/ci/cd" style="font-size:1rem">ci/cd</a>
+        
+            
+            
+            
+            
+            
+            
+            <a href="https://joerismissaert.dev/tags/cifs" style="font-size:1rem">cifs</a>
+        
+            
+            
+            
+            
+            
+            
+            <a href="https://joerismissaert.dev/tags/cloudflare" style="font-size:1.323007418555045rem">cloudflare</a>
+        
+            
+            
+            
+            
+            
+            
+            <a href="https://joerismissaert.dev/tags/cron" style="font-size:1rem">cron</a>
+        
+            
+            
+            
+            
+            
+            
+            <a href="https://joerismissaert.dev/tags/dual-display" style="font-size:1rem">dual-display</a>
+        
+            
+            
+            
+            
+            
+            
+            <a href="https://joerismissaert.dev/tags/external-monitor" style="font-size:1rem">external-monitor</a>
+        
+            
+            
+            
+            
+            
+            
+            <a href="https://joerismissaert.dev/tags/fdisk" style="font-size:1rem">fdisk</a>
+        
+            
+            
+            
+            
+            
+            
+            <a href="https://joerismissaert.dev/tags/file-permissions" style="font-size:1rem">file-permissions</a>
+        
+            
+            
+            
+            
+            
+            
+            <a href="https://joerismissaert.dev/tags/file-system-issues" style="font-size:1rem">file-system-issues</a>
+        
+            
+            
+            
+            
+            
+            
+            <a href="https://joerismissaert.dev/tags/file-systems" style="font-size:1rem">file-systems</a>
+        
+            
+            
+            
+            
+            
+            
+            <a href="https://joerismissaert.dev/tags/firewall" style="font-size:1rem">firewall</a>
+        
+            
+            
+            
+            
+            
+            
+            <a href="https://joerismissaert.dev/tags/firewalld-service" style="font-size:1rem">firewalld-service</a>
+        
+            
+            
+            
+            
+            
+            
+            <a href="https://joerismissaert.dev/tags/gdisk" style="font-size:1rem">gdisk</a>
+        
+            
+            
+            
+            
+            
+            
+            <a href="https://joerismissaert.dev/tags/git" style="font-size:1rem">git</a>
+        
+            
+            
+            
+            
+            
+            
+            <a href="https://joerismissaert.dev/tags/gitlab" style="font-size:1rem">gitlab</a>
+        
+            
+            
+            
+            
+            
+            
+            <a href="https://joerismissaert.dev/tags/gpt" style="font-size:1.323007418555045rem">gpt</a>
+        
+            
+            
+            
+            
+            
+            
+            <a href="https://joerismissaert.dev/tags/grub2" style="font-size:1rem">grub2</a>
+        
+            
+            
+            
+            
+            
+            
+            <a href="https://joerismissaert.dev/tags/gunicorn" style="font-size:1rem">gunicorn</a>
+        
+            
+            
+            
+            
+            
+            
+            <a href="https://joerismissaert.dev/tags/httpd" style="font-size:1rem">httpd</a>
+        
+            
+            
+            
+            
+            
+            
+            <a href="https://joerismissaert.dev/tags/initramfs" style="font-size:1rem">initramfs</a>
+        
+            
+            
+            
+            
+            
+            
+            <a href="https://joerismissaert.dev/tags/kernel-management" style="font-size:1rem">kernel-management</a>
+        
+            
+            
+            
+            
+            
+            
+            <a href="https://joerismissaert.dev/tags/kinsta" style="font-size:1rem">kinsta</a>
+        
+            
+            
+            
+            
+            
+            
+            <a href="https://joerismissaert.dev/tags/lab" style="font-size:1rem">lab</a>
+        
+            
+            
+            
+            
+            
+            
+            <a href="https://joerismissaert.dev/tags/linux" style="font-size:1.323007418555045rem">linux</a>
+        
+            
+            
+            
+            
+            
+            
+            <a href="https://joerismissaert.dev/tags/logging" style="font-size:1rem">logging</a>
+        
+            
+            
+            
+            
+            
+            
+            <a href="https://joerismissaert.dev/tags/logical-volume-manager" style="font-size:1rem">logical-volume-manager</a>
+        
+            
+            
+            
+            
+            
+            
+            <a href="https://joerismissaert.dev/tags/lvm" style="font-size:1rem">lvm</a>
+        
+            
+            
+            
+            
+            
+            
+            <a href="https://joerismissaert.dev/tags/mbr" style="font-size:1.323007418555045rem">mbr</a>
+        
+            
+            
+            
+            
+            
+            
+            <a href="https://joerismissaert.dev/tags/mount" style="font-size:1.323007418555045rem">mount</a>
+        
+            
+            
+            
+            
+            
+            
+            <a href="https://joerismissaert.dev/tags/network" style="font-size:1rem">network</a>
+        
+            
+            
+            
+            
+            
+            
+            <a href="https://joerismissaert.dev/tags/network-configuration" style="font-size:1rem">network-configuration</a>
+        
+            
+            
+            
+            
+            
+            
+            <a href="https://joerismissaert.dev/tags/network-services" style="font-size:1.323007418555045rem">network-services</a>
+        
+            
+            
+            
+            
+            
+            
+            <a href="https://joerismissaert.dev/tags/network-storage" style="font-size:1rem">network-storage</a>
+        
+            
+            
+            
+            
+            
+            
+            <a href="https://joerismissaert.dev/tags/network-validation" style="font-size:1rem">network-validation</a>
+        
+            
+            
+            
+            
+            
+            
+            <a href="https://joerismissaert.dev/tags/nfs" style="font-size:1rem">nfs</a>
+        
+            
+            
+            
+            
+            
+            
+            <a href="https://joerismissaert.dev/tags/nginx" style="font-size:1.6460148371100896rem">nginx</a>
+        
+            
+            
+            
+            
+            
+            
+            <a href="https://joerismissaert.dev/tags/nmcli" style="font-size:1rem">nmcli</a>
+        
+            
+            
+            
+            
+            
+            
+            <a href="https://joerismissaert.dev/tags/nmtui" style="font-size:1rem">nmtui</a>
+        
+            
+            
+            
+            
+            
+            
+            <a href="https://joerismissaert.dev/tags/ntfs" style="font-size:1rem">ntfs</a>
+        
+            
+            
+            
+            
+            
+            
+            <a href="https://joerismissaert.dev/tags/nvidia" style="font-size:1rem">nvidia</a>
+        
+            
+            
+            
+            
+            
+            
+            <a href="https://joerismissaert.dev/tags/package-module-stream" style="font-size:1rem">package-module-stream</a>
+        
+            
+            
+            
+            
+            
+            
+            <a href="https://joerismissaert.dev/tags/parted" style="font-size:1rem">parted</a>
+        
+            
+            
+            
+            
+            
+            
+            <a href="https://joerismissaert.dev/tags/partitions" style="font-size:1.323007418555045rem">partitions</a>
+        
+            
+            
+            
+            
+            
+            
+            <a href="https://joerismissaert.dev/tags/permissions" style="font-size:1rem">permissions</a>
+        
+            
+            
+            
+            
+            
+            
+            <a href="https://joerismissaert.dev/tags/processes" style="font-size:1rem">processes</a>
+        
+            
+            
+            
+            
+            
+            
+            <a href="https://joerismissaert.dev/tags/python" style="font-size:1rem">python</a>
+        
+            
+            
+            
+            
+            
+            
+            <a href="https://joerismissaert.dev/tags/red-hat" style="font-size:1.75rem">red-hat</a>
+        
+            
+            
+            
+            
+            
+            
+            <a href="https://joerismissaert.dev/tags/repo" style="font-size:1rem">repo</a>
+        
+            
+            
+            
+            
+            
+            
+            <a href="https://joerismissaert.dev/tags/rescue-disk" style="font-size:1rem">rescue-disk</a>
+        
+            
+            
+            
+            
+            
+            
+            <a href="https://joerismissaert.dev/tags/rhcsa" style="font-size:1.9690222556651342rem">rhcsa</a>
+        
+            
+            
+            
+            
+            
+            
+            <a href="https://joerismissaert.dev/tags/rhel" style="font-size:2.4809769015296235rem">rhel</a>
+        
+            
+            
+            
+            
+            
+            
+            <a href="https://joerismissaert.dev/tags/rhel8" style="font-size:1rem">rhel8</a>
+        
+            
+            
+            
+            
+            
+            
+            <a href="https://joerismissaert.dev/tags/root-password" style="font-size:1rem">root-password</a>
+        
+            
+            
+            
+            
+            
+            
+            <a href="https://joerismissaert.dev/tags/samba" style="font-size:1rem">samba</a>
+        
+            
+            
+            
+            
+            
+            
+            <a href="https://joerismissaert.dev/tags/scripting" style="font-size:1rem">scripting</a>
+        
+            
+            
+            
+            
+            
+            
+            <a href="https://joerismissaert.dev/tags/security" style="font-size:1.323007418555045rem">security</a>
+        
+            
+            
+            
+            
+            
+            
+            <a href="https://joerismissaert.dev/tags/selinux" style="font-size:1rem">selinux</a>
+        
+            
+            
+            
+            
+            
+            
+            <a href="https://joerismissaert.dev/tags/service-manager" style="font-size:1rem">service-manager</a>
+        
+            
+            
+            
+            
+            
+            
+            <a href="https://joerismissaert.dev/tags/shell" style="font-size:1rem">shell</a>
+        
+            
+            
+            
+            
+            
+            
+            <a href="https://joerismissaert.dev/tags/ssh" style="font-size:1rem">ssh</a>
+        
+            
+            
+            
+            
+            
+            
+            <a href="https://joerismissaert.dev/tags/ssl" style="font-size:1rem">ssl</a>
+        
+            
+            
+            
+            
+            
+            
+            <a href="https://joerismissaert.dev/tags/storage" style="font-size:1.9067964663416257rem">storage</a>
+        
+            
+            
+            
+            
+            
+            
+            <a href="https://joerismissaert.dev/tags/stratis" style="font-size:1rem">stratis</a>
+        
+            
+            
+            
+            
+            
+            
+            <a href="https://joerismissaert.dev/tags/systemd" style="font-size:1.323007418555045rem">systemd</a>
+        
+            
+            
+            
+            
+            
+            
+            <a href="https://joerismissaert.dev/tags/systemd-targets" style="font-size:1rem">systemd-targets</a>
+        
+            
+            
+            
+            
+            
+            
+            <a href="https://joerismissaert.dev/tags/tasks" style="font-size:1rem">tasks</a>
+        
+            
+            
+            
+            
+            
+            
+            <a href="https://joerismissaert.dev/tags/tls" style="font-size:1rem">tls</a>
+        
+            
+            
+            
+            
+            
+            
+            <a href="https://joerismissaert.dev/tags/tls-authentication" style="font-size:1rem">tls-authentication</a>
+        
+            
+            
+            
+            
+            
+            
+            <a href="https://joerismissaert.dev/tags/troubleshooting" style="font-size:1rem">troubleshooting</a>
+        
+            
+            
+            
+            
+            
+            
+            <a href="https://joerismissaert.dev/tags/unclean" style="font-size:1rem">unclean</a>
+        
+            
+            
+            
+            
+            
+            
+            <a href="https://joerismissaert.dev/tags/units" style="font-size:1rem">units</a>
+        
+            
+            
+            
+            
+            
+            
+            <a href="https://joerismissaert.dev/tags/user-extended-attributes" style="font-size:1rem">user-extended-attributes</a>
+        
+            
+            
+            
+            
+            
+            
+            <a href="https://joerismissaert.dev/tags/vdo" style="font-size:1rem">vdo</a>
+        
+            
+            
+            
+            
+            
+            
+            <a href="https://joerismissaert.dev/tags/virtual-data-optimizer" style="font-size:1rem">virtual-data-optimizer</a>
+        
+            
+            
+            
+            
+            
+            
+            <a href="https://joerismissaert.dev/tags/wordpress" style="font-size:1rem">wordpress</a>
+        
+            
+            
+            
+            
+            
+            
+            <a href="https://joerismissaert.dev/tags/yum" style="font-size:1rem">yum</a>
+        
+    </div>
+
+                
+
+
+            </div>
+
+            
+                <footer class="footer">
+    <div class="footer__inner">
+        <div class="footer__content">
+            <span>&copy; 2021</span>
+            
+                <span><a href="https://joerismissaert.dev">Joeri JM Smissaert</a></span>
+            
+            
+                <span><a href="https://joerismissaert.dev/privacy-policy">Privacy Policy</a> & <a href="https://joerismissaert.dev/terms-of-service">Terms of Service</a></span>
+            
+            <span> <a href="https://joerismissaert.dev/posts/index.xml" target="_blank" title="rss"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-rss"><path d="M4 11a9 9 0 0 1 9 9"></path><path d="M4 4a16 16 0 0 1 16 16"></path><circle cx="5" cy="19" r="1"></circle></svg></a></span>
+        </div>
+    </div>
+    <div class="footer__inner">
+        <div class="footer__content">
+            <style>.bmc-button img{height: 34px !important;width: 35px !important;margin-bottom: 1px !important;box-shadow: none !important;border: none !important;vertical-align: middle !important;}.bmc-button{padding: 7px 15px 7px 10px !important;line-height: 35px !important;height:51px !important;text-decoration: none !important;display:inline-flex !important;color:#000000 !important;background-color:#FFFFFF !important;border-radius: 5px !important;border: 1px solid transparent !important;padding: 7px 15px 7px 10px !important;font-size: 20px !important;letter-spacing:0.6px !important;box-shadow: 0px 1px 2px rgba(190, 190, 190, 0.5) !important;-webkit-box-shadow: 0px 1px 2px 2px rgba(190, 190, 190, 0.5) !important;margin: 0 auto !important;font-family:'Roboto', cursive !important;-webkit-box-sizing: border-box !important;box-sizing: border-box !important;}.bmc-button:hover, .bmc-button:active, .bmc-button:focus {-webkit-box-shadow: 0px 1px 2px 2px rgba(190, 190, 190, 0.5) !important;text-decoration: none !important;box-shadow: 0px 1px 2px 2px rgba(190, 190, 190, 0.5) !important;opacity: 0.85 !important;color:#000000 !important;}</style><link href="https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap" rel="stylesheet"><a class="bmc-button" target="_blank" href="https://www.buymeacoffee.com/joerismissaert"><img src="https://cdn.buymeacoffee.com/buttons/bmc-new-btn-logo.svg" alt="Buy me a coffee"><span style="margin-left:5px;font-size:19px !important;">Buy me a coffee :)</span></a>
+        </div>
+    </div>
+</footer>
+
+            
+        </div>
+
+        
+
+
+
+
+<script type="text/javascript" src="https://joerismissaert.dev/bundle.min.dc716e9092c9820b77f96da294d0120aeeb189b5bcea9752309ebea27fd53bbe6b13cffb2aca8ecf32525647ceb7001f76091de4199ac5a3caa432c070247f5b.js" integrity="sha512-3HFukJLJggt3&#43;W2ilNASCu6xibW86pdSMJ6&#43;on/VO75rE8/7KsqOzzJSVkfOtwAfdgkd5BmaxaPKpDLAcCR/Ww=="></script>
+    
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-81179434-3', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+
+
+
+
+    </body>
+</html>

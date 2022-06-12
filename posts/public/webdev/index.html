@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="author" content="Joeri JM Smissaert ">
+<meta name="description" content="Crime Map This app was built with the Flask micro web framework, Bootstrap, MySQL, and a pinch of JavaScript. Some important features I implemented are: submission moderation, email notifications, email verification, user access rights, password change, password reset and email change.
+https://crimemap.joerismissaert.dev  Secret Note Send notes that will self-destruct after being read. Built with Flask, Jinja2, MongoDB and, the Reblandly API.
+https://secretnote.joerismissaert.dev/  Drum Kit A JavaScript and CSS Drum Kit." />
+<meta name="keywords" content="linux, red hat, centos, fedora, rhel, nginx, development, kinsta, rhcsa, python" />
+<meta name="robots" content="noodp" />
+<meta name="theme-color" content="#42464a" />
+<link rel="canonical" href="https://joerismissaert.dev/webdev/" />
+
+
+    <title>
+        
+            WebDev :: Joeri JM Smissaert 
+        
+    </title>
+
+
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.2.1/css/flag-icon.min.css" rel="stylesheet"
+    type="text/css">
+
+
+
+<link rel="stylesheet" href="https://joerismissaert.dev/main.bc0e1ee95501e8eff4092797423b13efee0ad37ba6def28f39ac50c21062b401.css">
+
+
+
+
+    <link rel="apple-touch-icon" sizes="180x180" href="https://joerismissaert.dev/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="https://joerismissaert.dev/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="https://joerismissaert.dev/favicon-16x16.png">
+    <link rel="manifest" href="https://joerismissaert.dev/site.webmanifest">
+    <link rel="mask-icon" href="https://joerismissaert.dev/safari-pinned-tab.svg" color="##42464a">
+    <link rel="shortcut icon" href="https://joerismissaert.dev/favicon.ico">
+    <meta name="msapplication-TileColor" content="##42464a">
+    <meta name="theme-color" content="##42464a">
+
+
+
+<meta itemprop="name" content="WebDev">
+<meta itemprop="description" content="Crime Map This app was built with the Flask micro web framework, Bootstrap, MySQL, and a pinch of JavaScript. Some important features I implemented are: submission moderation, email notifications, email verification, user access rights, password change, password reset and email change.
+https://crimemap.joerismissaert.dev  Secret Note Send notes that will self-destruct after being read. Built with Flask, Jinja2, MongoDB and, the Reblandly API.
+https://secretnote.joerismissaert.dev/  Drum Kit A JavaScript and CSS Drum Kit.">
+<meta itemprop="datePublished" content="2020-07-09T18:55:24+04:00" />
+<meta itemprop="dateModified" content="2020-07-09T18:55:24+04:00" />
+<meta itemprop="wordCount" content="108">
+
+
+
+<meta itemprop="keywords" content="" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="WebDev"/>
+<meta name="twitter:description" content="Crime Map This app was built with the Flask micro web framework, Bootstrap, MySQL, and a pinch of JavaScript. Some important features I implemented are: submission moderation, email notifications, email verification, user access rights, password change, password reset and email change.
+https://crimemap.joerismissaert.dev  Secret Note Send notes that will self-destruct after being read. Built with Flask, Jinja2, MongoDB and, the Reblandly API.
+https://secretnote.joerismissaert.dev/  Drum Kit A JavaScript and CSS Drum Kit."/>
+
+
+
+    <meta property="og:title" content="WebDev" />
+<meta property="og:description" content="Crime Map This app was built with the Flask micro web framework, Bootstrap, MySQL, and a pinch of JavaScript. Some important features I implemented are: submission moderation, email notifications, email verification, user access rights, password change, password reset and email change.
+https://crimemap.joerismissaert.dev  Secret Note Send notes that will self-destruct after being read. Built with Flask, Jinja2, MongoDB and, the Reblandly API.
+https://secretnote.joerismissaert.dev/  Drum Kit A JavaScript and CSS Drum Kit." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://joerismissaert.dev/webdev/" />
+<meta property="article:published_time" content="2020-07-09T18:55:24+04:00" />
+<meta property="article:modified_time" content="2020-07-09T18:55:24+04:00" />
+
+
+
+
+
+
+    <meta property="article:published_time" content="2020-07-09 18:55:24 &#43;0400 &#43;04" />
+
+
+
+
+
+
+
+
+    </head>
+
+    <body class="dark-theme">
+        <div class="container">
+            <header class="header">
+    <span class="header__inner">
+        <a href="https://joerismissaert.dev/" style="text-decoration: none;">
+    <div class="logo">
+        
+            <span class="logo__mark">></span>
+            <span class="logo__text">$ cd ~</span>
+            <span class="logo__cursor" style=
+                  "
+                   background-color:#8B0000;
+                   ">
+            </span>
+        
+    </div>
+</a>
+
+
+        <span class="header__right">
+            
+                <nav class="menu">
+    <ul class="menu__inner"><li><a href="https://joerismissaert.dev/about/">1. About</a></li><li><a href="https://joerismissaert.dev/posts/">2. Posts</a></li><li><a href="https://joerismissaert.dev/dev/">3. Dev</a></li><li><a href="https://joerismissaert.dev/webdev/">4. WebDev</a></li>
+    </ul>
+</nav>
+
+                <span class="menu-trigger">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        <path d="M0 0h24v24H0z" fill="none"/>
+                        <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/>
+                    </svg>
+                </span>
+            
+
+            <span class="theme-toggle unselectable"><svg class="theme-toggler" width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M22 41C32.4934 41 41 32.4934 41 22C41 11.5066 32.4934 3 22
+  3C11.5066 3 3 11.5066 3 22C3 32.4934 11.5066 41 22 41ZM7 22C7
+  13.7157 13.7157 7 22 7V37C13.7157 37 7 30.2843 7 22Z"/>
+</svg>
+</span>
+        </span>
+    </span>
+</header>
+
+
+            <div class="content">
+                
+    <main class="post">
+
+        <div class="post-info">
+            
+            </p>
+        </div>
+
+        <article>
+            <h2 class="post-title"><a href="https://joerismissaert.dev/webdev/">WebDev</a></h2>
+
+            
+
+            <div class="post-content">
+                <h2 id="crime-map">Crime Map</h2>
+
+    <img src="https://joerismissaert.dev/img/image-6-1024x488.png"  alt="Crime Map Screenshot"  class="center"  />
+
+
+<p>This app was built with the Flask micro web framework, Bootstrap, MySQL, and a pinch of JavaScript. Some important features I implemented are: submission moderation, email notifications, email verification, user access rights, password change, password reset and email change.<br>
+<a href="https://crimemap.joerismissaert.dev/" target="_blank">https://crimemap.joerismissaert.dev</a>
+
+</p>
+<hr>
+<h2 id="secret-note">Secret Note</h2>
+
+    <img src="https://joerismissaert.dev/img/image-4.png"  alt="Secret Note Screenshot"  class="center"  />
+
+
+<p>Send notes that will self-destruct after being read. Built with Flask, Jinja2, MongoDB and, the Reblandly API.<br>
+<a href="https://secretnote.joerismissaert.dev" target="_blank">https://secretnote.joerismissaert.dev/</a>
+
+</p>
+<hr>
+<h2 id="drum-kit">Drum Kit</h2>
+
+    <img src="https://joerismissaert.dev/img/image-3.png"  alt="Drum Kit Screenshot"  class="center"  />
+
+
+<p>A JavaScript and CSS Drum Kit.<br>
+<a href="https://joerismissaert.dev/drum" target="_blank">https://joerismissaert.dev/drum</a>
+
+</p>
+<hr>
+<h2 id="pomodoro-timer">Pomodoro Timer</h2>
+
+    <img src="https://joerismissaert.dev/img/image-2.png"  alt="Pomodoro Timer Screenshot"  class="center"  />
+
+
+<p>A Pomodoro timer built with Bootstrap and JavaScript.<br>
+<a href="https://joerismissaert.dev/pomo" target="_blank">https://joerismissaert.dev/pomo</a>
+
+</p>
+<hr>
+<h2 id="conversion-tool">Conversion Tool</h2>
+
+    <img src="https://joerismissaert.dev/img/image-1.png"  alt="Unit Conversion Tool Screenshot"  class="center"  />
+
+
+<p>A unit conversion tool built with Bootstrap and JavaScript.<br>
+<a href="https://joerismissaert.dev/conversion" target="_blank">https://joerismissaert.dev/conversion</a>
+
+</p>
+<hr>
+<h2 id="bmi-calculator">BMI Calculator</h2>
+
+    <img src="https://joerismissaert.dev/img/image.png"  alt="BMI Calculator Screenshot"  class="center"  />
+
+
+<p>A metric and imperial BMI Calculator made with Bootstrap and JavaScript.<br>
+<a href="https://joerismissaert.dev/bmicalc" target="_blank">https://joerismissaert.dev/bmicalc</a>
+
+</p>
+
+            </div>
+        </article>
+
+        <hr />
+
+        <div class="post-info">
+  		</div>
+    </main>
+
+            </div>
+
+            
+                <footer class="footer">
+    <div class="footer__inner">
+        <div class="footer__content">
+            <span>&copy; 2021</span>
+            
+                <span><a href="https://joerismissaert.dev">Joeri JM Smissaert</a></span>
+            
+            
+                <span><a href="https://joerismissaert.dev/privacy-policy">Privacy Policy</a> & <a href="https://joerismissaert.dev/terms-of-service">Terms of Service</a></span>
+            
+            <span> <a href="https://joerismissaert.dev/posts/index.xml" target="_blank" title="rss"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-rss"><path d="M4 11a9 9 0 0 1 9 9"></path><path d="M4 4a16 16 0 0 1 16 16"></path><circle cx="5" cy="19" r="1"></circle></svg></a></span>
+        </div>
+    </div>
+    <div class="footer__inner">
+        <div class="footer__content">
+            <style>.bmc-button img{height: 34px !important;width: 35px !important;margin-bottom: 1px !important;box-shadow: none !important;border: none !important;vertical-align: middle !important;}.bmc-button{padding: 7px 15px 7px 10px !important;line-height: 35px !important;height:51px !important;text-decoration: none !important;display:inline-flex !important;color:#000000 !important;background-color:#FFFFFF !important;border-radius: 5px !important;border: 1px solid transparent !important;padding: 7px 15px 7px 10px !important;font-size: 20px !important;letter-spacing:0.6px !important;box-shadow: 0px 1px 2px rgba(190, 190, 190, 0.5) !important;-webkit-box-shadow: 0px 1px 2px 2px rgba(190, 190, 190, 0.5) !important;margin: 0 auto !important;font-family:'Roboto', cursive !important;-webkit-box-sizing: border-box !important;box-sizing: border-box !important;}.bmc-button:hover, .bmc-button:active, .bmc-button:focus {-webkit-box-shadow: 0px 1px 2px 2px rgba(190, 190, 190, 0.5) !important;text-decoration: none !important;box-shadow: 0px 1px 2px 2px rgba(190, 190, 190, 0.5) !important;opacity: 0.85 !important;color:#000000 !important;}</style><link href="https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap" rel="stylesheet"><a class="bmc-button" target="_blank" href="https://www.buymeacoffee.com/joerismissaert"><img src="https://cdn.buymeacoffee.com/buttons/bmc-new-btn-logo.svg" alt="Buy me a coffee"><span style="margin-left:5px;font-size:19px !important;">Buy me a coffee :)</span></a>
+        </div>
+    </div>
+</footer>
+
+            
+        </div>
+
+        
+
+
+
+
+<script type="text/javascript" src="https://joerismissaert.dev/bundle.min.dc716e9092c9820b77f96da294d0120aeeb189b5bcea9752309ebea27fd53bbe6b13cffb2aca8ecf32525647ceb7001f76091de4199ac5a3caa432c070247f5b.js" integrity="sha512-3HFukJLJggt3&#43;W2ilNASCu6xibW86pdSMJ6&#43;on/VO75rE8/7KsqOzzJSVkfOtwAfdgkd5BmaxaPKpDLAcCR/Ww=="></script>
+    
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-81179434-3', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+
+
+
+
+    </body>
+</html>

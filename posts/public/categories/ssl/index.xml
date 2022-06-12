@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>SSL on Joeri JM Smissaert</title>
+    <link>https://joerismissaert.dev/categories/ssl/</link>
+    <description>Recent content in SSL on Joeri JM Smissaert</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>&lt;a href=&#34;https://joerismissaert.dev/privacy-policy&#34;&gt;Privacy Policy&lt;/a&gt; &amp; &lt;a href=&#34;https://joerismissaert.dev/terms-of-service&#34;&gt;Terms of Service&lt;/a&gt;</copyright>
+    <lastBuildDate>Thu, 30 Apr 2020 16:57:40 +0000</lastBuildDate><atom:link href="https://joerismissaert.dev/categories/ssl/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>CloudFlare Authenticated Origin Pulls</title>
+      <link>https://joerismissaert.dev/cloudflare-authenticated-origin-pulls/</link>
+      <pubDate>Thu, 30 Apr 2020 16:57:40 +0000</pubDate>
+      
+      <guid>https://joerismissaert.dev/cloudflare-authenticated-origin-pulls/</guid>
+      <description>In addition to my previous post on blocking requests that are hitting my websites directly without going through the CloudFlare network, we can enable the Authenticated Origin Pulls feature.
+Authenticated Origin Pulls uses TLS Authentication to verify that the server hosting my website is communicating with CloudFlare and not some other server or client.
+Nginx will be configured to only accept requests which use a valid client certificate from Cloudflare and requests which have not passed through CloudFlare will be dropped: The server will respond with a 400 Bad Request status code.</description>
+    </item>
+    
+    <item>
+      <title>Automate Let’s Encrypt SSL with Certbot on Centos 8</title>
+      <link>https://joerismissaert.dev/automate-lets-encrypt-ssl-with-certbot-on-centos-8/</link>
+      <pubDate>Fri, 10 Jan 2020 08:30:48 +0000</pubDate>
+      
+      <guid>https://joerismissaert.dev/automate-lets-encrypt-ssl-with-certbot-on-centos-8/</guid>
+      <description>An SSL Certificate is a text file with encrypted data that you install on your server so that you can secure/encrypt sensitive communications between your site and your visitors. They are also used to verify that you are connected with the service you wish to be connecting with, and, as a website owner it validates your trustworthiness.
+SSL certificates can be expensive, so here&amp;rsquo;s where Let’s Encrypt comes into play.</description>
+    </item>
+    
+  </channel>
+</rss>

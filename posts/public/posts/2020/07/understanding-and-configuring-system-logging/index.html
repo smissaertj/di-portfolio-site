@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="author" content="Joeri JM Smissaert ">
+<meta name="description" content="Understanding System Logging Services on a Linux server write information to log files in different destinations using different approaches, and there are multiple ways to find relevant information in those log files.
+Services can write log information via:
+ Direct Write - information is written directly to a log file by a service. rsyslogd - a service passes log information to the rsyslogd service that in turn takes care of managing centralized log files." />
+<meta name="keywords" content="linux, red hat, centos, fedora, rhel, nginx, development, kinsta, rhcsa, python, RHEL, RHCSA, Logging" />
+<meta name="robots" content="noodp" />
+<meta name="theme-color" content="#42464a" />
+<link rel="canonical" href="https://joerismissaert.dev/posts/2020/07/understanding-and-configuring-system-logging/" />
+
+
+    <title>
+        
+            Understanding and Configuring System Logging :: Joeri JM Smissaert 
+        
+    </title>
+
+
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.2.1/css/flag-icon.min.css" rel="stylesheet"
+    type="text/css">
+
+
+
+<link rel="stylesheet" href="https://joerismissaert.dev/main.bc0e1ee95501e8eff4092797423b13efee0ad37ba6def28f39ac50c21062b401.css">
+
+
+
+
+    <link rel="apple-touch-icon" sizes="180x180" href="https://joerismissaert.dev/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="https://joerismissaert.dev/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="https://joerismissaert.dev/favicon-16x16.png">
+    <link rel="manifest" href="https://joerismissaert.dev/site.webmanifest">
+    <link rel="mask-icon" href="https://joerismissaert.dev/safari-pinned-tab.svg" color="##42464a">
+    <link rel="shortcut icon" href="https://joerismissaert.dev/favicon.ico">
+    <meta name="msapplication-TileColor" content="##42464a">
+    <meta name="theme-color" content="##42464a">
+
+
+
+<meta itemprop="name" content="Understanding and Configuring System Logging">
+<meta itemprop="description" content="Understanding System Logging Services on a Linux server write information to log files in different destinations using different approaches, and there are multiple ways to find relevant information in those log files.
+Services can write log information via:
+ Direct Write - information is written directly to a log file by a service. rsyslogd - a service passes log information to the rsyslogd service that in turn takes care of managing centralized log files.">
+<meta itemprop="datePublished" content="2020-07-15T20:06:32&#43;04:00" />
+<meta itemprop="dateModified" content="2020-07-15T20:06:32&#43;04:00" />
+<meta itemprop="wordCount" content="1817">
+
+
+
+<meta itemprop="keywords" content="RHEL,RHCSA,Logging," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Understanding and Configuring System Logging"/>
+<meta name="twitter:description" content="Understanding System Logging Services on a Linux server write information to log files in different destinations using different approaches, and there are multiple ways to find relevant information in those log files.
+Services can write log information via:
+ Direct Write - information is written directly to a log file by a service. rsyslogd - a service passes log information to the rsyslogd service that in turn takes care of managing centralized log files."/>
+
+
+
+    <meta property="og:title" content="Understanding and Configuring System Logging" />
+<meta property="og:description" content="Understanding System Logging Services on a Linux server write information to log files in different destinations using different approaches, and there are multiple ways to find relevant information in those log files.
+Services can write log information via:
+ Direct Write - information is written directly to a log file by a service. rsyslogd - a service passes log information to the rsyslogd service that in turn takes care of managing centralized log files." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://joerismissaert.dev/posts/2020/07/understanding-and-configuring-system-logging/" />
+<meta property="article:published_time" content="2020-07-15T20:06:32+04:00" />
+<meta property="article:modified_time" content="2020-07-15T20:06:32+04:00" />
+
+
+
+
+
+
+    <meta property="article:published_time" content="2020-07-15 20:06:32 &#43;0400 &#43;04" />
+
+
+
+
+
+
+
+
+    </head>
+
+    <body class="dark-theme">
+        <div class="container">
+            <header class="header">
+    <span class="header__inner">
+        <a href="https://joerismissaert.dev/" style="text-decoration: none;">
+    <div class="logo">
+        
+            <span class="logo__mark">></span>
+            <span class="logo__text">$ cd ~</span>
+            <span class="logo__cursor" style=
+                  "
+                   background-color:#8B0000;
+                   ">
+            </span>
+        
+    </div>
+</a>
+
+
+        <span class="header__right">
+            
+                <nav class="menu">
+    <ul class="menu__inner"><li><a href="https://joerismissaert.dev/about/">About</a></li><li><a href="https://joerismissaert.dev/posts/">Posts</a></li><li><a href="https://joerismissaert.dev/scripts/">Scripts</a></li><li><a href="https://joerismissaert.dev/webapps/">WebApps</a></li>
+    </ul>
+</nav>
+
+                <span class="menu-trigger">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        <path d="M0 0h24v24H0z" fill="none"/>
+                        <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/>
+                    </svg>
+                </span>
+            
+
+            <span class="theme-toggle unselectable"><svg class="theme-toggler" width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M22 41C32.4934 41 41 32.4934 41 22C41 11.5066 32.4934 3 22
+  3C11.5066 3 3 11.5066 3 22C3 32.4934 11.5066 41 22 41ZM7 22C7
+  13.7157 13.7157 7 22 7V37C13.7157 37 7 30.2843 7 22Z"/>
+</svg>
+</span>
+        </span>
+    </span>
+</header>
+
+
+            <div class="content">
+                
+  <main class="post">
+
+    <div class="post-info">
+      <p>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clock">
+          <circle cx="12" cy="12" r="10"></circle>
+          <polyline points="12 6 12 12 16 14"></polyline>
+        </svg>
+        9 minutes
+
+        
+      </p>
+    </div>
+
+    <article>
+      <h1 class="post-title">
+        <a href="https://joerismissaert.dev/posts/2020/07/understanding-and-configuring-system-logging/">Understanding and Configuring System Logging</a>
+      </h1>
+
+      
+
+      <div class="post-content">
+        
+    <img src="https://joerismissaert.dev/img/redhat-8-logo.png"  alt="Red Hat logo"  class="center"  />
+
+
+<h2 id="understanding-system-logging">Understanding System Logging</h2>
+<p>Services on a Linux server write information to log files in different destinations using different approaches, and there are multiple ways to find relevant information in those log files.</p>
+<p>Services can write log information via:</p>
+<ul>
+<li><strong>Direct Write</strong> - information is written directly to a log file by a service.</li>
+<li><strong>rsyslogd</strong> - a service passes log information to the <code>rsyslogd</code> service that in turn takes care of managing centralized log files.</li>
+<li><strong>journald</strong> - this service is tightly integrated with Systemd.</li>
+</ul>
+<p><code>journald</code> receives all messages generated by Systemd Units. It also collects messages from the kernel, the boot procedure and services, then writes these message to an event journal which is stored in binary format. This journal can be queried with the <code>journalctl</code> command.</p>
+<p><code>journald</code> is not persistent between reboots, so messages are also forwarded to <code>rsyslogd</code> which in turn writes the log information to different files in the <code>/var/log</code> directory and thus making them persistent.</p>
+<p><code>rsyslogd</code> adds some services to <code>journald</code>, it allows you to configure remote logging and log servers, and makes logging persistent.</p>
+<p>We also have the <code>auditd</code> service which offers an in-depth trace of what specific services, processes and users have been doing.</p>
+<p>We the above in mind, we have three approaches to get more information on what has been happening on a machine:</p>
+<ul>
+<li>Monitor the files in <code>/var/log</code> written by <code>rsyslogd</code> or by services directly.</li>
+<li>Use the <code>journalctl</code> command.</li>
+<li>Use the <code>systemctl status</code> command.</li>
+</ul>
+<h3 id="persistent-log-files">Persistent Log Files</h3>
+<p>As mentioned earlier, persistent log files are located in the <code>/var/log</code> directory. Most of the files are managed by <code>rsyslogd</code> but some of them are created directly by services. The most convenient way of reading these files would be by using a pager like <code>less</code>.</p>
+<p>The below table provides an overview of some of the standard files that are created in this directory and what content you may expect.</p>
+
+
+
+
+
+<table class="table table-dark table-striped table-bordered">
+<thead>
+<tr>
+<th>Log File</th>
+<th>Explanation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>/var/log/messages</td>
+<td>A generic log file where most messages are written to.</td>
+</tr>
+<tr>
+<td>/var/log/dmesg</td>
+<td>Contains kernel log messages.</td>
+</tr>
+<tr>
+<td>/var/log/secure</td>
+<td>Contains authentication-related messages.</td>
+</tr>
+<tr>
+<td>/var/log/boot.log</td>
+<td>Messages related to system startup</td>
+</tr>
+<tr>
+<td>/var/log/audit/audit.log</td>
+<td>Contains audit messages. SELinux writes to this file.</td>
+</tr>
+<tr>
+<td>/var/log/maillog</td>
+<td>Mail-related messages</td>
+</tr>
+<tr>
+<td>/var/log/samba</td>
+<td>The Samba service writes directly to this file, it&rsquo;s not managed through <code>rsyslogd</code>.</td>
+</tr>
+<tr>
+<td>/var/log/sssd</td>
+<td>Messages written by the <code>sssd</code> service, which plays an important role in the authentication process.</td>
+</tr>
+<tr>
+<td>/var/log/cups</td>
+<td>Messages generated the the CUPS print service.</td>
+</tr>
+<tr>
+<td>/var/log/httpd</td>
+<td>Directory that contains log files written directly by the Apache web server.</td>
+</tr>
+</tbody>
+</table>
+
+<p>It might be useful to see what is happening in real time. The <code>tail -f &lt;logfile&gt;</code> command would allow you to live monitor a specific log file, you&rsquo;ll see lines being added to the output of the command as system events happen.</p>
+<h3 id="using-logger">Using logger</h3>
+<p>While services write information to log files by themselves or through <code>rsyslogd</code>, users can write messages to <code>rsyslogd</code> from the command line or a script using the <code>logger</code> command. Simply type <code>logger</code> followed by the message you want to write to the logs.</p>
+<p>You can also specify the priority and facility to log to. For example, <code>logger -p kern.err hello</code> would write <code>hello</code> to the kernel facility using the error priority.</p>
+<h2 id="configuring-rsyslogd">Configuring rsyslogd</h2>
+<p>The <code>rsyslogd</code> service makes sure that information that needs to be logged is written to the location where you would want to find it.
+This is configured inside the <code>/etc/rsyslog.conf</code> file that acts as the central location from where <code>rsyslogd</code> is configured. From this file the <code>/etc/rsyslog.d/</code> directory is included, RPM packages can put specific configuration files inside this directory.</p>
+<p>If you need to pass specific options to the rsyslogd service <em>on startup</em> you need to do that via the <code>/etc/sysconfig/ryslog</code> file. This file contains one line by default where you can specify startup parameters: <code>SYSLOGD_OPTIONS=&quot;&quot;</code>
+This variable is included in the Systemd configuration file that starts rsyslogd.</p>
+<h3 id="understanding-rsyslogd-configuration-files">Understanding rsyslogd Configuration Files</h3>
+<p>The <code>rsyslogd.conf</code> file contains different sections to specify what should be logged and where:</p>
+<ul>
+<li>
+<p><strong>### MODULES ###</strong>: rsyslogd is modular and you can expand features using modules.</p>
+</li>
+<li>
+<p><strong>### GLOBAL DIRECTIVES ###</strong>: Specified global parameters like the default timestamp format or the location where files are being written to.</p>
+</li>
+<li>
+<p><strong>### RULES ###</strong>: This is the most important part, it contains rules that specify which information should be logged to which destination.</p>
+</li>
+</ul>
+<pre><code>#### RULES ####
+
+# Log all kernel messages to the console.
+# Logging much else clutters up the screen.
+#kern.*                                                 /dev/console
+
+# Log anything (except mail) of level info or higher.
+# Don't log private authentication messages!
+*.info;mail.none;authpriv.none;cron.none                /var/log/messages
+
+# The authpriv file has restricted access.
+authpriv.*                                              /var/log/secure
+
+# Log all the mail messages in one place.
+mail.*                                                  -/var/log/maillog
+
+
+# Log cron stuff
+cron.*                                                  /var/log/cron
+
+# Everybody gets emergency messages
+*.emerg                                                 :omusrmsg:*
+
+# Save news errors of level crit and higher in a special file.
+uucp,news.crit                                          /var/log/spooler
+
+# Save boot messages also to boot.log
+local7.*                                                /var/log/boot.log
+</code></pre><h4 id="facilities-priorities-and-destinations">Facilities, Priorities and Destinations</h4>
+<p>The Rules section we discussed above uses facilities, priorities and destinations to specify what should  be logged and where.</p>
+<ul>
+<li>A <em>facility</em> specifies a category of information. There is a fixed list of facilities that cannot be extended to ensure backwards compatibility. As a result some facilities exist that serve no purpose anymore and some services that became relevant at a later stage do not have their own facility. To circumvent that you can configure the service to use the generic <code>daemon</code> and <code>local0</code> to <code>local7</code> facilities.</li>
+</ul>
+
+
+
+
+
+<table class="table table-dark table-striped table-bordered">
+<thead>
+<tr>
+<th>Facility</th>
+<th>Used by</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>auth/authpriv</td>
+<td>Messages related to authentication</td>
+</tr>
+<tr>
+<td>cron</td>
+<td>Messages generated by the crond service</td>
+</tr>
+<tr>
+<td>daemon</td>
+<td>Generic facility to be used for nonspecified daemons</td>
+</tr>
+<tr>
+<td>kern</td>
+<td>Kernel messages</td>
+</tr>
+<tr>
+<td>lpr</td>
+<td>Messages generated through the legacy lpd print system</td>
+</tr>
+<tr>
+<td>mail</td>
+<td>Email related messages</td>
+</tr>
+<tr>
+<td>mark</td>
+<td>Special facility that can be used to periodically write a marker</td>
+</tr>
+<tr>
+<td>news</td>
+<td>Messages generated by the NNTP news system</td>
+</tr>
+<tr>
+<td>security</td>
+<td>Deprecated, same as auth/authpriv</td>
+</tr>
+<tr>
+<td>syslog</td>
+<td>Messages generated by the syslog system</td>
+</tr>
+<tr>
+<td>user</td>
+<td>Messages generated in user space</td>
+</tr>
+<tr>
+<td>uucp</td>
+<td>Messages generated by the legacy UUCP system</td>
+</tr>
+<tr>
+<td>local0-7</td>
+<td>Messages generated by services configured to use one of the local0 to local7 facilities</td>
+</tr>
+</tbody>
+</table>
+
+<ul>
+<li><em>Priorities</em> define the severity of the message that needs to be logged. When specifying a priority, all messages with that specific priority and higher will be logged.<br>
+If you need to configure logging where messages with different priorities are sent to different files you can specify the priority with a <code>=</code> sign:
+<code>cron.=debug -/var/log/cron.debug</code>
+This will write all cron message with only the debug priority to the <code>/var/log/cron.debug</code> log.</li>
+</ul>
+
+
+
+
+
+<table class="table table-dark table-striped table-bordered">
+<thead>
+<tr>
+<th>Priority</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>emerg/panic</td>
+<td>Message generated when the availability of the service is discontinued</td>
+</tr>
+<tr>
+<td>alert</td>
+<td>Used when the availability of the service is about to be discontinued</td>
+</tr>
+<tr>
+<td>crit</td>
+<td>A critical error has occurred</td>
+</tr>
+<tr>
+<td>error/err</td>
+<td>A noncritical error has occurred</td>
+</tr>
+<tr>
+<td>warning/warn</td>
+<td>Something is suboptimal, but no real error yet</td>
+</tr>
+<tr>
+<td>notice</td>
+<td>Messages about items that might become an issue later</td>
+</tr>
+<tr>
+<td>info</td>
+<td>Informational messages about normal service operation</td>
+</tr>
+<tr>
+<td>debug</td>
+<td>Debug messages that will give as much information as possible about service operation</td>
+</tr>
+</tbody>
+</table>
+
+<ul>
+<li><em>Destinations</em> defines where the message should be written to. Typically these are files, but they can be devices or ryslog modules as well. If the destination file name starts with a hypen, e.g. <code>-/var/log/maillog</code>, the message will not be commited immediately to the file. Instead, it will be buffered to make writes more efficient.</li>
+</ul>
+<p>See <strong>man 5 rsyslog.conf</strong></p>
+<h2 id="rotating-log-files">Rotating Log Files</h2>
+<p>When a certain treshold has been reached the old log file is closed and a new log file is opened by the logrotate utility which is started periodically by the crond service.</p>
+<p>When a log file is rotated, the old log file is typically copied to a new file that has the rotation date in it. By default, four old log files are kept on the system, files older than that period are removed from the system automatically.</p>
+<blockquote>
+<p>You should back up log files or configure a centralized log server where logrotate keeps rotated messages for a significanlty longer period.</p>
+</blockquote>
+<p>The default settings for log rotation are kep in the <code>/etc/logrotate.conf</code> file, but you can create configuration files inside the <code>/etc/logrotate.d/</code> directory to be applied to specific log files.</p>
+<pre><code># see &quot;man logrotate&quot; for details
+# rotate log files weekly
+weekly
+
+# keep 4 weeks worth of backlogs
+rotate 4
+
+# create new (empty) log files after rotating old ones
+create
+
+# use date as a suffix of the rotated file
+dateext
+
+# uncomment this if you want your log files compressed
+#compress
+
+# packages drop log rotation information into this directory
+include /etc/logrotate.d
+
+# system-specific logs may be also be configured here.
+</code></pre><h2 id="working-with-journald">Working with journald</h2>
+<p>The systemd-journald service stores log messages in a binary file, the journal, <code>/run/log/journal</code>. Since this file is in the <code>/run</code> directory, it is not persistent.</p>
+<p>We can examine the journal using the <code>journalctl</code> command, the output is shown in a <code>less</code> pager and by default you&rsquo;ll see the beginning of the journal. You can live monitor the journal using the <code>journcalctl -f</code> command.</p>
+<p><code>journalctl</code> has many filtering options, you can find some of the most useful in the table below.
+You can also use tab completion to see specific options.</p>
+<p>
+
+
+
+
+<table class="table table-dark table-striped table-bordered">
+<thead>
+<tr>
+<th>Command</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>journalctl --no-pager</code></td>
+<td>Shows the content without using a pager</td>
+</tr>
+<tr>
+<td><code>journalctl -f</code></td>
+<td>Live monitor the journal as events happen</td>
+</tr>
+<tr>
+<td><code>journalctl _UID=1000</code></td>
+<td>Show messages that have been logged for a specific user</td>
+</tr>
+<tr>
+<td><code>journalctl -p err</code></td>
+<td>Show messages with the <em>error</em> priority</td>
+</tr>
+<tr>
+<td><code>journalctl --since yesterday --until today</code></td>
+<td>Shows messages in a specific time frame. Accepts keywords like <em>yesterday</em>, <em>today</em>, <em>tomorrow</em> or you can specify a date/time in the <code>YYYY-MM-DD hh:mm:ss</code> format.</td>
+</tr>
+<tr>
+<td><code>journalctl _SYSTEMD_UNIT=sshd.service</code></td>
+<td>Shows information on the sshd Systemd Unit.</td>
+</tr>
+<tr>
+<td><code>journalctl --dmesg</code></td>
+<td>Shows kernel related messages</td>
+</tr>
+<tr>
+<td><code>journalctl -o verbose</code></td>
+<td>Shows detailed information on logged items</td>
+</tr>
+</tbody>
+</table>
+<br>
+The above options can all be combined, e.g. <code>journalctl --since yesterday -p err _UID=1000</code> or <code>journalctl _SYSTEMD_UNIT=sshd.service -o verbose</code>.</p>
+<h3 id="persistently-storing-the-systemd-journal">Persistently Storing the Systemd Journal</h3>
+<p>Storing the journal in a persistent way so that it survives reboots requires setting the <code>Storage=</code> parameter inside <code>/etc/systemd/journal.conf</code>:</p>
+<ul>
+<li><strong>Storage=auto</strong> The journal will be written to disk if the <code>/var/log/journal</code> <em>directory</em> exists.</li>
+<li><strong>Storage=volatile</strong> The journal will only be stored in <code>/run/log/journal</code> in a non persistent way.</li>
+<li><strong>Storage=persistent</strong> The journal will be written to disk in the <code>/var/log/journal</code> directory, if this directory does not exist it will be created.</li>
+<li><strong>Storage=none</strong> No data will be stored, but forwarding to other targets like the kernel log buffer or syslog will still work.</li>
+</ul>
+<p>If you manually created the <code>/var/log/journal</code> directory you need to set ownership and permissions, then either reboot or kill the <code>systemd-journald</code> service. Restarting the <code>systemd-journald</code> service is not enough:</p>
+<pre><code># chown root:systemd-journal /var/log/journal
+# chmod 2755 /var/log/journal
+# killall -USR1 systemd-journald
+</code></pre><p>The journal has built-in log rotation, so even if the journal is stored persistently the data is not kept forever.
+The journal is limited to a maximum size of 10% of the file system it&rsquo;s on and it will stop growing when less than 15% of file system is free. When this happens the oldest messages from the journal are dropped to make room for new messages.
+This can be changed in the <code>/etc/systemd/journal.conf</code> file.</p>
+
+      </div>
+    </article>
+
+    <hr />
+
+    <div class="post-info">
+        <p>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-tag meta-icon">
+            <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path>
+            <line x1="7" y1="7" x2="7" y2="7"></line>
+          </svg><span class="tag"><a href="https://joerismissaert.dev/tags/rhel/">RHEL</a></span><span class="tag"><a href="https://joerismissaert.dev/tags/rhcsa/">RHCSA</a></span><span class="tag"><a href="https://joerismissaert.dev/tags/logging/">Logging</a></span>
+        </p>
+
+      <p>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+          <polyline points="14 2 14 8 20 8"></polyline>
+          <line x1="16" y1="13" x2="8" y2="13"></line>
+          <line x1="16" y1="17" x2="8" y2="17"></line>
+          <polyline points="10 9 9 9 8 9"></polyline>
+        </svg>
+        1817 Words
+      </p>
+
+      <p>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar">
+          <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+          <line x1="16" y1="2" x2="16" y2="6"></line>
+          <line x1="8" y1="2" x2="8" y2="6"></line>
+          <line x1="3" y1="10" x2="21" y2="10"></line>
+        </svg>
+        2020-07-15 20:06 &#43;0400
+      </p>
+    </div>
+      <hr />
+      <div class="sharing-buttons">
+        
+<a class="resp-sharing-button__link resp-sharing-button__icon--solid" href="https://facebook.com/sharer/sharer.php?u=https%3a%2f%2fjoerismissaert.dev%2fposts%2f2020%2f07%2funderstanding-and-configuring-system-logging%2f" target="_blank" rel="noopener" aria-label="" title="Share on facebook">
+  <div class="resp-sharing-button resp-sharing-button--facebook resp-sharing-button--small resp-sharing-button__icon--solid"><div aria-hidden="true" class="resp-sharing-button__icon resp-sharing-button__icon--solid">
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg>
+    </div>
+  </div>
+</a>
+
+
+<a class="resp-sharing-button__link" href="https://twitter.com/intent/tweet/?url=https%3a%2f%2fjoerismissaert.dev%2fposts%2f2020%2f07%2funderstanding-and-configuring-system-logging%2f" target="_blank" rel="noopener" aria-label="" title="Share on twitter">
+  <div class="resp-sharing-button resp-sharing-button--twitter resp-sharing-button--small">
+      <div aria-hidden="true" class="resp-sharing-button__icon resp-sharing-button__icon--solid">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path></svg>
+    </div>
+  </div>
+</a>
+
+
+
+
+<a class="resp-sharing-button__link" href="https://www.linkedin.com/shareArticle?mini=true&amp;url=https%3a%2f%2fjoerismissaert.dev%2fposts%2f2020%2f07%2funderstanding-and-configuring-system-logging%2f&amp;title=Understanding%20and%20Configuring%20System%20Logging&amp;summary=Understanding%20and%20Configuring%20System%20Logging&amp;source=https%3a%2f%2fjoerismissaert.dev%2fposts%2f2020%2f07%2funderstanding-and-configuring-system-logging%2f" target="_blank" rel="noopener" aria-label="" title="Share on linkedin">
+  <div class="resp-sharing-button resp-sharing-button--linkedin resp-sharing-button--small"><div aria-hidden="true" class="resp-sharing-button__icon resp-sharing-button__icon--solid">
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>
+    </div>
+  </div>
+</a>
+
+
+<a class="resp-sharing-button__link" href="https://reddit.com/submit/?url=https%3a%2f%2fjoerismissaert.dev%2fposts%2f2020%2f07%2funderstanding-and-configuring-system-logging%2f&amp;resubmit=true&amp;title=Understanding%20and%20Configuring%20System%20Logging" target="_blank" rel="noopener" aria-label="" title="Share on reddit">
+  <div class="resp-sharing-button resp-sharing-button--reddit resp-sharing-button--small"><div aria-hidden="true" class="resp-sharing-button__icon resp-sharing-button__icon--solid">
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M12 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0zm5.01 4.744c.688 0 1.25.561 1.25 1.249a1.25 1.25 0 0 1-2.498.056l-2.597-.547-.8 3.747c1.824.07 3.48.632 4.674 1.488.308-.309.73-.491 1.207-.491.968 0 1.754.786 1.754 1.754 0 .716-.435 1.333-1.01 1.614a3.111 3.111 0 0 1 .042.52c0 2.694-3.13 4.87-7.004 4.87-3.874 0-7.004-2.176-7.004-4.87 0-.183.015-.366.043-.534A1.748 1.748 0 0 1 4.028 12c0-.968.786-1.754 1.754-1.754.463 0 .898.196 1.207.49 1.207-.883 2.878-1.43 4.744-1.487l.885-4.182a.342.342 0 0 1 .14-.197.35.35 0 0 1 .238-.042l2.906.617a1.214 1.214 0 0 1 1.108-.701zM9.25 12C8.561 12 8 12.562 8 13.25c0 .687.561 1.248 1.25 1.248.687 0 1.248-.561 1.248-1.249 0-.688-.561-1.249-1.249-1.249zm5.5 0c-.687 0-1.248.561-1.248 1.25 0 .687.561 1.248 1.249 1.248.688 0 1.249-.561 1.249-1.249 0-.687-.562-1.249-1.25-1.249zm-5.466 3.99a.327.327 0 0 0-.231.094.33.33 0 0 0 0 .463c.842.842 2.484.913 2.961.913.477 0 2.105-.056 2.961-.913a.361.361 0 0 0 .029-.463.33.33 0 0 0-.464 0c-.547.533-1.684.73-2.512.73-.828 0-1.979-.196-2.512-.73a.326.326 0 0 0-.232-.095z"/></svg>
+    </div>
+  </div>
+</a>
+
+      </div>
+
+    
+      <div class="pagination">
+        <div class="pagination__title">
+          <span class="pagination__title-h"></span>
+          <hr />
+        </div>
+
+        <div class="pagination__buttons">
+          
+            <span class="button previous">
+              <a href="https://joerismissaert.dev/posts/2020/07/managing-storage-understanding-mbr-and-gpt-partions/">
+                <span class="button__icon">←</span>
+                <span class="button__text">Managing Storage: Understanding MBR and GPT Partions</span>
+              </a>
+            </span>
+          
+
+          
+            <span class="button next">
+              <a href="https://joerismissaert.dev/scheduling-tasks-with-cron-at-anacron/">
+                <span class="button__text">Scheduling Tasks with Cron, At and Anacron</span>
+                <span class="button__icon">→</span>
+              </a>
+            </span>
+          
+        </div>
+      </div>
+    
+
+
+    
+      
+        <div id="comments">
+          <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "joeri-jm-smissaert" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+        </div>
+      
+    
+
+  </main>
+
+            </div>
+
+            
+                <footer class="footer">
+    <div class="footer__inner">
+        <div class="footer__content">
+            <span>&copy; 2020</span>
+            
+                <span><a href="https://joerismissaert.dev">Joeri JM Smissaert</a></span>
+            
+            
+                <span><a href="https://joerismissaert.dev/privacy-policy">Privacy Policy</a> & <a href="https://joerismissaert.dev/terms-of-service">Terms of Service</a></span>
+            
+            <span> <a href="https://joerismissaert.dev/posts/index.xml" target="_blank" title="rss"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-rss"><path d="M4 11a9 9 0 0 1 9 9"></path><path d="M4 4a16 16 0 0 1 16 16"></path><circle cx="5" cy="19" r="1"></circle></svg></a></span>
+        </div>
+    </div>
+    <div class="footer__inner">
+        <div class="footer__content">
+            <style>.bmc-button img{height: 34px !important;width: 35px !important;margin-bottom: 1px !important;box-shadow: none !important;border: none !important;vertical-align: middle !important;}.bmc-button{padding: 7px 15px 7px 10px !important;line-height: 35px !important;height:51px !important;text-decoration: none !important;display:inline-flex !important;color:#000000 !important;background-color:#FFFFFF !important;border-radius: 5px !important;border: 1px solid transparent !important;padding: 7px 15px 7px 10px !important;font-size: 20px !important;letter-spacing:0.6px !important;box-shadow: 0px 1px 2px rgba(190, 190, 190, 0.5) !important;-webkit-box-shadow: 0px 1px 2px 2px rgba(190, 190, 190, 0.5) !important;margin: 0 auto !important;font-family:'Roboto', cursive !important;-webkit-box-sizing: border-box !important;box-sizing: border-box !important;}.bmc-button:hover, .bmc-button:active, .bmc-button:focus {-webkit-box-shadow: 0px 1px 2px 2px rgba(190, 190, 190, 0.5) !important;text-decoration: none !important;box-shadow: 0px 1px 2px 2px rgba(190, 190, 190, 0.5) !important;opacity: 0.85 !important;color:#000000 !important;}</style><link href="https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap" rel="stylesheet"><a class="bmc-button" target="_blank" href="https://www.buymeacoffee.com/joerismissaert"><img src="https://cdn.buymeacoffee.com/buttons/bmc-new-btn-logo.svg" alt="Buy me a coffee"><span style="margin-left:5px;font-size:19px !important;">Buy me a coffee :)</span></a>
+        </div>
+    </div>
+</footer>
+
+            
+        </div>
+
+        
+
+
+
+
+<script type="text/javascript" src="https://joerismissaert.dev/bundle.min.dc716e9092c9820b77f96da294d0120aeeb189b5bcea9752309ebea27fd53bbe6b13cffb2aca8ecf32525647ceb7001f76091de4199ac5a3caa432c070247f5b.js" integrity="sha512-3HFukJLJggt3&#43;W2ilNASCu6xibW86pdSMJ6&#43;on/VO75rE8/7KsqOzzJSVkfOtwAfdgkd5BmaxaPKpDLAcCR/Ww=="></script>
+    
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-81179434-3', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+
+
+
+
+    </body>
+</html>

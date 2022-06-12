@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>processes on Joeri JM Smissaert</title>
+    <link>https://joerismissaert.dev/tags/processes/</link>
+    <description>Recent content in processes on Joeri JM Smissaert</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>&lt;a href=&#34;https://joerismissaert.dev/privacy-policy&#34;&gt;Privacy Policy&lt;/a&gt; &amp; &lt;a href=&#34;https://joerismissaert.dev/terms-of-service&#34;&gt;Terms of Service&lt;/a&gt;</copyright>
+    <lastBuildDate>Sat, 20 Jun 2020 13:57:41 +0000</lastBuildDate><atom:link href="https://joerismissaert.dev/tags/processes/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Managing Shell Jobs and Processes on RHEL8</title>
+      <link>https://joerismissaert.dev/managing-shell-jobs-and-processes-on-rhel8/</link>
+      <pubDate>Sat, 20 Jun 2020 13:57:41 +0000</pubDate>
+      
+      <guid>https://joerismissaert.dev/managing-shell-jobs-and-processes-on-rhel8/</guid>
+      <description>On Linux, we can distinct between three major process types: Shell jobs, Daemons and Kernel threads.
+ Shell Jobs are commands started from the command line and are also referred to as interactive processes. Daemons are processes that provides services. They usually start when a computer is booted. Kernel threads are part of the Linux kernel. You can not manage them using the common tools discussed in this post.  Managing Shell Jobs Running Jobs in the Foreground and Background When you type a command, a shell job is started automatically in the foreground occupying the terminal until it finishes.</description>
+    </item>
+    
+  </channel>
+</rss>

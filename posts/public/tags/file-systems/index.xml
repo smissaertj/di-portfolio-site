@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>File Systems on Joeri JM Smissaert</title>
+    <link>https://joerismissaert.dev/tags/file-systems/</link>
+    <description>Recent content in File Systems on Joeri JM Smissaert</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>&lt;a href=&#34;https://joerismissaert.dev/privacy-policy&#34;&gt;Privacy Policy&lt;/a&gt; &amp; &lt;a href=&#34;https://joerismissaert.dev/terms-of-service&#34;&gt;Terms of Service&lt;/a&gt;</copyright>
+    <lastBuildDate>Fri, 31 Jul 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://joerismissaert.dev/tags/file-systems/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Managing Storage: Creating &amp; Mounting File Systems</title>
+      <link>https://joerismissaert.dev/managing-storage-creating-mounting-file-systems/</link>
+      <pubDate>Fri, 31 Jul 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://joerismissaert.dev/managing-storage-creating-mounting-file-systems/</guid>
+      <description>Partitions by themselves aren&amp;rsquo;t of any use if they don&amp;rsquo;t contain a file system. On RHEL 8 different file systems can be used, the default being xfs. To format a partition with one of the supported file systems we can use the mkfs command followed by the -t option to specify a specific file system. Alternatively, you can use a file system-specific tool like mkfs.xfs to format an xfs file system or mkfs.</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Boot on Joeri JM Smissaert</title>
+    <link>https://joerismissaert.dev/tags/boot/</link>
+    <description>Recent content in Boot on Joeri JM Smissaert</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>&lt;a href=&#34;https://joerismissaert.dev/privacy-policy&#34;&gt;Privacy Policy&lt;/a&gt; &amp; &lt;a href=&#34;https://joerismissaert.dev/terms-of-service&#34;&gt;Terms of Service&lt;/a&gt;</copyright>
+    <lastBuildDate>Fri, 11 Sep 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://joerismissaert.dev/tags/boot/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Managing Systemd Targets and Working with GRUB2</title>
+      <link>https://joerismissaert.dev/managing-systemd-targets-working-with-grub2/</link>
+      <pubDate>Fri, 11 Sep 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://joerismissaert.dev/managing-systemd-targets-working-with-grub2/</guid>
+      <description>Managing Systemd Targets A Systemd target is a group of units belonging together, some of these targets can be used to define the state a system should boot in. These targets can be isolated and have the AllowIsolate property in their [Unit] section.
+Four targets can be used to boot into:
+ emergency.target : A minimal number of units are started. rescue.target : A fully operation Linux system without nonessential services.</description>
+    </item>
+    
+  </channel>
+</rss>

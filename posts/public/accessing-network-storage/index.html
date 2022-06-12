@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="author" content="Joeri JM Smissaert ">
+<meta name="description" content="firewalld: nfs, mountd, rpc-bind
+NFS Server yum install nfs-utils
+Mounting nfs shares showmount -e nfs-server mount nfs-server:/share /mnt /etc/fstab ==&amp;gt; _netdev mount option. nfs-server:/data /nfs nfs _netdev 0 0
+Mounting Samba shares cifs-utils samba-client smbclient -L //sambahost mount -o username=sambeuser //sambahost/share /mountpoint _netdev,username=,password= or noauto
+If you want to allow samba to modify public files used for public file transfer services. Files/Directories must be labeled public_content_rw_t., you must turn on the smbd_anon_write boolean." />
+<meta name="keywords" content="linux, red hat, centos, fedora, rhel, nginx, development, kinsta, rhcsa, python, RHEL, Network, Storage, Network Storage, NFS, CIFS, Samba" />
+<meta name="robots" content="noodp" />
+<meta name="theme-color" content="#42464a" />
+<link rel="canonical" href="https://joerismissaert.dev/accessing-network-storage/" />
+
+
+    <title>
+        
+            Accessing Network Storage :: Joeri JM Smissaert 
+        
+    </title>
+
+
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.2.1/css/flag-icon.min.css" rel="stylesheet"
+    type="text/css">
+
+
+
+<link rel="stylesheet" href="https://joerismissaert.dev/main.bc0e1ee95501e8eff4092797423b13efee0ad37ba6def28f39ac50c21062b401.css">
+
+
+
+
+    <link rel="apple-touch-icon" sizes="180x180" href="https://joerismissaert.dev/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="https://joerismissaert.dev/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="https://joerismissaert.dev/favicon-16x16.png">
+    <link rel="manifest" href="https://joerismissaert.dev/site.webmanifest">
+    <link rel="mask-icon" href="https://joerismissaert.dev/safari-pinned-tab.svg" color="##42464a">
+    <link rel="shortcut icon" href="https://joerismissaert.dev/favicon.ico">
+    <meta name="msapplication-TileColor" content="##42464a">
+    <meta name="theme-color" content="##42464a">
+
+
+
+<meta itemprop="name" content="Accessing Network Storage">
+<meta itemprop="description" content="firewalld: nfs, mountd, rpc-bind
+NFS Server yum install nfs-utils
+Mounting nfs shares showmount -e nfs-server mount nfs-server:/share /mnt /etc/fstab ==&gt; _netdev mount option. nfs-server:/data /nfs nfs _netdev 0 0
+Mounting Samba shares cifs-utils samba-client smbclient -L //sambahost mount -o username=sambeuser //sambahost/share /mountpoint _netdev,username=,password= or noauto
+If you want to allow samba to modify public files used for public file transfer services. Files/Directories must be labeled public_content_rw_t., you must turn on the smbd_anon_write boolean."><meta itemprop="datePublished" content="2020-11-07T00:00:00&#43;00:00" />
+<meta itemprop="dateModified" content="2020-11-07T00:00:00&#43;00:00" />
+<meta itemprop="wordCount" content="382">
+<meta itemprop="keywords" content="RHEL,Network,Storage,Network Storage,NFS,CIFS,Samba," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Accessing Network Storage"/>
+<meta name="twitter:description" content="firewalld: nfs, mountd, rpc-bind
+NFS Server yum install nfs-utils
+Mounting nfs shares showmount -e nfs-server mount nfs-server:/share /mnt /etc/fstab ==&gt; _netdev mount option. nfs-server:/data /nfs nfs _netdev 0 0
+Mounting Samba shares cifs-utils samba-client smbclient -L //sambahost mount -o username=sambeuser //sambahost/share /mountpoint _netdev,username=,password= or noauto
+If you want to allow samba to modify public files used for public file transfer services. Files/Directories must be labeled public_content_rw_t., you must turn on the smbd_anon_write boolean."/>
+
+
+
+    <meta property="og:title" content="Accessing Network Storage" />
+<meta property="og:description" content="firewalld: nfs, mountd, rpc-bind
+NFS Server yum install nfs-utils
+Mounting nfs shares showmount -e nfs-server mount nfs-server:/share /mnt /etc/fstab ==&gt; _netdev mount option. nfs-server:/data /nfs nfs _netdev 0 0
+Mounting Samba shares cifs-utils samba-client smbclient -L //sambahost mount -o username=sambeuser //sambahost/share /mountpoint _netdev,username=,password= or noauto
+If you want to allow samba to modify public files used for public file transfer services. Files/Directories must be labeled public_content_rw_t., you must turn on the smbd_anon_write boolean." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://joerismissaert.dev/accessing-network-storage/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2020-11-07T00:00:00&#43;00:00" />
+<meta property="article:modified_time" content="2020-11-07T00:00:00&#43;00:00" />
+
+
+
+
+
+
+
+    <meta property="article:published_time" content="2020-11-07 00:00:00 &#43;0000 UTC" />
+
+
+
+
+
+
+
+
+    </head>
+
+    <body class="dark-theme">
+        <div class="container">
+            <header class="header">
+    <span class="header__inner">
+        <a href="https://joerismissaert.dev/" style="text-decoration: none;">
+    <div class="logo">
+        
+            <span class="logo__mark">></span>
+            <span class="logo__text">$ cd ~</span>
+            <span class="logo__cursor" style=
+                  "
+                   background-color:#8B0000;
+                   ">
+            </span>
+        
+    </div>
+</a>
+
+
+        <span class="header__right">
+            
+                <nav class="menu">
+    <ul class="menu__inner"><li><a href="https://joerismissaert.dev/about/">1. About</a></li><li><a href="https://joerismissaert.dev/posts/">2. Posts</a></li><li><a href="https://joerismissaert.dev/dev/">3. Dev</a></li><li><a href="https://joerismissaert.dev/webdev/">4. WebDev</a></li>
+    </ul>
+</nav>
+
+                <span class="menu-trigger">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        <path d="M0 0h24v24H0z" fill="none"/>
+                        <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/>
+                    </svg>
+                </span>
+            
+
+            <span class="theme-toggle unselectable"><svg class="theme-toggler" width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M22 41C32.4934 41 41 32.4934 41 22C41 11.5066 32.4934 3 22
+  3C11.5066 3 3 11.5066 3 22C3 32.4934 11.5066 41 22 41ZM7 22C7
+  13.7157 13.7157 7 22 7V37C13.7157 37 7 30.2843 7 22Z"/>
+</svg>
+</span>
+        </span>
+    </span>
+</header>
+
+
+            <div class="content">
+                
+  <main class="post">
+
+    <div class="post-info">
+      <p>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clock">
+          <circle cx="12" cy="12" r="10"></circle>
+          <polyline points="12 6 12 12 16 14"></polyline>
+        </svg>
+        2 minutes
+
+        
+      </p>
+    </div>
+
+    <article>
+      <h1 class="post-title">
+        <a href="https://joerismissaert.dev/accessing-network-storage/">Accessing Network Storage</a>
+      </h1>
+
+      
+
+      <div class="post-content">
+        <figure class="center">
+    <img src="https://joerismissaert.dev/img/redhat-8-logo.png"
+         alt="Red Hat logo"/> 
+</figure>
+
+<p>firewalld: nfs, mountd, rpc-bind</p>
+<h1 id="nfs-server">NFS Server</h1>
+<p>yum install nfs-utils</p>
+<h1 id="mounting-nfs-shares">Mounting nfs shares</h1>
+<p>showmount -e nfs-server
+mount nfs-server:/share /mnt
+<code>/etc/fstab</code> ==&gt; <code>_netdev</code> mount option.
+nfs-server:/data  /nfs  nfs _netdev 0 0</p>
+<h1 id="mounting-samba-shares">Mounting Samba shares</h1>
+<p>cifs-utils samba-client
+smbclient -L //sambahost
+mount -o username=sambeuser //sambahost/share /mountpoint
+<code>_netdev,username=,password=</code> or <code>noauto</code></p>
+<p>If you want to allow samba to modify public files used for public file transfer services.  Files/Directories must be labeled public_content_rw_t., you must turn on the smbd_anon_write boolean.</p>
+<h1 id="automount">automount</h1>
+<h1 id="using-nfs-services">Using NFS Services</h1>
+<p>The Network File System is a protocol that was developed for UNIX by Sun in the early 1980s. Its purpose is to make mounting of remote file systems in the local file system hierarchy possible. It was often used with Network Information Services (NIS) which provides network-based authentication, all machines connected to the NIS server used the same user accounts and security was handled by the NIS server. NFS security by default is limited to allowing and restricting specific hosts.</p>
+<p>Without NIS, NFS seems to be an unsecure solution: if on server1 the user X has UID 1001 and on server2 user Y has UID 1001, then user X would have the same access to server2 resources as user Y. To prevent situations like this, NFS should be used together with a centralized authentication service like the Lightweight Directory Access Protocol (LDAP) and Kerberos. This solution is not covered in this post.</p>
+<p>On RHEL8, NFS 4 is the default version of NFS wichi you can override when mounting using the <code>nfsvers=</code> mount option. Typically, clients will automatically fallback to a previous version of NFS if required.</p>
+<h2 id="offering-an-nfs-share">Offering an NFS Share</h2>
+<p>To setup an NFS share you would need to go through a few tasks:</p>
+<ul>
+<li>Create local directories which you want to share:</li>
+</ul>
+<pre><code>[root@server1 users]# mkdir -p /nfsdata /users/user{1..2}
+[root@server1 users]# cp -r /etc/[a-c]* /nfsdata/
+[root@server1 users]# cp -r /etc/[d-f]* /users/user1/
+[root@server1 users]# cp -r /etc/[g-i]* /users/user2/
+</code></pre><ul>
+<li>Edit the <code>/etc/exports</code> file to define the NFS shares:</li>
+</ul>
+<pre><code>[root@server1 users]# vim /etc/exports
+[root@server1 users]# cat /etc/exports
+/nfsdata	*(rw,no_root_squash)
+/users		*(rw,no_root_squash)
+</code></pre><ul>
+<li>Start and enable the NFS server:</li>
+</ul>
+<pre><code>[root@server1 users]# yum install nfs-utils
+[root@server1 users]# systemctl enable --now nfs-server
+</code></pre><ul>
+<li>Configure the firewall to allow incoming NFS traffic</li>
+</ul>
+<pre><code>[root@server1 users]# firewall-cmd --add-service=nfs --permanent
+success
+[root@server1 users]# firewall-cmd --add-service=rpc-bind --permanent
+success
+[root@server1 users]# firewall-cmd --add-service=mountd --permanent
+success
+[root@server1 users]# firewall-cmd --reload
+success
+</code></pre>
+      </div>
+    </article>
+
+    <hr />
+
+    <div class="post-info">
+        <p>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-tag meta-icon">
+            <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path>
+            <line x1="7" y1="7" x2="7" y2="7"></line>
+          </svg><span class="tag"><a href="https://joerismissaert.dev/tags/rhel/">RHEL</a></span><span class="tag"><a href="https://joerismissaert.dev/tags/network/">Network</a></span><span class="tag"><a href="https://joerismissaert.dev/tags/storage/">Storage</a></span><span class="tag"><a href="https://joerismissaert.dev/tags/network-storage/">Network Storage</a></span><span class="tag"><a href="https://joerismissaert.dev/tags/nfs/">NFS</a></span><span class="tag"><a href="https://joerismissaert.dev/tags/cifs/">CIFS</a></span><span class="tag"><a href="https://joerismissaert.dev/tags/samba/">Samba</a></span>
+        </p>
+
+      <p>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+          <polyline points="14 2 14 8 20 8"></polyline>
+          <line x1="16" y1="13" x2="8" y2="13"></line>
+          <line x1="16" y1="17" x2="8" y2="17"></line>
+          <polyline points="10 9 9 9 8 9"></polyline>
+        </svg>
+        382 Words
+      </p>
+
+      <p>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar">
+          <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+          <line x1="16" y1="2" x2="16" y2="6"></line>
+          <line x1="8" y1="2" x2="8" y2="6"></line>
+          <line x1="3" y1="10" x2="21" y2="10"></line>
+        </svg>
+        2020-11-07 04:00 &#43;0400
+      </p>
+    </div>
+      <hr />
+      <div class="sharing-buttons">
+        
+<a class="resp-sharing-button__link resp-sharing-button__icon--solid" href="https://facebook.com/sharer/sharer.php?u=https%3a%2f%2fjoerismissaert.dev%2faccessing-network-storage%2f" target="_blank" rel="noopener" aria-label="" title="Share on facebook">
+  <div class="resp-sharing-button resp-sharing-button--facebook resp-sharing-button--small resp-sharing-button__icon--solid"><div aria-hidden="true" class="resp-sharing-button__icon resp-sharing-button__icon--solid">
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg>
+    </div>
+  </div>
+</a>
+
+
+<a class="resp-sharing-button__link" href="https://twitter.com/intent/tweet/?url=https%3a%2f%2fjoerismissaert.dev%2faccessing-network-storage%2f" target="_blank" rel="noopener" aria-label="" title="Share on twitter">
+  <div class="resp-sharing-button resp-sharing-button--twitter resp-sharing-button--small">
+      <div aria-hidden="true" class="resp-sharing-button__icon resp-sharing-button__icon--solid">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path></svg>
+    </div>
+  </div>
+</a>
+
+
+
+
+<a class="resp-sharing-button__link" href="https://www.linkedin.com/shareArticle?mini=true&amp;url=https%3a%2f%2fjoerismissaert.dev%2faccessing-network-storage%2f&amp;title=Accessing%20Network%20Storage&amp;summary=Accessing%20Network%20Storage&amp;source=https%3a%2f%2fjoerismissaert.dev%2faccessing-network-storage%2f" target="_blank" rel="noopener" aria-label="" title="Share on linkedin">
+  <div class="resp-sharing-button resp-sharing-button--linkedin resp-sharing-button--small"><div aria-hidden="true" class="resp-sharing-button__icon resp-sharing-button__icon--solid">
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>
+    </div>
+  </div>
+</a>
+
+
+<a class="resp-sharing-button__link" href="https://reddit.com/submit/?url=https%3a%2f%2fjoerismissaert.dev%2faccessing-network-storage%2f&amp;resubmit=true&amp;title=Accessing%20Network%20Storage" target="_blank" rel="noopener" aria-label="" title="Share on reddit">
+  <div class="resp-sharing-button resp-sharing-button--reddit resp-sharing-button--small"><div aria-hidden="true" class="resp-sharing-button__icon resp-sharing-button__icon--solid">
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M12 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0zm5.01 4.744c.688 0 1.25.561 1.25 1.249a1.25 1.25 0 0 1-2.498.056l-2.597-.547-.8 3.747c1.824.07 3.48.632 4.674 1.488.308-.309.73-.491 1.207-.491.968 0 1.754.786 1.754 1.754 0 .716-.435 1.333-1.01 1.614a3.111 3.111 0 0 1 .042.52c0 2.694-3.13 4.87-7.004 4.87-3.874 0-7.004-2.176-7.004-4.87 0-.183.015-.366.043-.534A1.748 1.748 0 0 1 4.028 12c0-.968.786-1.754 1.754-1.754.463 0 .898.196 1.207.49 1.207-.883 2.878-1.43 4.744-1.487l.885-4.182a.342.342 0 0 1 .14-.197.35.35 0 0 1 .238-.042l2.906.617a1.214 1.214 0 0 1 1.108-.701zM9.25 12C8.561 12 8 12.562 8 13.25c0 .687.561 1.248 1.25 1.248.687 0 1.248-.561 1.248-1.249 0-.688-.561-1.249-1.249-1.249zm5.5 0c-.687 0-1.248.561-1.248 1.25 0 .687.561 1.248 1.249 1.248.688 0 1.249-.561 1.249-1.249 0-.687-.562-1.249-1.25-1.249zm-5.466 3.99a.327.327 0 0 0-.231.094.33.33 0 0 0 0 .463c.842.842 2.484.913 2.961.913.477 0 2.105-.056 2.961-.913a.361.361 0 0 0 .029-.463.33.33 0 0 0-.464 0c-.547.533-1.684.73-2.512.73-.828 0-1.979-.196-2.512-.73a.326.326 0 0 0-.232-.095z"/></svg>
+    </div>
+  </div>
+</a>
+
+      </div>
+
+    
+      <div class="pagination">
+        <div class="pagination__title">
+          <span class="pagination__title-h"></span>
+          <hr />
+        </div>
+
+        <div class="pagination__buttons">
+          
+
+          
+            <span class="button next">
+              <a href="https://joerismissaert.dev/managing-a-firewall-with-firewalld/">
+                <span class="button__text">Managing a Firewall with Firewalld</span>
+                <span class="button__icon">→</span>
+              </a>
+            </span>
+          
+        </div>
+      </div>
+    
+
+
+    
+      
+        <div id="comments">
+          <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "joeri-jm-smissaert" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+        </div>
+      
+    
+
+  </main>
+
+            </div>
+
+            
+                <footer class="footer">
+    <div class="footer__inner">
+        <div class="footer__content">
+            <span>&copy; 2021</span>
+            
+                <span><a href="https://joerismissaert.dev">Joeri JM Smissaert</a></span>
+            
+            
+                <span><a href="https://joerismissaert.dev/privacy-policy">Privacy Policy</a> & <a href="https://joerismissaert.dev/terms-of-service">Terms of Service</a></span>
+            
+            <span> <a href="https://joerismissaert.dev/posts/index.xml" target="_blank" title="rss"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-rss"><path d="M4 11a9 9 0 0 1 9 9"></path><path d="M4 4a16 16 0 0 1 16 16"></path><circle cx="5" cy="19" r="1"></circle></svg></a></span>
+        </div>
+    </div>
+    <div class="footer__inner">
+        <div class="footer__content">
+            <style>.bmc-button img{height: 34px !important;width: 35px !important;margin-bottom: 1px !important;box-shadow: none !important;border: none !important;vertical-align: middle !important;}.bmc-button{padding: 7px 15px 7px 10px !important;line-height: 35px !important;height:51px !important;text-decoration: none !important;display:inline-flex !important;color:#000000 !important;background-color:#FFFFFF !important;border-radius: 5px !important;border: 1px solid transparent !important;padding: 7px 15px 7px 10px !important;font-size: 20px !important;letter-spacing:0.6px !important;box-shadow: 0px 1px 2px rgba(190, 190, 190, 0.5) !important;-webkit-box-shadow: 0px 1px 2px 2px rgba(190, 190, 190, 0.5) !important;margin: 0 auto !important;font-family:'Roboto', cursive !important;-webkit-box-sizing: border-box !important;box-sizing: border-box !important;}.bmc-button:hover, .bmc-button:active, .bmc-button:focus {-webkit-box-shadow: 0px 1px 2px 2px rgba(190, 190, 190, 0.5) !important;text-decoration: none !important;box-shadow: 0px 1px 2px 2px rgba(190, 190, 190, 0.5) !important;opacity: 0.85 !important;color:#000000 !important;}</style><link href="https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap" rel="stylesheet"><a class="bmc-button" target="_blank" href="https://www.buymeacoffee.com/joerismissaert"><img src="https://cdn.buymeacoffee.com/buttons/bmc-new-btn-logo.svg" alt="Buy me a coffee"><span style="margin-left:5px;font-size:19px !important;">Buy me a coffee :)</span></a>
+        </div>
+    </div>
+</footer>
+
+            
+        </div>
+
+        
+
+
+
+
+<script type="text/javascript" src="https://joerismissaert.dev/bundle.min.a0f363fdf81cdc5cfacc447a79c33189eb000d090336cd04aac8ee256f423b3133b836c281944c19c75e38d0b0b449f01ce5807e37798b7ac94ac1db51983fc4.js" integrity="sha512-oPNj/fgc3Fz6zER6ecMxiesADQkDNs0EqsjuJW9COzEzuDbCgZRMGcdeONCwtEnwHOWAfjd5i3rJSsHbUZg/xA=="></script>
+    
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-81179434-3', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+
+
+
+
+    </body>
+</html>

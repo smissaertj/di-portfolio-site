@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>repo on Joeri JM Smissaert</title>
+    <link>https://joerismissaert.dev/tags/repo/</link>
+    <description>Recent content in repo on Joeri JM Smissaert</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>&lt;a href=&#34;https://joerismissaert.dev/privacy-policy&#34;&gt;Privacy Policy&lt;/a&gt; &amp; &lt;a href=&#34;https://joerismissaert.dev/terms-of-service&#34;&gt;Terms of Service&lt;/a&gt;</copyright>
+    <lastBuildDate>Thu, 21 May 2020 16:54:46 +0000</lastBuildDate><atom:link href="https://joerismissaert.dev/tags/repo/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Package Management with Yum: Understanding Repo’s, Groups, Package Module Streams and RPM Queries</title>
+      <link>https://joerismissaert.dev/package-management-with-yum-understanding-repos-groups-package-module-streams-and-rpm-queries/</link>
+      <pubDate>Thu, 21 May 2020 16:54:46 +0000</pubDate>
+      
+      <guid>https://joerismissaert.dev/package-management-with-yum-understanding-repos-groups-package-module-streams-and-rpm-queries/</guid>
+      <description>The Yellowdog Updater, Modified, is the default utility to manage software packages on Red Hat Enterprise Linux. On Fedora (the upstream version of RHEL) Yum has been replaced with dnf but Red Hat decided to keep the Yum name for the RHEL releases. Although you&amp;rsquo;ll be using yum, under the hood you&amp;rsquo;re in fact using dnf which is why sometimes you&amp;rsquo;ll see references to dnf or dnf resources.
+The Role of Repositories Yum is designed to work with repositories which are depots of available software packages.</description>
+    </item>
+    
+  </channel>
+</rss>

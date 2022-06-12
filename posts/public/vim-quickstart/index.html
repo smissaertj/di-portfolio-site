@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="author" content="Joeri">
+<meta name="description" content="Nano used to be my favorite command line text editor until I (re)discovered Vim (Vi improved). I never was a big fan of Vim earlier on because of the command and input mode that leads to confusion. One does not simply quit Vim. Well, at least not until you put your back into it.
+I decided to take some time to learn Vim because it offers some enhancements over regular Vi (syntax highlighting for one) and Vi is really the only text editor that is always available on any Linux distribution." />
+<meta name="keywords" content="linux, red hat, centos, fedora, rhel, nginx, development, kinsta, rhcsa, python, text editor, vi, vim" />
+<meta name="robots" content="noodp" />
+<meta name="theme-color" content="#252627" />
+<link rel="canonical" href="https://staging.joerismissaert.dev/vim-quickstart/" />
+
+
+    <title>
+        
+            Vim Quickstart :: Joeri JM Smissaert 
+        
+    </title>
+
+
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.2.1/css/flag-icon.min.css" rel="stylesheet"
+    type="text/css">
+
+
+
+<link rel="stylesheet" href="https://staging.joerismissaert.dev/main.82e76569c5d77b59e62e409586b0e2d463cfd10858f2d854656d4d4b70d90920.css">
+
+
+
+
+    <link rel="apple-touch-icon" sizes="180x180" href="https://staging.joerismissaert.dev/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="https://staging.joerismissaert.dev/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="https://staging.joerismissaert.dev/favicon-16x16.png">
+    <link rel="manifest" href="https://staging.joerismissaert.dev/site.webmanifest">
+    <link rel="mask-icon" href="https://staging.joerismissaert.dev/safari-pinned-tab.svg" color="#252627">
+    <link rel="shortcut icon" href="https://staging.joerismissaert.dev/favicon.ico">
+    <meta name="msapplication-TileColor" content="#252627">
+    <meta name="theme-color" content="#252627">
+
+
+
+<meta itemprop="name" content="Vim Quickstart">
+<meta itemprop="description" content="Nano used to be my favorite command line text editor until I (re)discovered Vim (Vi improved). I never was a big fan of Vim earlier on because of the command and input mode that leads to confusion. One does not simply quit Vim. Well, at least not until you put your back into it.
+I decided to take some time to learn Vim because it offers some enhancements over regular Vi (syntax highlighting for one) and Vi is really the only text editor that is always available on any Linux distribution.">
+<meta itemprop="datePublished" content="2020-05-04T07:56:09&#43;00:00" />
+<meta itemprop="dateModified" content="2020-05-04T07:56:09&#43;00:00" />
+<meta itemprop="wordCount" content="437">
+
+
+
+<meta itemprop="keywords" content="text editor,vi,vim," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Vim Quickstart"/>
+<meta name="twitter:description" content="Nano used to be my favorite command line text editor until I (re)discovered Vim (Vi improved). I never was a big fan of Vim earlier on because of the command and input mode that leads to confusion. One does not simply quit Vim. Well, at least not until you put your back into it.
+I decided to take some time to learn Vim because it offers some enhancements over regular Vi (syntax highlighting for one) and Vi is really the only text editor that is always available on any Linux distribution."/>
+
+
+
+    <meta property="og:title" content="Vim Quickstart" />
+<meta property="og:description" content="Nano used to be my favorite command line text editor until I (re)discovered Vim (Vi improved). I never was a big fan of Vim earlier on because of the command and input mode that leads to confusion. One does not simply quit Vim. Well, at least not until you put your back into it.
+I decided to take some time to learn Vim because it offers some enhancements over regular Vi (syntax highlighting for one) and Vi is really the only text editor that is always available on any Linux distribution." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://staging.joerismissaert.dev/vim-quickstart/" />
+<meta property="article:published_time" content="2020-05-04T07:56:09+00:00" />
+<meta property="article:modified_time" content="2020-05-04T07:56:09+00:00" />
+
+
+
+
+    <meta property="article:section" content="Linux" />
+
+
+
+    <meta property="article:published_time" content="2020-05-04 07:56:09 &#43;0000 &#43;0000" />
+
+
+
+
+
+
+
+
+    </head>
+
+    <body class="dark-theme">
+        <div class="container">
+            <header class="header">
+    <span class="header__inner">
+        <a href="https://staging.joerismissaert.dev/" style="text-decoration: none;">
+    <div class="logo">
+        
+            <span class="logo__mark">></span>
+            <span class="logo__text">$ cd /home/joeri</span>
+            <span class="logo__cursor" style=
+                  "
+                   background-color:#8B0000;
+                   ">
+            </span>
+        
+    </div>
+</a>
+
+
+        <span class="header__right">
+            
+                <nav class="menu">
+    <ul class="menu__inner"><li><a href="https://staging.joerismissaert.dev/about/">About</a></li><li><a href="https://staging.joerismissaert.dev/posts/">Posts</a></li>
+    </ul>
+</nav>
+
+                <span class="menu-trigger">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        <path d="M0 0h24v24H0z" fill="none"/>
+                        <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/>
+                    </svg>
+                </span>
+            
+
+            <span class="theme-toggle unselectable"><svg class="theme-toggler" width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M22 41C32.4934 41 41 32.4934 41 22C41 11.5066 32.4934 3 22
+  3C11.5066 3 3 11.5066 3 22C3 32.4934 11.5066 41 22 41ZM7 22C7
+  13.7157 13.7157 7 22 7V37C13.7157 37 7 30.2843 7 22Z"/>
+</svg>
+</span>
+        </span>
+    </span>
+</header>
+
+
+            <div class="content">
+                
+    <main class="post">
+
+        <div class="post-info">
+            
+            </p>
+        </div>
+
+        <article>
+            <h2 class="post-title"><a href="https://staging.joerismissaert.dev/vim-quickstart/">Vim Quickstart</a></h2>
+
+            
+
+            <div class="post-content">
+                <!-- raw HTML omitted -->
+<p>Nano used to be my favorite command line text editor until I (re)discovered Vim (Vi improved). I never was a big fan of Vim earlier on because of the command and input mode that leads to confusion. One does not simply quit Vim. Well, at least not until you put your back into it.</p>
+<p>I decided to take some time to learn Vim because it offers some enhancements over regular Vi (syntax highlighting for one) and Vi is really the only text editor that is always available on any Linux distribution.<br>
+Everything I mention here on Vim will be applicable for Vi as well.</p>
+<p>After an hour or two getting my feet wet it all started to make sense and the commands started sticking around. Vim has now become my goto text editor on the command line, I even created an alias for Nano to Vim in my <code>.bashrc</code> file just in case.</p>
+<p>I started getting comfortable with Vim by using <code>vimtutor</code>. This command opens a Vim tutorial that let’s you work through some exercises.<br>
+You can install <code>vimtutor</code> by doing <code>dnf install vim-enhanced</code>.</p>
+<p>Below is a small cheat sheet of regular commands I’m using:<!-- raw HTML omitted --></p>
+<!-- raw HTML omitted -->
+<pre><code>&lt;th class=&quot;has-text-align-center&quot; data-align=&quot;center&quot;&gt;
+  Explanation
+&lt;/th&gt;
+</code></pre>
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<pre><code>&lt;td class=&quot;has-text-align-center&quot; data-align=&quot;center&quot;&gt;
+  Switches from input mode to command mode.
+&lt;/td&gt;
+</code></pre>
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<pre><code>&lt;td class=&quot;has-text-align-center&quot; data-align=&quot;center&quot;&gt;
+  Switches from command to input mode at the current cursor position (i) or after the current cursor position (a)
+&lt;/td&gt;
+</code></pre>
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<pre><code>&lt;td class=&quot;has-text-align-center&quot; data-align=&quot;center&quot;&gt;
+  Opens a new line below the current cursor position and switches to input mode
+&lt;/td&gt;
+</code></pre>
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<pre><code>&lt;td class=&quot;has-text-align-center&quot; data-align=&quot;center&quot;&gt;
+  Save and exit
+&lt;/td&gt;
+</code></pre>
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<pre><code>&lt;td class=&quot;has-text-align-center&quot; data-align=&quot;center&quot;&gt;
+  Exit without saving changes
+&lt;/td&gt;
+</code></pre>
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<pre><code>&lt;td class=&quot;has-text-align-center&quot; data-align=&quot;center&quot;&gt;
+  Save the current file under a new filename
+&lt;/td&gt;
+</code></pre>
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<pre><code>&lt;td class=&quot;has-text-align-center&quot; data-align=&quot;center&quot;&gt;
+  Delete the current line
+&lt;/td&gt;
+</code></pre>
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<pre><code>&lt;td class=&quot;has-text-align-center&quot; data-align=&quot;center&quot;&gt;
+  Copy the current line
+&lt;/td&gt;
+</code></pre>
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<pre><code>&lt;td class=&quot;has-text-align-center&quot; data-align=&quot;center&quot;&gt;
+  Paste the current selection
+&lt;/td&gt;
+</code></pre>
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<pre><code>&lt;td class=&quot;has-text-align-center&quot; data-align=&quot;center&quot;&gt;
+  Enter Visual mode. Select a block of text using the arrow keys. Use &lt;strong&gt;d&lt;/strong&gt; to cut or &lt;strong&gt;y &lt;/strong&gt;to copy the selection.
+&lt;/td&gt;
+</code></pre>
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<pre><code>&lt;td class=&quot;has-text-align-center&quot; data-align=&quot;center&quot;&gt;
+  Undo
+&lt;/td&gt;
+</code></pre>
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<pre><code>&lt;td class=&quot;has-text-align-center&quot; data-align=&quot;center&quot;&gt;
+  Redo
+&lt;/td&gt;
+</code></pre>
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<pre><code>&lt;td class=&quot;has-text-align-center&quot; data-align=&quot;center&quot;&gt;
+  Go to the first line
+&lt;/td&gt;
+</code></pre>
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<pre><code>&lt;td class=&quot;has-text-align-center&quot; data-align=&quot;center&quot;&gt;
+  Go to the last line
+&lt;/td&gt;
+</code></pre>
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<pre><code>&lt;td class=&quot;has-text-align-center&quot; data-align=&quot;center&quot;&gt;
+  Searches for &lt;em&gt;text&lt;/em&gt; from the current cursor position forward
+&lt;/td&gt;
+</code></pre>
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<pre><code>&lt;td class=&quot;has-text-align-center&quot; data-align=&quot;center&quot;&gt;
+  Searches for &lt;em&gt;text&lt;/em&gt; from the current cursor position backward
+&lt;/td&gt;
+</code></pre>
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<pre><code>&lt;td class=&quot;has-text-align-center&quot; data-align=&quot;center&quot;&gt;
+  Go to the first position in the current line
+&lt;/td&gt;
+</code></pre>
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<pre><code>&lt;td class=&quot;has-text-align-center&quot; data-align=&quot;center&quot;&gt;
+  Go to the last position in the current line
+&lt;/td&gt;
+</code></pre>
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<pre><code>&lt;td class=&quot;has-text-align-center&quot; data-align=&quot;center&quot;&gt;
+  Adds to output of &lt;strong&gt;ls&lt;/strong&gt; in the current file. Can be any other command.
+&lt;/td&gt;
+</code></pre>
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<pre><code>&lt;td class=&quot;has-text-align-center&quot; data-align=&quot;center&quot;&gt;
+  Replaces all occurrences of &lt;em&gt;old &lt;/em&gt;with &lt;em&gt;new&lt;/em&gt;
+&lt;/td&gt;
+</code></pre>
+<!-- raw HTML omitted -->
+
+            </div>
+        </article>
+
+        <hr />
+
+        <div class="post-info">
+  				<p>
+  					<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-tag meta-icon"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7" y2="7"></line></svg><span class="tag"><a href="https://staging.joerismissaert.dev/tags/text-editor">text editor</a></span><span class="tag"><a href="https://staging.joerismissaert.dev/tags/vi">vi</a></span><span class="tag"><a href="https://staging.joerismissaert.dev/tags/vim">vim</a></span>
+  				</p>
+  		</div>
+    </main>
+
+            </div>
+
+            
+                <footer class="footer">
+    <div class="footer__inner">
+        <div class="footer__content">
+            <span>&copy; 2020</span>
+            
+                <span><a href="https://staging.joerismissaert.dev">Joeri JM Smissaert</a></span>
+            
+            
+            <span> <a href="https://staging.joerismissaert.dev/posts/index.xml" target="_blank" title="rss"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-rss"><path d="M4 11a9 9 0 0 1 9 9"></path><path d="M4 4a16 16 0 0 1 16 16"></path><circle cx="5" cy="19" r="1"></circle></svg></a></span>
+        </div>
+    </div>
+    <div class="footer__inner">
+        <div class="footer__content">
+            <style>.bmc-button img{height: 34px !important;width: 35px !important;margin-bottom: 1px !important;box-shadow: none !important;border: none !important;vertical-align: middle !important;}.bmc-button{padding: 7px 15px 7px 10px !important;line-height: 35px !important;height:51px !important;text-decoration: none !important;display:inline-flex !important;color:#000000 !important;background-color:#FFFFFF !important;border-radius: 5px !important;border: 1px solid transparent !important;padding: 7px 15px 7px 10px !important;font-size: 20px !important;letter-spacing:0.6px !important;box-shadow: 0px 1px 2px rgba(190, 190, 190, 0.5) !important;-webkit-box-shadow: 0px 1px 2px 2px rgba(190, 190, 190, 0.5) !important;margin: 0 auto !important;font-family:'Arial', cursive !important;-webkit-box-sizing: border-box !important;box-sizing: border-box !important;}.bmc-button:hover, .bmc-button:active, .bmc-button:focus {-webkit-box-shadow: 0px 1px 2px 2px rgba(190, 190, 190, 0.5) !important;text-decoration: none !important;box-shadow: 0px 1px 2px 2px rgba(190, 190, 190, 0.5) !important;opacity: 0.85 !important;color:#000000 !important;}</style><link href="https://fonts.googleapis.com/css?family=Arial" rel="stylesheet"><a class="bmc-button" target="_blank" href="https://www.buymeacoffee.com/joerismissaert"><img src="https://cdn.buymeacoffee.com/buttons/bmc-new-btn-logo.svg" alt="Buy me a coffee"><span style="margin-left:5px;font-size:19px !important;">Buy me a coffee</span></a>
+        </div>
+    </div>
+</footer>
+
+            
+        </div>
+
+        
+
+
+
+
+<script type="text/javascript" src="https://staging.joerismissaert.dev/bundle.min.dc716e9092c9820b77f96da294d0120aeeb189b5bcea9752309ebea27fd53bbe6b13cffb2aca8ecf32525647ceb7001f76091de4199ac5a3caa432c070247f5b.js" integrity="sha512-3HFukJLJggt3&#43;W2ilNASCu6xibW86pdSMJ6&#43;on/VO75rE8/7KsqOzzJSVkfOtwAfdgkd5BmaxaPKpDLAcCR/Ww=="></script>
+    
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-81179434-3', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+
+
+
+
+    </body>
+</html>

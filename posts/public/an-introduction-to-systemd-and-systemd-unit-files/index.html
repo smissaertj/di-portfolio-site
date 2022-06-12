@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="author" content="Joeri JM Smissaert ">
+<meta name="description" content="Systemd is considered to be the future standard init system by all mainstream Linux distributions. The Systemd System and Service Manager uses &amp;ldquo;units&amp;rdquo; as an abstraction for parts of the system to be managed: typically services, sockets, mounts and targets. It provides a uniform interface for managing units.
+The systemctl -t help command displays a list of available units that can be managed with Systemd.
+[student@server1 ~]$ systemctl -t help Available unit types: service mount swap socket target device automount timer path slice scope Each unit type can be recognized by the file extension." />
+<meta name="keywords" content="linux, red hat, centos, fedora, rhel, nginx, development, kinsta, rhcsa, python, Red Hat, Service Manager, Systemd, Units, RHEL, RHCSA" />
+<meta name="robots" content="noodp" />
+<meta name="theme-color" content="#42464a" />
+<link rel="canonical" href="https://joerismissaert.dev/an-introduction-to-systemd-and-systemd-unit-files/" />
+
+
+    <title>
+        
+            An Introduction to Systemd and Systemd Unit files :: Joeri JM Smissaert 
+        
+    </title>
+
+
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.2.1/css/flag-icon.min.css" rel="stylesheet"
+    type="text/css">
+
+
+
+<link rel="stylesheet" href="https://joerismissaert.dev/main.bc0e1ee95501e8eff4092797423b13efee0ad37ba6def28f39ac50c21062b401.css">
+
+
+
+
+    <link rel="apple-touch-icon" sizes="180x180" href="https://joerismissaert.dev/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="https://joerismissaert.dev/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="https://joerismissaert.dev/favicon-16x16.png">
+    <link rel="manifest" href="https://joerismissaert.dev/site.webmanifest">
+    <link rel="mask-icon" href="https://joerismissaert.dev/safari-pinned-tab.svg" color="##42464a">
+    <link rel="shortcut icon" href="https://joerismissaert.dev/favicon.ico">
+    <meta name="msapplication-TileColor" content="##42464a">
+    <meta name="theme-color" content="##42464a">
+
+
+
+<meta itemprop="name" content="An Introduction to Systemd and Systemd Unit files">
+<meta itemprop="description" content="Systemd is considered to be the future standard init system by all mainstream Linux distributions. The Systemd System and Service Manager uses &ldquo;units&rdquo; as an abstraction for parts of the system to be managed: typically services, sockets, mounts and targets. It provides a uniform interface for managing units.
+The systemctl -t help command displays a list of available units that can be managed with Systemd.
+[student@server1 ~]$ systemctl -t help Available unit types: service mount swap socket target device automount timer path slice scope Each unit type can be recognized by the file extension.">
+<meta itemprop="datePublished" content="2020-06-25T12:04:28+00:00" />
+<meta itemprop="dateModified" content="2020-06-25T12:04:28+00:00" />
+<meta itemprop="wordCount" content="1941">
+
+
+
+<meta itemprop="keywords" content="Red Hat,Service Manager,Systemd,Units,RHEL,RHCSA," />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="An Introduction to Systemd and Systemd Unit files"/>
+<meta name="twitter:description" content="Systemd is considered to be the future standard init system by all mainstream Linux distributions. The Systemd System and Service Manager uses &ldquo;units&rdquo; as an abstraction for parts of the system to be managed: typically services, sockets, mounts and targets. It provides a uniform interface for managing units.
+The systemctl -t help command displays a list of available units that can be managed with Systemd.
+[student@server1 ~]$ systemctl -t help Available unit types: service mount swap socket target device automount timer path slice scope Each unit type can be recognized by the file extension."/>
+
+
+
+    <meta property="og:title" content="An Introduction to Systemd and Systemd Unit files" />
+<meta property="og:description" content="Systemd is considered to be the future standard init system by all mainstream Linux distributions. The Systemd System and Service Manager uses &ldquo;units&rdquo; as an abstraction for parts of the system to be managed: typically services, sockets, mounts and targets. It provides a uniform interface for managing units.
+The systemctl -t help command displays a list of available units that can be managed with Systemd.
+[student@server1 ~]$ systemctl -t help Available unit types: service mount swap socket target device automount timer path slice scope Each unit type can be recognized by the file extension." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://joerismissaert.dev/an-introduction-to-systemd-and-systemd-unit-files/" />
+<meta property="article:published_time" content="2020-06-25T12:04:28+00:00" />
+<meta property="article:modified_time" content="2020-06-25T12:04:28+00:00" />
+
+
+
+
+    <meta property="article:section" content="Red Hat Enterprise Linux" />
+
+
+
+    <meta property="article:published_time" content="2020-06-25 12:04:28 &#43;0000 &#43;0000" />
+
+
+
+
+
+
+
+
+    </head>
+
+    <body class="dark-theme">
+        <div class="container">
+            <header class="header">
+    <span class="header__inner">
+        <a href="https://joerismissaert.dev/" style="text-decoration: none;">
+    <div class="logo">
+        
+            <span class="logo__mark">></span>
+            <span class="logo__text">$ cd ~</span>
+            <span class="logo__cursor" style=
+                  "
+                   background-color:#8B0000;
+                   ">
+            </span>
+        
+    </div>
+</a>
+
+
+        <span class="header__right">
+            
+                <nav class="menu">
+    <ul class="menu__inner"><li><a href="https://joerismissaert.dev/about/">1. About</a></li><li><a href="https://joerismissaert.dev/posts/">2. Posts</a></li><li><a href="https://joerismissaert.dev/dev/">3. Dev</a></li><li><a href="https://joerismissaert.dev/webdev/">4. WebDev</a></li>
+    </ul>
+</nav>
+
+                <span class="menu-trigger">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        <path d="M0 0h24v24H0z" fill="none"/>
+                        <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/>
+                    </svg>
+                </span>
+            
+
+            <span class="theme-toggle unselectable"><svg class="theme-toggler" width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M22 41C32.4934 41 41 32.4934 41 22C41 11.5066 32.4934 3 22
+  3C11.5066 3 3 11.5066 3 22C3 32.4934 11.5066 41 22 41ZM7 22C7
+  13.7157 13.7157 7 22 7V37C13.7157 37 7 30.2843 7 22Z"/>
+</svg>
+</span>
+        </span>
+    </span>
+</header>
+
+
+            <div class="content">
+                
+  <main class="post">
+
+    <div class="post-info">
+      <p>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clock">
+          <circle cx="12" cy="12" r="10"></circle>
+          <polyline points="12 6 12 12 16 14"></polyline>
+        </svg>
+        10 minutes
+
+        
+      </p>
+    </div>
+
+    <article>
+      <h1 class="post-title">
+        <a href="https://joerismissaert.dev/an-introduction-to-systemd-and-systemd-unit-files/">An Introduction to Systemd and Systemd Unit files</a>
+      </h1>
+
+      
+
+      <div class="post-content">
+        
+    <img src="https://joerismissaert.dev/img/redhat-8-logo.png"  alt="Red Hat logo"  class="center"  />
+
+
+<p>Systemd is considered to be the future standard init system by all mainstream Linux distributions. The Systemd System and Service Manager uses &ldquo;units&rdquo; as an abstraction for parts of the system to be managed: typically services, sockets, mounts and targets. It provides a uniform interface for managing units.</p>
+<p>The <strong>systemctl -t help</strong> command displays a list of available units that can be managed with Systemd.</p>
+<pre><code>[student@server1 ~]$ systemctl -t help
+Available unit types:
+service
+mount
+swap
+socket
+target
+device
+automount
+timer
+path
+slice
+scope
+</code></pre><p>Each unit type can be recognized by the file extension. A service unit will end on <code>.service</code> while a target unit will end on <code>.target</code>.</p>
+<p>Unit files are located in three different locations:</p>
+<ul>
+<li>
+<p><code>/usr/lib/systemd/system</code> contains default unit files that have been installed by RPM packages. These should not be edited since package updates can overwrite your changes.</p>
+</li>
+<li>
+<p><code>/etc/systemd/system</code> contains custom unit files written by a system administrator or generated by the <strong>systemctl edit</strong> command.</p>
+</li>
+<li>
+<p><code>/run/systemd/system</code> contains unit files that have been generated automatically by the system during runtime.</p>
+</li>
+</ul>
+<p>The above locations have a specific priority if a unit file happens to exist in more than one location. Units in the <code>/run</code> directory have the highest priority, followed by custom unit files in the <code>/etc/systemd/system</code> directory and lastly the files inside <code>/usr/lib/systemd/system</code>.</p>
+<h2 id="systemd-service-units">Systemd Service Units</h2>
+<p>The most important unit type is the service unit. You can start any type of process by using a service unit, including daemon processes and regular commands.</p>
+<p>Let&rsquo;s take a look at the service unit file for the Very Secure Ftp Daemon:</p>
+<pre><code>[root@server1 ~]# systemctl cat vsftpd
+# /usr/lib/systemd/system/vsftpd.service
+[Unit]
+Description=Vsftpd ftp daemon
+After=network.target
+
+[Service]
+Type=forking
+ExecStart=/usr/sbin/vsftpd /etc/vsftpd/vsftpd.conf
+
+[Install]
+WantedBy=multi-user.target
+</code></pre><p>We can identify three sections in this service unit file:</p>
+<ul>
+<li>
+<p><strong>[Unit]</strong> This sections describes the unit and dependencies (more on that later). It contains the important <strong>After</strong> statement and optional <strong>Before</strong> statement. These statements define dependencies between different units and how they relate from the perspective of this unit. In the above example, the <strong>After</strong> statement indicates that this unit should be started after the <code>network.target</code> unit.</p>
+</li>
+<li>
+<p><strong>[Service]</strong> describes how to start and stop the unit. Usually you will see the <strong>ExecStart</strong> statement to indicate how to start the unit and the <strong>ExecStop</strong> statement for how to stop the unit. The <strong>Type</strong> statement is used to specify how the process should start. The <code>forking</code> type is commonly used by daemon processes.</p>
+</li>
+<li>
+<p><strong>[Install]</strong> indicates in which <code>target</code> unit this service has to start. We&rsquo;ll cover more on target units later.</p>
+</li>
+</ul>
+<p>For more detailed information on the above, see <strong>man 5 systemd.service</strong>.</p>
+<h2 id="systemd-mount-units">Systemd Mount Units</h2>
+<p>A mount unit specifies how a file system can be mounted on a specific directory. Configuring mount points through <code>/etc/fstab</code> is the preferred approach, any mount points configured in the <code>/etc/fstab</code> file will be converted to a Systemd mount unit at boot time.</p>
+<pre><code>[root@server1 ~]# systemctl cat tmp.mount
+[Unit]
+Description=Temporary Directory (/tmp)
+Documentation=https://systemd.io/TEMPORARY_DIRECTORIES
+Documentation=man:file-hierarchy(7)
+Documentation=https://www.freedesktop.org/wiki/Software/systemd/APIFileSystems
+ConditionPathIsSymbolicLink=!/tmp
+DefaultDependencies=no
+Conflicts=umount.target
+Before=local-fs.target umount.target
+After=swap.target
+
+[Mount]
+What=tmpfs
+Where=/tmp
+Type=tmpfs
+Options=mode=1777,strictatime,nosuid,nodev&lt;/code&gt;&lt;/pre&gt;
+</code></pre><p>We typically see the following options inside the <strong>[Mount]</strong> section:</p>
+<ul>
+<li>
+<p><strong>What</strong> takes an absolute path of a file or device node. This is a mandatory option.</p>
+</li>
+<li>
+<p><strong>Where</strong> defines the absolute path for the mount point, which cannot be a symbolic link. If it does not exist at the time of mounting, it is created as a directory. This is a mandatory option as well and the string must reflect the unit filename.</p>
+</li>
+<li>
+<p><strong>Type</strong> defines the file system type. This is optional.</p>
+</li>
+</ul>
+<p>See <strong>man 5 systemd.mount</strong> for more details.</p>
+<h2 id="systemd-socket-units">Systemd Socket Units</h2>
+<p>A socket creates a method for applications to communicate either by means of a file or a TCP/UDP port on which Systemd will be listening for incoming connections.</p>
+<p>This means a specific service doesn&rsquo;t have to be running continuously, if Systemd detects an incoming connection on the socket it can start the associated service (on-demand starting). With that in mind, each socket unit <em>must</em> have a corresponding service unit file.</p>
+<pre><code>[root@server1 ~]# systemctl cat cockpit.socket
+# /usr/lib/systemd/system/cockpit.socket
+[Unit]
+Description=Cockpit Web Service Socket
+Documentation=man:cockpit-ws(8)
+Wants=cockpit-motd.service
+
+[Socket]
+ListenStream=9090
+ExecStartPost=-/usr/share/cockpit/motd/update-motd '' localhost
+ExecStartPost=-/bin/ln -snf active.motd /run/cockpit/motd
+ExecStopPost=-/bin/ln -snf /usr/share/cockpit/motd/inactive.motd /run/cockpit/motd
+
+[Install]
+WantedBy=sockets.target
+</code></pre><p>The important option in the above example is <em><strong>ListenStream</strong></em>. This options specifies the address and/or <strong>TCP</strong> port number to listen on. It can be written as e.g. <code>192.168.0.1:9090</code> or <code>9090</code> or <code>/path/to/file.socket</code> or <code>[ipv6]:port</code>number</p>
+<p>For UDP ports you would use <em><strong>ListenDatagram</strong></em> instead.</p>
+<p>See <strong>man 5 systemd.socket</strong> for more information.</p>
+<h2 id="systemd-target-units">Systemd Target Units</h2>
+<p>A target unit makes it possible to load unit files in a specific order to define the state the machine should be started in, very similar to the runlevels used in other init systems. A target unit is basically a group of units, they don&rsquo;t have additional functionality on top of the units they group.</p>
+<pre><code>[root@server1 ~]# systemctl cat multi-user.target
+# /usr/lib/systemd/system/multi-user.target
+
+[Unit]
+Description=Multi-User System
+Documentation=man:systemd.special(7)
+Requires=basic.target
+Conflicts=rescue.service rescue.target
+After=basic.target rescue.service rescue.target
+AllowIsolate=yes
+</code></pre><p>The target unit has definitions on what it requires and what other targets it cannot coexist with (Conflicts). It defines load ordering by using the <strong>After</strong> option.</p>
+<p>When using the <strong>systemctl enable</strong> command on a unit to automatically start it at boot time, the <strong>[Install]</strong> section of that unit determines to what target unit it should be added. Behind the scenes, the <strong>systemctl enable</strong> command creates a symbolic link in the target directory (defined by [Install]) inside <code>/etc/systemd/system</code>.</p>
+<p>For example, <strong>systemctl enable vsftpd</strong> adds a symbolic link in <code>/etc/systemd/system/multi-user.target/wants/vsftpd.service</code> which points to <code>/usr/lib/systemd/system/vsftpd.service</code> ensuring the <code>vsftpd.service</code> unit will be started automatically with the Multi-User System target. This symbolic link is called a <em><strong>want</strong></em>, it defines what the target wants to start when it is processed.</p>
+<pre><code>[root@server1 ~]# systemctl enable vsftpd
+Created symlink /etc/systemd/system/multi-user.target.wants/vsftpd.service → /usr/lib/systemd/system/vsftpd.service.  
+</code></pre><h2 id="using-systemd-to-manage-units">Using Systemd to Manage Units</h2>
+<p>You should&rsquo;ve noticed we can use the <strong>systemctl</strong> command to manage Systemd units. <strong>systemctl start/stop</strong> will start/stop a unit, while <strong>systemctl enable/disable</strong> will either start the unit at boot or prevent the unit from starting at boot.</p>
+<p>The <strong>systemctl status</strong> command shows us runtime status information on the unit as well as the most recent journal log data:</p>
+<pre><code>[root@server1 ~]# systemctl status vsftpd
+● vsftpd.service - Vsftpd ftp daemon
+     Loaded: loaded (/usr/lib/systemd/system/vsftpd.service; disabled; vendor preset: disabled)
+     Active: active (running) since Thu 2020-06-25 14:27:13 +04; 1s ago
+    Process: 66451 ExecStart=/usr/sbin/vsftpd /etc/vsftpd/vsftpd.conf (code=exited, status=0/SUCCESS)
+   Main PID: 66452 (vsftpd)
+      Tasks: 1 (limit: 28430)
+     Memory: 636.0K
+        CPU: 4ms
+     CGroup: /system.slice/vsftpd.service
+             └─66452 /usr/sbin/vsftpd /etc/vsftpd/vsftpd.conf
+
+Jun 25 14:27:13 DELLG5 systemd&amp;#91;1]: Starting Vsftpd ftp daemon...
+Jun 25 14:27:13 DELLG5 systemd&amp;#91;1]: Started Vsftpd ftp daemon.
+</code></pre><p>The second line shows us the unit has been loaded into memory, but is not enabled at boot. The status of <strong>Loaded</strong> can also be <code>error</code>, <code>not-found</code>, <code>bad-setting</code>, <code>masked</code> or <code>static</code>.</p>
+<p>The <strong>Active</strong> line shows the current state:</p>
+<ul>
+<li><em><strong>running</strong></em>: The unit is running with active processes</li>
+<li><em><strong>exited</strong></em>: A one time run was successfully completed.</li>
+<li><em><strong>waiting</strong></em>: The unit is running and waiting for events.</li>
+<li><em><strong>inactive (dead)</strong></em>: The unit is not running</li>
+</ul>
+<p>In addition to the <strong>systemctl status</strong> command for a specific unit, the following commands can help you get a bigger picture of unit statuses:</p>
+
+
+
+
+
+<table class="table table-dark table-striped table-bordered">
+<thead>
+<tr>
+<th>Command</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>systemctl –type=service</td>
+<td>Show service units</td>
+</tr>
+<tr>
+<td>systemctl list-units –type-service</td>
+<td>idem</td>
+</tr>
+<tr>
+<td>systemctl list-units –type=service –all</td>
+<td>Show active and inactive service units</td>
+</tr>
+<tr>
+<td>systemctl –failed –type=service</td>
+<td>Show failed services</td>
+</tr>
+</tbody>
+</table>
+
+<h2 id="managing-systemd-dependencies">Managing Systemd Dependencies</h2>
+<p>Unit files can have dependencies, a unit file may <strong>Want</strong>, <strong>Require</strong> or <strong>Requisite</strong> one or more other units <strong>After</strong> or <strong>Before</strong> it can run. These keywords can be used in the <strong>[Unit]</strong> section of a unit file.</p>
+<ul>
+<li><em><strong>Requires:</strong></em> If this unit loads, then units specified here will also load. Deactivating either unit will result in both units being deactivated.</li>
+<li><em><strong>Requisite:</strong></em> If the unit listed here is not already loaded, then the unit will fail.</li>
+<li><em><strong>Wants:</strong></em> The unit will try to load units specified here, but it will not fail if any of the specified units do fail.</li>
+<li><em><strong>Before:</strong></em> The unit will start before the unit listed here.</li>
+<li><em><strong>After:</strong></em> The unit will start after the unit listed here.</li>
+</ul>
+<p>You can request a list of unit dependencies using the <strong>systemctl list-dependencies</strong> command. Adding a unit to the command will show dependencies for that specific unit, and adding the <strong>- -reverse</strong> flag will show what units are dependent on that specific unit.</p>
+<pre><code>[root@server1 ~]# systemctl list-dependencies vsftpd
+vsftpd.service
+● ├─system.slice
+● └─sysinit.target
+●   ├─dev-hugepages.mount
+●   ├─dev-mqueue.mount
+●   ├─dmraid-activation.service
+....
+
+[oot@server1 ~]# systemctl list-dependencies multi-user.target
+multi-user.target
+● ├─abrt-journal-core.service
+● ├─abrt-oops.service
+....
+
+[root@server1 ~]# systemctl list-dependencies --reverse multi-user.target
+multi-user.target
+● └─graphical.target
+</code></pre><h3 id="managing-unit-options">Managing Unit Options</h3>
+<p>There&rsquo;s a huge amount of options available for each unit file, to see what options (and their default values) are available for a specific unit use the <strong>systemctl show</strong> command.</p>
+<p>Changes to unit files need to be written to the <code>/etc/systemd/system</code> directory which is where custom unit files are located. The recommended way is to do so by using the <strong>systemctl edit</strong> command on a unit, this will create an override file for the unit and store that in the correct location. All settings in this file overwrite existing settings in <code>/usr/lib/systemd/system</code>.</p>
+<p>By default, <strong>systemctl edit</strong> will use the <strong>nano</strong> editor, but you can change the default file editor by including the following in <code>~/.bash_profile</code> or <code>/etc/bash_profile</code> to change this system wide:<br>
+<code>export SYSTEMD_EDITOR=&quot;/bin/vim&quot;</code></p>
+<h2 id="practical-example">Practical Example</h2>
+<p>Let&rsquo;s have a look at a practical example where we will install the <code>httpd</code> and <code>vsftpd</code> services, enable them at boot time and have them auto restart after 5 seconds should they fail. When the <code>httpd</code> service is started, the <code>vsftpd</code> service should be started as well, but the <code>httpd</code> service should <em>not</em> fail if for some reason <code>vsftpd</code> can not be started.</p>
+<pre><code>[root@server1 ~]# dnf install httpd vsftpd -y
+Last metadata expiration check: 0:02:49 ago on Fri 26 Jun 2020 12:36:40 +04.
+Dependencies resolved.
+.....
+[root@server1 ~]# systemctl enable httpd &amp;&amp; systemctl enable vsftpd
+Created symlink /etc/systemd/system/multi-user.target.wants/httpd.service → /usr/lib/systemd/system/httpd.service.
+Created symlink /etc/systemd/system/multi-user.target.wants/vsftpd.service → /usr/lib/systemd/system/vsftpd.service.
+[root@server1 ~]# systemctl start  httpd &amp;&amp; systemctl start vsftpd
+[root@server1 ~]#
+</code></pre><p>Now that we have both services installed, enabled at boot time and running, let&rsquo;s make sure they automatically restart in case they fail:</p>
+<pre><code>[root@server1 ~]# systemctl edit httpd
+[root@server1 ~]# systemctl cat httpd
+# /etc/systemd/system/httpd.service.d/override.conf
+[Service]
+Restart=on-failure
+RestartSec=5s
+[root@server1 ~]# systemctl daemon-reload
+</code></pre><p>Apply the same configuration for the <code>vsftpd</code> service and test it:<br>
+Check for the Main PID of the service using the <strong>systemctl status</strong> command and send a <strong>SIGKILL</strong> signal. When checking the status again you should see <code>Active: activating (auto-restart)</code> and a few seconds later the service will be running again.</p>
+<pre><code>[root@server1 ~]# systemctl status httpd
+● httpd.service - The Apache HTTP Server
+   Loaded: loaded (/usr/lib/systemd/system/httpd.service; enabled; vendor preset: disabled)
+  Drop-In: /etc/systemd/system/httpd.service.d
+           └─override.conf
+   Active: active (running) since Fri 2020-06-26 12:42:04 +04; 9min ago
+     Docs: man:httpd.service(8)
+ Main PID: 32234 (httpd)
+
+[root@server1 ~]# kill -9 32234
+[root@server1 ~]# systemctl status httpd
+● httpd.service - The Apache HTTP Server
+   Loaded: loaded (/usr/lib/systemd/system/httpd.service; enabled; vendor preset: disabled)
+  Drop-In: /etc/systemd/system/httpd.service.d
+           └─override.conf
+   Active: activating (auto-restart) (Result: signal) since Fri 2020-06-26 12:51:33 +04; 2s ago
+     Docs: man:httpd.service(8)
+  Process: 32234 ExecStart=/usr/sbin/httpd $OPTIONS -DFOREGROUND (code=killed, signal=KILL)
+</code></pre><p>Now, let&rsquo;s make sure that the <code>vsftpd</code> service is automatically started when <code>httpd</code> is started:</p>
+<pre><code>[root@server1 ~]# systemctl edit httpd
+[root@server1 ~]# systemctl cat httpd
+# /etc/systemd/system/httpd.service.d/override.conf
+[Service]
+Restart=on-failure
+RestartSec=5s
+
+[Unit]
+Wants=vsftpd.service
+[root@server1 ~]# systemctl daemon-reload
+</code></pre><p>Stop both services then <em>only</em> start the <code>httpd</code> service again:</p>
+<pre><code>[root@server1 ~]# systemctl stop httpd &amp;&amp; systemctl stop vsftpd
+[root@server1 ~]# systemctl start httpd
+[root@server1 ~]# systemctl status vsftpd
+● vsftpd.service - Vsftpd ftp daemon
+   Loaded: loaded (/usr/lib/systemd/system/vsftpd.service; enabled; vendor preset: disabled)
+  Drop-In: /etc/systemd/system/vsftpd.service.d
+           └─override.conf
+   Active: active (running) since Fri 2020-06-26 13:21:15 +04; 4s ago
+</code></pre><h2 id="summary">Summary</h2>
+<p>We learned about different unit types in Systemd, the three sections of a Systemd unit file, understanding Target Units and managing units with the <strong>systemctl</strong> command.</p>
+
+      </div>
+    </article>
+
+    <hr />
+
+    <div class="post-info">
+        <p>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-tag meta-icon">
+            <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path>
+            <line x1="7" y1="7" x2="7" y2="7"></line>
+          </svg><span class="tag"><a href="https://joerismissaert.dev/tags/red-hat/">Red Hat</a></span><span class="tag"><a href="https://joerismissaert.dev/tags/service-manager/">Service Manager</a></span><span class="tag"><a href="https://joerismissaert.dev/tags/systemd/">Systemd</a></span><span class="tag"><a href="https://joerismissaert.dev/tags/units/">Units</a></span><span class="tag"><a href="https://joerismissaert.dev/tags/rhel/">RHEL</a></span><span class="tag"><a href="https://joerismissaert.dev/tags/rhcsa/">RHCSA</a></span>
+        </p>
+
+      <p>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+          <polyline points="14 2 14 8 20 8"></polyline>
+          <line x1="16" y1="13" x2="8" y2="13"></line>
+          <line x1="16" y1="17" x2="8" y2="17"></line>
+          <polyline points="10 9 9 9 8 9"></polyline>
+        </svg>
+        1941 Words
+      </p>
+
+      <p>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar">
+          <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+          <line x1="16" y1="2" x2="16" y2="6"></line>
+          <line x1="8" y1="2" x2="8" y2="6"></line>
+          <line x1="3" y1="10" x2="21" y2="10"></line>
+        </svg>
+        2020-06-25 16:04 &#43;0400
+      </p>
+    </div>
+      <hr />
+      <div class="sharing-buttons">
+        
+<a class="resp-sharing-button__link resp-sharing-button__icon--solid" href="https://facebook.com/sharer/sharer.php?u=https%3a%2f%2fjoerismissaert.dev%2fan-introduction-to-systemd-and-systemd-unit-files%2f" target="_blank" rel="noopener" aria-label="" title="Share on facebook">
+  <div class="resp-sharing-button resp-sharing-button--facebook resp-sharing-button--small resp-sharing-button__icon--solid"><div aria-hidden="true" class="resp-sharing-button__icon resp-sharing-button__icon--solid">
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg>
+    </div>
+  </div>
+</a>
+
+
+<a class="resp-sharing-button__link" href="https://twitter.com/intent/tweet/?url=https%3a%2f%2fjoerismissaert.dev%2fan-introduction-to-systemd-and-systemd-unit-files%2f" target="_blank" rel="noopener" aria-label="" title="Share on twitter">
+  <div class="resp-sharing-button resp-sharing-button--twitter resp-sharing-button--small">
+      <div aria-hidden="true" class="resp-sharing-button__icon resp-sharing-button__icon--solid">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path></svg>
+    </div>
+  </div>
+</a>
+
+
+
+
+<a class="resp-sharing-button__link" href="https://www.linkedin.com/shareArticle?mini=true&amp;url=https%3a%2f%2fjoerismissaert.dev%2fan-introduction-to-systemd-and-systemd-unit-files%2f&amp;title=An%20Introduction%20to%20Systemd%20and%20Systemd%20Unit%20files&amp;summary=An%20Introduction%20to%20Systemd%20and%20Systemd%20Unit%20files&amp;source=https%3a%2f%2fjoerismissaert.dev%2fan-introduction-to-systemd-and-systemd-unit-files%2f" target="_blank" rel="noopener" aria-label="" title="Share on linkedin">
+  <div class="resp-sharing-button resp-sharing-button--linkedin resp-sharing-button--small"><div aria-hidden="true" class="resp-sharing-button__icon resp-sharing-button__icon--solid">
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>
+    </div>
+  </div>
+</a>
+
+
+<a class="resp-sharing-button__link" href="https://reddit.com/submit/?url=https%3a%2f%2fjoerismissaert.dev%2fan-introduction-to-systemd-and-systemd-unit-files%2f&amp;resubmit=true&amp;title=An%20Introduction%20to%20Systemd%20and%20Systemd%20Unit%20files" target="_blank" rel="noopener" aria-label="" title="Share on reddit">
+  <div class="resp-sharing-button resp-sharing-button--reddit resp-sharing-button--small"><div aria-hidden="true" class="resp-sharing-button__icon resp-sharing-button__icon--solid">
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M12 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0zm5.01 4.744c.688 0 1.25.561 1.25 1.249a1.25 1.25 0 0 1-2.498.056l-2.597-.547-.8 3.747c1.824.07 3.48.632 4.674 1.488.308-.309.73-.491 1.207-.491.968 0 1.754.786 1.754 1.754 0 .716-.435 1.333-1.01 1.614a3.111 3.111 0 0 1 .042.52c0 2.694-3.13 4.87-7.004 4.87-3.874 0-7.004-2.176-7.004-4.87 0-.183.015-.366.043-.534A1.748 1.748 0 0 1 4.028 12c0-.968.786-1.754 1.754-1.754.463 0 .898.196 1.207.49 1.207-.883 2.878-1.43 4.744-1.487l.885-4.182a.342.342 0 0 1 .14-.197.35.35 0 0 1 .238-.042l2.906.617a1.214 1.214 0 0 1 1.108-.701zM9.25 12C8.561 12 8 12.562 8 13.25c0 .687.561 1.248 1.25 1.248.687 0 1.248-.561 1.248-1.249 0-.688-.561-1.249-1.249-1.249zm5.5 0c-.687 0-1.248.561-1.248 1.25 0 .687.561 1.248 1.249 1.248.688 0 1.249-.561 1.249-1.249 0-.687-.562-1.249-1.25-1.249zm-5.466 3.99a.327.327 0 0 0-.231.094.33.33 0 0 0 0 .463c.842.842 2.484.913 2.961.913.477 0 2.105-.056 2.961-.913a.361.361 0 0 0 .029-.463.33.33 0 0 0-.464 0c-.547.533-1.684.73-2.512.73-.828 0-1.979-.196-2.512-.73a.326.326 0 0 0-.232-.095z"/></svg>
+    </div>
+  </div>
+</a>
+
+      </div>
+
+    
+      <div class="pagination">
+        <div class="pagination__title">
+          <span class="pagination__title-h"></span>
+          <hr />
+        </div>
+
+        <div class="pagination__buttons">
+          
+            <span class="button previous">
+              <a href="https://joerismissaert.dev/scheduling-tasks-with-cron-at-anacron/">
+                <span class="button__icon">←</span>
+                <span class="button__text">Scheduling Tasks with Cron, At and Anacron</span>
+              </a>
+            </span>
+          
+
+          
+            <span class="button next">
+              <a href="https://joerismissaert.dev/managing-shell-jobs-and-processes-on-rhel8/">
+                <span class="button__text">Managing Shell Jobs and Processes on RHEL8</span>
+                <span class="button__icon">→</span>
+              </a>
+            </span>
+          
+        </div>
+      </div>
+    
+
+
+    
+      
+        <div id="comments">
+          <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "joeri-jm-smissaert" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+        </div>
+      
+    
+
+  </main>
+
+            </div>
+
+            
+                <footer class="footer">
+    <div class="footer__inner">
+        <div class="footer__content">
+            <span>&copy; 2021</span>
+            
+                <span><a href="https://joerismissaert.dev">Joeri JM Smissaert</a></span>
+            
+            
+                <span><a href="https://joerismissaert.dev/privacy-policy">Privacy Policy</a> & <a href="https://joerismissaert.dev/terms-of-service">Terms of Service</a></span>
+            
+            <span> <a href="https://joerismissaert.dev/posts/index.xml" target="_blank" title="rss"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-rss"><path d="M4 11a9 9 0 0 1 9 9"></path><path d="M4 4a16 16 0 0 1 16 16"></path><circle cx="5" cy="19" r="1"></circle></svg></a></span>
+        </div>
+    </div>
+    <div class="footer__inner">
+        <div class="footer__content">
+            <style>.bmc-button img{height: 34px !important;width: 35px !important;margin-bottom: 1px !important;box-shadow: none !important;border: none !important;vertical-align: middle !important;}.bmc-button{padding: 7px 15px 7px 10px !important;line-height: 35px !important;height:51px !important;text-decoration: none !important;display:inline-flex !important;color:#000000 !important;background-color:#FFFFFF !important;border-radius: 5px !important;border: 1px solid transparent !important;padding: 7px 15px 7px 10px !important;font-size: 20px !important;letter-spacing:0.6px !important;box-shadow: 0px 1px 2px rgba(190, 190, 190, 0.5) !important;-webkit-box-shadow: 0px 1px 2px 2px rgba(190, 190, 190, 0.5) !important;margin: 0 auto !important;font-family:'Roboto', cursive !important;-webkit-box-sizing: border-box !important;box-sizing: border-box !important;}.bmc-button:hover, .bmc-button:active, .bmc-button:focus {-webkit-box-shadow: 0px 1px 2px 2px rgba(190, 190, 190, 0.5) !important;text-decoration: none !important;box-shadow: 0px 1px 2px 2px rgba(190, 190, 190, 0.5) !important;opacity: 0.85 !important;color:#000000 !important;}</style><link href="https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap" rel="stylesheet"><a class="bmc-button" target="_blank" href="https://www.buymeacoffee.com/joerismissaert"><img src="https://cdn.buymeacoffee.com/buttons/bmc-new-btn-logo.svg" alt="Buy me a coffee"><span style="margin-left:5px;font-size:19px !important;">Buy me a coffee :)</span></a>
+        </div>
+    </div>
+</footer>
+
+            
+        </div>
+
+        
+
+
+
+
+<script type="text/javascript" src="https://joerismissaert.dev/bundle.min.dc716e9092c9820b77f96da294d0120aeeb189b5bcea9752309ebea27fd53bbe6b13cffb2aca8ecf32525647ceb7001f76091de4199ac5a3caa432c070247f5b.js" integrity="sha512-3HFukJLJggt3&#43;W2ilNASCu6xibW86pdSMJ6&#43;on/VO75rE8/7KsqOzzJSVkfOtwAfdgkd5BmaxaPKpDLAcCR/Ww=="></script>
+    
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-81179434-3', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+
+
+
+
+    </body>
+</html>

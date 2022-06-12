@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Nginx on Joeri JM Smissaert</title>
+    <link>https://joerismissaert.dev/tags/nginx/</link>
+    <description>Recent content in Nginx on Joeri JM Smissaert</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>&lt;a href=&#34;https://joerismissaert.dev/privacy-policy&#34;&gt;Privacy Policy&lt;/a&gt; &amp; &lt;a href=&#34;https://joerismissaert.dev/terms-of-service&#34;&gt;Terms of Service&lt;/a&gt;</copyright>
+    <lastBuildDate>Sat, 25 Jan 2020 07:36:18 +0000</lastBuildDate><atom:link href="https://joerismissaert.dev/tags/nginx/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Blocking requests not originating from CloudFlare on Nginx</title>
+      <link>https://joerismissaert.dev/blocking-requests-not-originating-from-cloudflare-on-nginx/</link>
+      <pubDate>Sat, 25 Jan 2020 07:36:18 +0000</pubDate>
+      
+      <guid>https://joerismissaert.dev/blocking-requests-not-originating-from-cloudflare-on-nginx/</guid>
+      <description>My websites are behind CloudFlare , which acts as a reverse proxy and which can help in mitigating attacks, malicious traffic and requests.
+CloudFlare is masking the real IP address of this site. If you look up the DNS A record for this domain, you&amp;rsquo;ll see one of CloudFlare&amp;rsquo;s IP addresses. Essentially, CloudFlare is forwarding traffic from their servers to the server where my sites are hosted.
+The inconvenience of this is that I can&amp;rsquo;t see the real IP address of the visitor, instead, I&amp;rsquo;m seeing CloudFlare&amp;rsquo;s IP addresses in the Nginx log.</description>
+    </item>
+    
+    <item>
+      <title>Automate Let’s Encrypt SSL with Certbot on Centos 8</title>
+      <link>https://joerismissaert.dev/automate-lets-encrypt-ssl-with-certbot-on-centos-8/</link>
+      <pubDate>Fri, 10 Jan 2020 08:30:48 +0000</pubDate>
+      
+      <guid>https://joerismissaert.dev/automate-lets-encrypt-ssl-with-certbot-on-centos-8/</guid>
+      <description>An SSL Certificate is a text file with encrypted data that you install on your server so that you can secure/encrypt sensitive communications between your site and your visitors. They are also used to verify that you are connected with the service you wish to be connecting with, and, as a website owner it validates your trustworthiness.
+SSL certificates can be expensive, so here&amp;rsquo;s where Let’s Encrypt comes into play.</description>
+    </item>
+    
+    <item>
+      <title>Serving a Python Flask app with Gunicorn, Nginx and Systemd.</title>
+      <link>https://joerismissaert.dev/serving-a-python-flask-app-with-gunicorn-nginx-and-systemd/</link>
+      <pubDate>Tue, 31 Dec 2019 08:05:24 +0000</pubDate>
+      
+      <guid>https://joerismissaert.dev/serving-a-python-flask-app-with-gunicorn-nginx-and-systemd/</guid>
+      <description>This post explains how to serve a Python app from a Virtualenv with the Gunicorn WSGI and using Nginx as a proxy server.
+You should already have Nginx installed, and have a sample Flask app in a Virtualenv.
+Install Gunicorn in your Virtualenv Activate your Virtualenv and install Gunicorn by typing:
+$ source myprojectenv/bin/activate (myprojectenv)$ pip install gunicorn Creating the WSGI Entry Point Next, we&amp;rsquo;ll create a file called wsgi.</description>
+    </item>
+    
+    <item>
+      <title>Installing Nginx and Setting up Server Blocks on CentOS 8</title>
+      <link>https://joerismissaert.dev/installing-nginx-and-setting-up-server-blocks-on-centos-8/</link>
+      <pubDate>Thu, 26 Dec 2019 08:29:00 +0000</pubDate>
+      
+      <guid>https://joerismissaert.dev/installing-nginx-and-setting-up-server-blocks-on-centos-8/</guid>
+      <description>In this post, I&amp;rsquo;ll walk through how to install Nginx and set up Nginx server blocks on CentOS 8, and, how to serve different content to different visitors depending on which domains they are requesting.
+After initially installing CentOS, check if updates are available and apply them:
+$ sudo dnf update -y firewalld Next, let&amp;rsquo;s install the firewalld daemon to secure the server, start the daemon and enable it at boot.</description>
+    </item>
+    
+  </channel>
+</rss>

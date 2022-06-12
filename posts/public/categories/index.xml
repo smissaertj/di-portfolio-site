@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Categories on Joeri JM Smissaert</title>
+    <link>https://joerismissaert.dev/categories/</link>
+    <description>Recent content in Categories on Joeri JM Smissaert</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>&lt;a href=&#34;https://joerismissaert.dev/privacy-policy&#34;&gt;Privacy Policy&lt;/a&gt; &amp; &lt;a href=&#34;https://joerismissaert.dev/terms-of-service&#34;&gt;Terms of Service&lt;/a&gt;</copyright>
+    <lastBuildDate>Tue, 07 Jul 2020 20:57:41 +0400</lastBuildDate><atom:link href="https://joerismissaert.dev/categories/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Red Hat Enterprise Linux</title>
+      <link>https://joerismissaert.dev/categories/red-hat-enterprise-linux/</link>
+      <pubDate>Tue, 07 Jul 2020 20:57:41 +0400</pubDate>
+      
+      <guid>https://joerismissaert.dev/categories/red-hat-enterprise-linux/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>CentOS</title>
+      <link>https://joerismissaert.dev/categories/centos/</link>
+      <pubDate>Thu, 21 May 2020 16:54:46 +0000</pubDate>
+      
+      <guid>https://joerismissaert.dev/categories/centos/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Lab</title>
+      <link>https://joerismissaert.dev/categories/lab/</link>
+      <pubDate>Thu, 14 May 2020 10:28:03 +0000</pubDate>
+      
+      <guid>https://joerismissaert.dev/categories/lab/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Linux</title>
+      <link>https://joerismissaert.dev/categories/linux/</link>
+      <pubDate>Sun, 10 May 2020 16:57:26 +0000</pubDate>
+      
+      <guid>https://joerismissaert.dev/categories/linux/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>CloudFlare</title>
+      <link>https://joerismissaert.dev/categories/cloudflare/</link>
+      <pubDate>Thu, 30 Apr 2020 16:57:40 +0000</pubDate>
+      
+      <guid>https://joerismissaert.dev/categories/cloudflare/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Nginx</title>
+      <link>https://joerismissaert.dev/categories/nginx/</link>
+      <pubDate>Thu, 30 Apr 2020 16:57:40 +0000</pubDate>
+      
+      <guid>https://joerismissaert.dev/categories/nginx/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>SSL</title>
+      <link>https://joerismissaert.dev/categories/ssl/</link>
+      <pubDate>Thu, 30 Apr 2020 16:57:40 +0000</pubDate>
+      
+      <guid>https://joerismissaert.dev/categories/ssl/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Python</title>
+      <link>https://joerismissaert.dev/categories/python/</link>
+      <pubDate>Tue, 31 Dec 2019 08:05:24 +0000</pubDate>
+      
+      <guid>https://joerismissaert.dev/categories/python/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Web</title>
+      <link>https://joerismissaert.dev/categories/web/</link>
+      <pubDate>Tue, 31 Dec 2019 08:05:24 +0000</pubDate>
+      
+      <guid>https://joerismissaert.dev/categories/web/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>

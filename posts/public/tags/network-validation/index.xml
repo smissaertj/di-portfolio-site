@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>network validation on Joeri JM Smissaert</title>
+    <link>https://joerismissaert.dev/tags/network-validation/</link>
+    <description>Recent content in network validation on Joeri JM Smissaert</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>&lt;a href=&#34;https://joerismissaert.dev/privacy-policy&#34;&gt;Privacy Policy&lt;/a&gt; &amp; &lt;a href=&#34;https://joerismissaert.dev/terms-of-service&#34;&gt;Terms of Service&lt;/a&gt;</copyright>
+    <lastBuildDate>Mon, 18 May 2020 17:33:16 +0000</lastBuildDate><atom:link href="https://joerismissaert.dev/tags/network-validation/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Validating Network Configuration on Red Hat Enterprise Linux 8</title>
+      <link>https://joerismissaert.dev/validating-network-configuration-on-red-hat-enterprise-linux-8/</link>
+      <pubDate>Mon, 18 May 2020 17:33:16 +0000</pubDate>
+      
+      <guid>https://joerismissaert.dev/validating-network-configuration-on-red-hat-enterprise-linux-8/</guid>
+      <description>Networking is one of the essential items on a server. On Red Hat Enterprise Linux 8, networking is managed by the NetworkManager service. We&amp;rsquo;ll cover new tools that were introduced to help manage networks during runtime and how to make make the configuration persistent.
+Validating Network Addresses and Interfaces In RHEL 8, the default names for network cards are based on firmware, device topology, and device firmware. Network card names will always consist of the following parts:</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="author" content="Joeri JM Smissaert ">
+<meta name="description" content="Configuring Cron to Automate Recurring Tasks. On Linux, the cron service is used to run processes automatically at specific times as a way to automate tasks that have to occur regularly.
+The cron service consists of two major components:
+ The cron daemon checks every minute to see if there are any jobs to run. The cron configuration files work together to provide the right information to the right service at the right time." />
+<meta name="keywords" content="linux, red hat, centos, fedora, rhel, nginx, development, kinsta, rhcsa, python, tasks, cron, at, anacron, RHEL, RHCSA" />
+<meta name="robots" content="noodp" />
+<meta name="theme-color" content="#42464a" />
+<link rel="canonical" href="https://joerismissaert.dev/scheduling-tasks-with-cron-at-anacron/" />
+
+
+    <title>
+        
+            Scheduling Tasks with Cron, At and Anacron :: Joeri JM Smissaert 
+        
+    </title>
+
+
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.2.1/css/flag-icon.min.css" rel="stylesheet"
+    type="text/css">
+
+
+
+<link rel="stylesheet" href="https://joerismissaert.dev/main.bc0e1ee95501e8eff4092797423b13efee0ad37ba6def28f39ac50c21062b401.css">
+
+
+
+
+    <link rel="apple-touch-icon" sizes="180x180" href="https://joerismissaert.dev/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="https://joerismissaert.dev/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="https://joerismissaert.dev/favicon-16x16.png">
+    <link rel="manifest" href="https://joerismissaert.dev/site.webmanifest">
+    <link rel="mask-icon" href="https://joerismissaert.dev/safari-pinned-tab.svg" color="##42464a">
+    <link rel="shortcut icon" href="https://joerismissaert.dev/favicon.ico">
+    <meta name="msapplication-TileColor" content="##42464a">
+    <meta name="theme-color" content="##42464a">
+
+
+
+<meta itemprop="name" content="Scheduling Tasks with Cron, At and Anacron">
+<meta itemprop="description" content="Configuring Cron to Automate Recurring Tasks. On Linux, the cron service is used to run processes automatically at specific times as a way to automate tasks that have to occur regularly.
+The cron service consists of two major components:
+ The cron daemon checks every minute to see if there are any jobs to run. The cron configuration files work together to provide the right information to the right service at the right time.">
+<meta itemprop="datePublished" content="2020-07-07T20:57:41+04:00" />
+<meta itemprop="dateModified" content="2020-07-07T20:57:41+04:00" />
+<meta itemprop="wordCount" content="1332">
+
+
+
+<meta itemprop="keywords" content="tasks,cron,at,anacron,RHEL,RHCSA," />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Scheduling Tasks with Cron, At and Anacron"/>
+<meta name="twitter:description" content="Configuring Cron to Automate Recurring Tasks. On Linux, the cron service is used to run processes automatically at specific times as a way to automate tasks that have to occur regularly.
+The cron service consists of two major components:
+ The cron daemon checks every minute to see if there are any jobs to run. The cron configuration files work together to provide the right information to the right service at the right time."/>
+
+
+
+    <meta property="og:title" content="Scheduling Tasks with Cron, At and Anacron" />
+<meta property="og:description" content="Configuring Cron to Automate Recurring Tasks. On Linux, the cron service is used to run processes automatically at specific times as a way to automate tasks that have to occur regularly.
+The cron service consists of two major components:
+ The cron daemon checks every minute to see if there are any jobs to run. The cron configuration files work together to provide the right information to the right service at the right time." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://joerismissaert.dev/scheduling-tasks-with-cron-at-anacron/" />
+<meta property="article:published_time" content="2020-07-07T20:57:41+04:00" />
+<meta property="article:modified_time" content="2020-07-07T20:57:41+04:00" />
+
+
+
+
+    <meta property="article:section" content="Red Hat Enterprise Linux" />
+
+
+
+    <meta property="article:published_time" content="2020-07-07 20:57:41 &#43;0400 &#43;04" />
+
+
+
+
+
+
+
+
+    </head>
+
+    <body class="dark-theme">
+        <div class="container">
+            <header class="header">
+    <span class="header__inner">
+        <a href="https://joerismissaert.dev/" style="text-decoration: none;">
+    <div class="logo">
+        
+            <span class="logo__mark">></span>
+            <span class="logo__text">$ cd ~</span>
+            <span class="logo__cursor" style=
+                  "
+                   background-color:#8B0000;
+                   ">
+            </span>
+        
+    </div>
+</a>
+
+
+        <span class="header__right">
+            
+                <nav class="menu">
+    <ul class="menu__inner"><li><a href="https://joerismissaert.dev/about/">1. About</a></li><li><a href="https://joerismissaert.dev/posts/">2. Posts</a></li><li><a href="https://joerismissaert.dev/dev/">3. Dev</a></li><li><a href="https://joerismissaert.dev/webdev/">4. WebDev</a></li>
+    </ul>
+</nav>
+
+                <span class="menu-trigger">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        <path d="M0 0h24v24H0z" fill="none"/>
+                        <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/>
+                    </svg>
+                </span>
+            
+
+            <span class="theme-toggle unselectable"><svg class="theme-toggler" width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M22 41C32.4934 41 41 32.4934 41 22C41 11.5066 32.4934 3 22
+  3C11.5066 3 3 11.5066 3 22C3 32.4934 11.5066 41 22 41ZM7 22C7
+  13.7157 13.7157 7 22 7V37C13.7157 37 7 30.2843 7 22Z"/>
+</svg>
+</span>
+        </span>
+    </span>
+</header>
+
+
+            <div class="content">
+                
+  <main class="post">
+
+    <div class="post-info">
+      <p>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clock">
+          <circle cx="12" cy="12" r="10"></circle>
+          <polyline points="12 6 12 12 16 14"></polyline>
+        </svg>
+        7 minutes
+
+        
+      </p>
+    </div>
+
+    <article>
+      <h1 class="post-title">
+        <a href="https://joerismissaert.dev/scheduling-tasks-with-cron-at-anacron/">Scheduling Tasks with Cron, At and Anacron</a>
+      </h1>
+
+      
+
+      <div class="post-content">
+        
+    <img src="https://joerismissaert.dev/img/redhat-8-logo.png"  alt="Red Hat logo"  class="center"  />
+
+
+<h2 id="configuring-cron-to-automate-recurring-tasks">Configuring Cron to Automate Recurring Tasks.</h2>
+<p>On Linux, the cron service is used to run processes automatically at specific times as a way to automate tasks that have to occur regularly.</p>
+<p>The cron service consists of two major components:</p>
+<ul>
+<li><em>The cron daemon</em> checks every minute to see if there are any jobs to run.</li>
+<li><em>The cron configuration files</em> work together to provide the right information to the right service at the right time.</li>
+</ul>
+<h3 id="managing-the-crond-service">Managing the crond Service</h3>
+<p>Because some system tasks run through the <code>crond</code> service, this service is started  by default. The <code>crond</code> service itself doesn&rsquo;t need much management, it does not need to be reloaded or activated, the <code>crond</code> daemon wakes up every minute to see if anything needs to be run. You can monitor the current status of the service using the <code>systemctl status crond -l</code> command:</p>
+<pre><code>[root@server1 ~]# systemctl status crond -l
+● crond.service - Command Scheduler
+   Loaded: loaded (/usr/lib/systemd/system/crond.service; enabled; vendor preset: enabled)
+   Active: active (running) since Sat 2020-07-04 14:22:31 +04; 3 days ago
+ Main PID: 9134 (crond)
+    Tasks: 1 (limit: 49648)
+   Memory: 3.4M
+   CGroup: /system.slice/crond.service
+           └─9134 /usr/sbin/crond -n
+
+Jul 07 12:01:01 server1 CROND[56917]: (root) CMD (run-parts /etc/cron.hourly)
+Jul 07 13:01:01 server1 CROND[57001]: (root) CMD (run-parts /etc/cron.hourly)
+Jul 07 14:01:01 server1 CROND[57303]: (root) CMD (run-parts /etc/cron.hourly)
+Jul 07 15:01:01 server1 CROND[57551]: (root) CMD (run-parts /etc/cron.hourly)
+Jul 07 16:01:01 server1 CROND[57582]: (root) CMD (run-parts /etc/cron.hourly)
+Jul 07 17:01:01 server1 CROND[57621]: (root) CMD (run-parts /etc/cron.hourly)
+Jul 07 18:01:01 server1 CROND[57715]: (root) CMD (run-parts /etc/cron.hourly)
+Jul 07 19:01:01 server1 CROND[57807]: (root) CMD (run-parts /etc/cron.hourly)
+Jul 07 19:01:01 server1 run-parts[57816]: (/etc/cron.hourly) finished 0anacron
+Jul 07 20:01:01 server1 CROND[57845]: (root) CMD (run-parts /etc/cron.hourly)
+
+</code></pre><p>The <code>systemctl</code> command uses the <code>journald</code> service to find out what is happening with the crond service.</p>
+<h3 id="cron-timing">Cron Timing</h3>
+<p>A time string is used to specify when exactly a specific job should be run.
+The following cron time and date fields can be used for this time string:</p>
+
+
+
+
+
+<table class="table table-dark table-striped table-bordered">
+<thead>
+<tr>
+<th>Field</th>
+<th>Values</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>minute</td>
+<td>0 - 59</td>
+</tr>
+<tr>
+<td>hour</td>
+<td>0 - 23</td>
+</tr>
+<tr>
+<td>day of month</td>
+<td>1 - 31</td>
+</tr>
+<tr>
+<td>month</td>
+<td>1 - 12</td>
+</tr>
+<tr>
+<td>day of week</td>
+<td>0 - 7 (Sunday is 0 or 7)</td>
+</tr>
+</tbody>
+</table>
+
+<p>In any of the above fields you can use an <code>*</code> as a wildcard to refer to any value, ranges of numbers, lists and patterns are also allowed:</p>
+<ul>
+<li><code>* 11 * * *</code> - Every minute between 11:00 and 11:59</li>
+<li><code>0 11 * * 1-5</code> - Every weekday at 11:00</li>
+<li><code>0 7-18 * * 1-5</code> - Every weekday between 7a.m. and 6p.m. at the top of the hour</li>
+<li><code>0 */2 2 12 5</code> - Every 2 hours at the top of the hour, on the 2nd of December and every Friday in December.</li>
+</ul>
+<pre><code># For details see man 4 crontabs
+
+# Example of job definition:
+# .---------------- minute (0 - 59)
+# |  .------------- hour (0 - 23)
+# |  |  .---------- day of month (1 - 31)
+# |  |  |  .------- month (1 - 12) OR jan,feb,mar,apr ...
+# |  |  |  |  .---- day of week (0 - 6) (Sunday=0 or 7) OR sun,mon,tue,wed,thu,fri,sat
+# |  |  |  |  |
+# *  *  *  *  * user-name  command to be executed
+</code></pre><h3 id="cron-configuration-files">Cron Configuration Files</h3>
+<p>The main configuration file for cron is <code>/etc/crontab</code>, but you will not change this file directly. Different Cron configuration files are used:</p>
+<ul>
+<li>Cron files in <code>/etc/cron.d</code></li>
+<li>Scripts in <code>/etc/cron.hourly</code>, <code>cron.daily</code>, <code>cron.weekly</code> and <code>cron.monthly</code></li>
+<li>User-specific files created with <code>crontab -e</code></li>
+</ul>
+<p>Cron jobs can be created for specific users by either logging in as that user and executing <code>crontab -e</code> or executing <code>crontab -e -u USERNAME</code> as root.
+<code>crontab -e</code> opens the <code>vi</code> editor and creates a temporary file. After saving your changes, the temporary file is moved to <code>/var/spool/cron</code> where a file is created for each user. These files should not be edited directly.</p>
+<p>You can also add Cron jobs that are not tied to a specific user account, these will be executed by default as root unless you specify otherwise.
+To do so you add a file where the content meets the syntax of a typical cron job inside the <code>/etc/cron.d</code> directory, the file name does not matter.</p>
+<p>The last way to schedule Cron jobs is through the following directories:</p>
+<ul>
+<li><code>/etc/cron.hourly</code></li>
+<li><code>/etc/cron.daily</code></li>
+<li><code>/etc/cron.weekly</code></li>
+<li><code>/etc/cron.monthly</code></li>
+</ul>
+<p>Scripts added to these directories should not contain any information on when it should be executed. You would only add scripts there if the exact time of execution does not really matter, the only thing that would matter is if the job needs to be launched once an hour, day, week or month.</p>
+<h3 id="the-purpose-of-anacron">The Purpose of Anacron</h3>
+<p>Anacron is the service that takes care of starting the hourly, daily, weekly and monthly jobs regardless of the exact time.
+Anacron uses the <code>/etc/anacrontab</code> file for this:</p>
+<pre><code>[root@server1 cron.d]# cat /etc/anacrontab 
+# /etc/anacrontab: configuration file for anacron
+
+# See anacron(8) and anacrontab(5) for details.
+
+SHELL=/bin/sh
+PATH=/sbin:/bin:/usr/sbin:/usr/bin
+MAILTO=root
+# the maximal random delay added to the base delay of the jobs
+RANDOM_DELAY=45
+# the jobs will be started during the following hours only
+START_HOURS_RANGE=3-22
+
+#period in days   delay in minutes   job-identifier   command
+1	5	cron.daily		nice run-parts /etc/cron.daily
+7	25	cron.weekly		nice run-parts /etc/cron.weekly
+@monthly 45	cron.monthly		nice run-parts /etc/cron.monthly
+</code></pre><p>From the above we can see that Anacron will only run jobs between 3a.m. and 10p.m.<br>
+The <em>period in days</em> specifies the job execution frequency, <em>delay in minutes</em> specifies how long Anacron waits before executing the job. Then we have the job identifier <code>cron.daily</code> and the command that&rsquo;s being executed (<em>nice run-parts /etc/cron.daily</em>)</p>
+<blockquote>
+<p>The need to configure jobs through Anacron is taken away by the <code>/etc/cron.hourly</code>, <code>cron.daily</code>, <code>cron.weekly</code> and <code>cron.monthly</code> directories.</p>
+</blockquote>
+<p>Note that there is no single command that would show all currently scheduled jobs. The <code>crontab -l</code> command does list cron jobs, but only for the current user.</p>
+<h3 id="cron-security">Cron Security</h3>
+<p>By default, all users are allowed to create Cron jobs.<br>
+To limit which user is allowed or not allowed to create Cron jobs we use the <code>/etc/cron.allow</code> and <code>/etc/cron.deny</code> files:</p>
+<ul>
+<li>If the <code>cron.allow</code> file exists, a user must be listed in the file to be allowed to use Cron.</li>
+<li>If the <code>cron.deny</code> file exists, a user must <strong>not</strong> be listed in the file to be allowed to use cron.</li>
+</ul>
+<blockquote>
+<p>Both files should not exist at the same time.<br>
+If neither file exists, only root can use Cron.</p>
+</blockquote>
+<h2 id="configuring-at-to-schedule-future-tasks">Configuring At to Schedule Future Tasks</h2>
+<p>The <code>atd</code> service is used for jobs that need to be executed only once and are thus not recurring.
+You can use the <code>at</code> command followed by the time the job needs the be executed, either a specific time as in <code>at 14:00</code> or a time indication like <code>at noon</code> or <code>at teatime</code>.</p>
+<p>After typing the <code>at</code> command a shell opens where you can type several commands that will be executed on at the time you specified, press <code>CTRL-D</code> to leave the shell.</p>
+<p>The <code>atq</code> command lists an overview of all currently scheduled jobs. You can remove a specific job using the <code>atrm</code> command followed by the job number.</p>
+<blockquote>
+<p>A load value can be specified when starting the <code>atd</code> service using the <code>-l</code> option.<br>
+e.g. <code>atd -l 3.0</code> will make sure no job is started when the system load is higher than 3.0</p>
+</blockquote>
+<pre><code>[student@server1 ~]$ at noon
+warning: commands will be executed using /bin/sh
+at&gt; echo &quot;It's noon&quot;
+at&gt; &lt;EOT&gt;
+job 41 at Wed Jul 08 12:00:00 2020
+[student@server1 ~]$ atq
+41	Wed Jul 08 12:00:00 2020 a student
+[student@server1 ~]$ atrm 41
+[student@server1 ~]$ atq
+[student@server1 ~]$ 
+
+</code></pre><p>Instead of specifying commands to be executed interactively from the prompt, we can instruct <code>at</code> to execute an existing script or program simply by passing it as an argument to the -f flag (or by using input redirection):</p>
+<pre><code>[student@server1 ~]$ at now + 1 minute -f script.sh
+warning: commands will be executed using /bin/sh
+job 42 at Wed Jul 08 12:02:00 2020
+[student@server1 ~]$ 
+
+[student@server1 ~]$ at now + 1 minute &lt; at_jobs.txt
+warning: commands will be executed using /bin/sh
+job 43 at Wed Jul 08 12:05:00 2020
+[student@server1 ~]$ 
+</code></pre>
+      </div>
+    </article>
+
+    <hr />
+
+    <div class="post-info">
+        <p>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-tag meta-icon">
+            <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path>
+            <line x1="7" y1="7" x2="7" y2="7"></line>
+          </svg><span class="tag"><a href="https://joerismissaert.dev/tags/tasks/">tasks</a></span><span class="tag"><a href="https://joerismissaert.dev/tags/cron/">cron</a></span><span class="tag"><a href="https://joerismissaert.dev/tags/at/">at</a></span><span class="tag"><a href="https://joerismissaert.dev/tags/anacron/">anacron</a></span><span class="tag"><a href="https://joerismissaert.dev/tags/rhel/">RHEL</a></span><span class="tag"><a href="https://joerismissaert.dev/tags/rhcsa/">RHCSA</a></span>
+        </p>
+
+      <p>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+          <polyline points="14 2 14 8 20 8"></polyline>
+          <line x1="16" y1="13" x2="8" y2="13"></line>
+          <line x1="16" y1="17" x2="8" y2="17"></line>
+          <polyline points="10 9 9 9 8 9"></polyline>
+        </svg>
+        1332 Words
+      </p>
+
+      <p>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar">
+          <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+          <line x1="16" y1="2" x2="16" y2="6"></line>
+          <line x1="8" y1="2" x2="8" y2="6"></line>
+          <line x1="3" y1="10" x2="21" y2="10"></line>
+        </svg>
+        2020-07-07 20:57 &#43;0400
+      </p>
+    </div>
+      <hr />
+      <div class="sharing-buttons">
+        
+<a class="resp-sharing-button__link resp-sharing-button__icon--solid" href="https://facebook.com/sharer/sharer.php?u=https%3a%2f%2fjoerismissaert.dev%2fscheduling-tasks-with-cron-at-anacron%2f" target="_blank" rel="noopener" aria-label="" title="Share on facebook">
+  <div class="resp-sharing-button resp-sharing-button--facebook resp-sharing-button--small resp-sharing-button__icon--solid"><div aria-hidden="true" class="resp-sharing-button__icon resp-sharing-button__icon--solid">
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg>
+    </div>
+  </div>
+</a>
+
+
+<a class="resp-sharing-button__link" href="https://twitter.com/intent/tweet/?url=https%3a%2f%2fjoerismissaert.dev%2fscheduling-tasks-with-cron-at-anacron%2f" target="_blank" rel="noopener" aria-label="" title="Share on twitter">
+  <div class="resp-sharing-button resp-sharing-button--twitter resp-sharing-button--small">
+      <div aria-hidden="true" class="resp-sharing-button__icon resp-sharing-button__icon--solid">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path></svg>
+    </div>
+  </div>
+</a>
+
+
+
+
+<a class="resp-sharing-button__link" href="https://www.linkedin.com/shareArticle?mini=true&amp;url=https%3a%2f%2fjoerismissaert.dev%2fscheduling-tasks-with-cron-at-anacron%2f&amp;title=Scheduling%20Tasks%20with%20Cron%2c%20At%20and%20Anacron&amp;summary=Scheduling%20Tasks%20with%20Cron%2c%20At%20and%20Anacron&amp;source=https%3a%2f%2fjoerismissaert.dev%2fscheduling-tasks-with-cron-at-anacron%2f" target="_blank" rel="noopener" aria-label="" title="Share on linkedin">
+  <div class="resp-sharing-button resp-sharing-button--linkedin resp-sharing-button--small"><div aria-hidden="true" class="resp-sharing-button__icon resp-sharing-button__icon--solid">
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>
+    </div>
+  </div>
+</a>
+
+
+<a class="resp-sharing-button__link" href="https://reddit.com/submit/?url=https%3a%2f%2fjoerismissaert.dev%2fscheduling-tasks-with-cron-at-anacron%2f&amp;resubmit=true&amp;title=Scheduling%20Tasks%20with%20Cron%2c%20At%20and%20Anacron" target="_blank" rel="noopener" aria-label="" title="Share on reddit">
+  <div class="resp-sharing-button resp-sharing-button--reddit resp-sharing-button--small"><div aria-hidden="true" class="resp-sharing-button__icon resp-sharing-button__icon--solid">
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M12 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0zm5.01 4.744c.688 0 1.25.561 1.25 1.249a1.25 1.25 0 0 1-2.498.056l-2.597-.547-.8 3.747c1.824.07 3.48.632 4.674 1.488.308-.309.73-.491 1.207-.491.968 0 1.754.786 1.754 1.754 0 .716-.435 1.333-1.01 1.614a3.111 3.111 0 0 1 .042.52c0 2.694-3.13 4.87-7.004 4.87-3.874 0-7.004-2.176-7.004-4.87 0-.183.015-.366.043-.534A1.748 1.748 0 0 1 4.028 12c0-.968.786-1.754 1.754-1.754.463 0 .898.196 1.207.49 1.207-.883 2.878-1.43 4.744-1.487l.885-4.182a.342.342 0 0 1 .14-.197.35.35 0 0 1 .238-.042l2.906.617a1.214 1.214 0 0 1 1.108-.701zM9.25 12C8.561 12 8 12.562 8 13.25c0 .687.561 1.248 1.25 1.248.687 0 1.248-.561 1.248-1.249 0-.688-.561-1.249-1.249-1.249zm5.5 0c-.687 0-1.248.561-1.248 1.25 0 .687.561 1.248 1.249 1.248.688 0 1.249-.561 1.249-1.249 0-.687-.562-1.249-1.25-1.249zm-5.466 3.99a.327.327 0 0 0-.231.094.33.33 0 0 0 0 .463c.842.842 2.484.913 2.961.913.477 0 2.105-.056 2.961-.913a.361.361 0 0 0 .029-.463.33.33 0 0 0-.464 0c-.547.533-1.684.73-2.512.73-.828 0-1.979-.196-2.512-.73a.326.326 0 0 0-.232-.095z"/></svg>
+    </div>
+  </div>
+</a>
+
+      </div>
+
+    
+      <div class="pagination">
+        <div class="pagination__title">
+          <span class="pagination__title-h"></span>
+          <hr />
+        </div>
+
+        <div class="pagination__buttons">
+          
+            <span class="button previous">
+              <a href="https://joerismissaert.dev/understanding-and-configuring-system-logging/">
+                <span class="button__icon">←</span>
+                <span class="button__text">Understanding and Configuring System Logging</span>
+              </a>
+            </span>
+          
+
+          
+            <span class="button next">
+              <a href="https://joerismissaert.dev/an-introduction-to-systemd-and-systemd-unit-files/">
+                <span class="button__text">An Introduction to Systemd and Systemd Unit files</span>
+                <span class="button__icon">→</span>
+              </a>
+            </span>
+          
+        </div>
+      </div>
+    
+
+
+    
+      
+        <div id="comments">
+          <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "joeri-jm-smissaert" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+        </div>
+      
+    
+
+  </main>
+
+            </div>
+
+            
+                <footer class="footer">
+    <div class="footer__inner">
+        <div class="footer__content">
+            <span>&copy; 2021</span>
+            
+                <span><a href="https://joerismissaert.dev">Joeri JM Smissaert</a></span>
+            
+            
+                <span><a href="https://joerismissaert.dev/privacy-policy">Privacy Policy</a> & <a href="https://joerismissaert.dev/terms-of-service">Terms of Service</a></span>
+            
+            <span> <a href="https://joerismissaert.dev/posts/index.xml" target="_blank" title="rss"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-rss"><path d="M4 11a9 9 0 0 1 9 9"></path><path d="M4 4a16 16 0 0 1 16 16"></path><circle cx="5" cy="19" r="1"></circle></svg></a></span>
+        </div>
+    </div>
+    <div class="footer__inner">
+        <div class="footer__content">
+            <style>.bmc-button img{height: 34px !important;width: 35px !important;margin-bottom: 1px !important;box-shadow: none !important;border: none !important;vertical-align: middle !important;}.bmc-button{padding: 7px 15px 7px 10px !important;line-height: 35px !important;height:51px !important;text-decoration: none !important;display:inline-flex !important;color:#000000 !important;background-color:#FFFFFF !important;border-radius: 5px !important;border: 1px solid transparent !important;padding: 7px 15px 7px 10px !important;font-size: 20px !important;letter-spacing:0.6px !important;box-shadow: 0px 1px 2px rgba(190, 190, 190, 0.5) !important;-webkit-box-shadow: 0px 1px 2px 2px rgba(190, 190, 190, 0.5) !important;margin: 0 auto !important;font-family:'Roboto', cursive !important;-webkit-box-sizing: border-box !important;box-sizing: border-box !important;}.bmc-button:hover, .bmc-button:active, .bmc-button:focus {-webkit-box-shadow: 0px 1px 2px 2px rgba(190, 190, 190, 0.5) !important;text-decoration: none !important;box-shadow: 0px 1px 2px 2px rgba(190, 190, 190, 0.5) !important;opacity: 0.85 !important;color:#000000 !important;}</style><link href="https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap" rel="stylesheet"><a class="bmc-button" target="_blank" href="https://www.buymeacoffee.com/joerismissaert"><img src="https://cdn.buymeacoffee.com/buttons/bmc-new-btn-logo.svg" alt="Buy me a coffee"><span style="margin-left:5px;font-size:19px !important;">Buy me a coffee :)</span></a>
+        </div>
+    </div>
+</footer>
+
+            
+        </div>
+
+        
+
+
+
+
+<script type="text/javascript" src="https://joerismissaert.dev/bundle.min.dc716e9092c9820b77f96da294d0120aeeb189b5bcea9752309ebea27fd53bbe6b13cffb2aca8ecf32525647ceb7001f76091de4199ac5a3caa432c070247f5b.js" integrity="sha512-3HFukJLJggt3&#43;W2ilNASCu6xibW86pdSMJ6&#43;on/VO75rE8/7KsqOzzJSVkfOtwAfdgkd5BmaxaPKpDLAcCR/Ww=="></script>
+    
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-81179434-3', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+
+
+
+
+    </body>
+</html>
