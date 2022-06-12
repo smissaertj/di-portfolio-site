@@ -1,1 +1,2 @@
 /posts/* https://blog.joerismissaert.dev/:splat 200!
+/tags/* https://blog.joerismissaert.dev/:splat 200!
